@@ -12,20 +12,17 @@ return [
     'truncate_tables' => true,
 
     'roles_structure' => [
-        'superadministrator' => [
+        'admin' => [
             'users' => 'c,r,u,d',
-            'payments' => 'c,r,u,d',
-            'profile' => 'r,u',
         ],
-        'administrator' => [
-            'users' => 'c,r,u,d',
-            'profile' => 'r,u',
+        'StockOwner' => [
+            'fabricstocks' => 'c,r,u,d',
         ],
-        'user' => [
-            'profile' => 'r,u',
+        'WarehouseProvider' => [
+            // Add warehouse provider permissions here
         ],
-        'role_name' => [
-            'module_1_name' => 'c,r,u,d',
+        'Transporter' => [
+            // Add transporter permissions here
         ],
     ],
 
