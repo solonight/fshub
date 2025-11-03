@@ -14,15 +14,20 @@ return [
     'roles_structure' => [
         'admin' => [
             'users' => 'c,r,u,d',
+            'fabricstocks' => 'c,r,u,d',
+            'warehouse' => 'c,r,u,d',
+            'transportercard' => 'c,r,u,d',
         ],
         'StockOwner' => [
             'fabricstocks' => 'c,r,u,d',
+            'warehouse' => 'r',
+            'transportercard' => 'r',
         ],
         'WarehouseProvider' => [
-            // Add warehouse provider permissions here
+            'warehouse' => 'c,r,u,d',
         ],
         'Transporter' => [
-            // Add transporter permissions here
+            'transportercard' => 'c,r,u,d',
         ],
     ],
 
