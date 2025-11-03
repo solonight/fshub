@@ -20,14 +20,16 @@ class FabricStock extends Model
         'total_quantity',
         'available_quantity',
         'description',
-        'auto_delete'
+        'auto_delete',
+        'samples_availability'
     ];
 
     protected $casts = [
         'price_per_unit' => 'decimal:2',
         'total_quantity' => 'decimal:2',
         'available_quantity' => 'decimal:2',
-        'auto_delete' => 'boolean'
+        'auto_delete' => 'boolean',
+        'samples_availability' => 'boolean'
     ];
 
     public function user()

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->decimal('available_quantity', 10, 2);
             $table->text('description')->nullable();
             $table->boolean('auto_delete')->default(true);
+            $table->boolean('samples_availability')->default(false);
             $table->timestamps();
             $table->softDeletes();
             
