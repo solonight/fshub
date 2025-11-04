@@ -29,6 +29,11 @@ return [
         'Transporter' => [
             'transportercard' => 'c,r,u,d',
         ],
+        'customer' => [
+            'fabricstocks' => 'r',
+            'warehouse' => 'r',
+            'transportercard' => 'r',
+        ],
     ],
 
     'permissions_map' => [

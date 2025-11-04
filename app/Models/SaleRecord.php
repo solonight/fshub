@@ -42,4 +42,28 @@ class SaleRecord extends Model
     {
         return $this->hasMany(StockHistory::class, 'reference_id');
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($saleRecord) {
+            // Update available_quantity in FabricStock
+            $stock = $saleRecord->stock;
+            if ($stock) {
+                $stock->available_quantity -= $saleRecord->quantity_sold;
+                $stock->save();
+
+                // Create StockHistory record
+                \App\Models\StockHistory::create([
+                    'stock_id' => $stock->stock_id,
+                    'user_id' => $saleRecord->user_id,
+                    'change_type' => 'SALE',
+                    'quantity' => -$saleRecord->quantity_sold,
+                    'notes' => $saleRecord->notes,
+                    'reference_id' => $saleRecord->record_id,
+                ]);
+            }
+        });
+    }
 }

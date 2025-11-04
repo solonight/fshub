@@ -48,7 +48,7 @@ class FabricStock extends Model
     }
 
     public function shouldAutoDelete()
-    {
+    { 
         return $this->auto_delete && $this->available_quantity <= 0;
     }
 }
