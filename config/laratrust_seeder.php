@@ -17,22 +17,27 @@ return [
             'fabricstocks' => 'c,r,u,d',
             'warehouse' => 'c,r,u,d',
             'transportercard' => 'c,r,u,d',
+            'sale-records' => 'c',
         ],
         'StockOwner' => [
             'fabricstocks' => 'c,r,u,d',
             'warehouse' => 'r',
             'transportercard' => 'r',
+            'sale-records' => 'c',
         ],
         'WarehouseProvider' => [
             'warehouse' => 'c,r,u,d',
+            'sale-records' => 'c',
         ],
         'Transporter' => [
             'transportercard' => 'c,r,u,d',
+            'sale-records' => 'c',
         ],
         'customer' => [
             'fabricstocks' => 'r',
             'warehouse' => 'r',
             'transportercard' => 'r',
+            'sale-records' => 'c',
         ],
     ],
 
