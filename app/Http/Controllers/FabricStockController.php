@@ -7,10 +7,11 @@ use Illuminate\Http\Request;
 
 class FabricStockController extends Controller
 {
-    // List all fabric stocks
-    public function index()
+    // List all fabric stocks, paginated (20 per page)
+    public function index(Request $request)
     {
-        return FabricStock::all();
+        $stocks = FabricStock::paginate(20);
+        return response()->json($stocks);
     }
 
     // Show a single fabric stock
@@ -40,6 +41,10 @@ class FabricStockController extends Controller
     public function update(Request $request, $id)
     {
         $fabricStock = FabricStock::findOrFail($id);
+        // Authorization: Only the owner can update
+        if (auth()->id() !== $fabricStock->user_id) {
+            return response()->json(['message' => 'Forbidden: You can only update your own stocks.'], 403);
+        }
         $validated = $request->validate([
             'fabric_type' => 'sometimes|string',
             'color' => 'sometimes|string',
@@ -58,6 +63,10 @@ class FabricStockController extends Controller
     public function destroy($id)
     {
         $fabricStock = FabricStock::findOrFail($id);
+        // Authorization: Only the owner can delete
+        if (auth()->id() !== $fabricStock->user_id) {
+            return response()->json(['message' => 'Forbidden: You can only delete your own stocks.'], 403);
+        }
         $fabricStock->delete();
         return response()->json(['message' => 'Deleted successfully']);
     }

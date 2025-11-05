@@ -10,6 +10,23 @@ use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
+    // Get all users, paginated (35 per page)
+    public function index(Request $request)
+    {
+        $users = User::paginate(35);
+        return response()->json($users);
+    }
+
+    // Get user by ID
+    public function show($id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+        return response()->json($user);
+    }
+
     // Delete a user by admin
     public function destroy($id)
     {

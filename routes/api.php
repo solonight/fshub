@@ -34,4 +34,8 @@ Route::apiResource('transporter-cards', App\Http\Controllers\TransporterCardCont
 Route::apiResource('warehouses', App\Http\Controllers\WarehouseController::class);
 
 // Admin user deletion route
+// Admin user index and show routes
+Route::middleware(['auth:sanctum'])->get('users', [App\Http\Controllers\UserController::class, 'index']);
+Route::middleware(['auth:sanctum'])->get('users/{id}', [App\Http\Controllers\UserController::class, 'show']);
 Route::middleware(['auth:sanctum'])->delete('users/{id}', [App\Http\Controllers\UserController::class, 'destroy']);
+
