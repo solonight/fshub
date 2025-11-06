@@ -242,7 +242,6 @@ export default function Register() {
                                 message={errors.role}
                                 className="mt-2 text-primary"
                             />
-                        </div>
                         <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-2 mt-2">
                             <Link
                                 href={route("login")}
@@ -256,6 +255,7 @@ export default function Register() {
                             >
                                 Register
                             </PrimaryButton>
+                        </div>
                         </div>
                     </form>
                 </div>
