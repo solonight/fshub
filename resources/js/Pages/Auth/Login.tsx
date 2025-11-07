@@ -48,6 +48,13 @@ export default function Login({
                 </div>
                 {/* Right side: Login form */}
                 <div className="flex flex-col justify-center items-center w-full md:w-1/2 h-full bg-primary px-6 sm:px-12 md:px-24 transition-all duration-500 shadow-2xl shadow-black/50">
+                    <div className="mb-6">
+                        <img
+                            src={SFlogo}
+                            alt="Logo"
+                            className="w-24 h-24 md:w-48 md:h-48 rounded-full shadow-lg"
+                        />
+                    </div>
 
                     {status && (
                         <div className="mb-4 font-medium text-sm text-green-600">
@@ -56,9 +63,6 @@ export default function Login({
                     )}
 
                     <form onSubmit={submit} className="space-y-3 w-full">
-                    <div className="absolute top-4 left-4">
-                        <img src={SFlogo} alt="Logo" className="w-16 h-16" />
-                    </div>
                         <div>
                             <InputLabel
                                 htmlFor="email"
