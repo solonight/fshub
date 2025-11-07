@@ -38,8 +38,16 @@ export default function Login({
             <Head title="Log in" />
 
             <div className="flex h-screen w-screen bg-primary">
-                {/* Left side: Login form */}
-                <div className="flex flex-col justify-center items-center w-full md:w-1/2 h-full bg-primary px-6 sm:px-12 md:px-24 transition-all duration-500">
+                {/* Left side: Image */}
+                <div className="hidden md:flex w-1/2 h-full items-center justify-center bg-primary transition-all duration-500 shadow-2xl shadow-black/50">
+                    <img
+                        src={loginLeftSide}
+                        alt="Login left side"
+                        className="object-cover w-full h-full  bg-primary"
+                    />
+                </div>
+                {/* Right side: Login form */}
+                <div className="flex flex-col justify-center items-center w-full md:w-1/2 h-full bg-primary px-6 sm:px-12 md:px-24 transition-all duration-500 shadow-2xl shadow-black/50">
                     {status && (
                         <div className="mb-4 font-medium text-sm text-green-600">
                             {status}
@@ -131,14 +139,6 @@ export default function Login({
                             </PrimaryButton>
                         </div>
                     </form>
-                </div>
-                {/* Right side: Image */}
-                <div className="hidden md:flex w-1/2 h-full items-center justify-center bg-primary transition-all duration-500">
-                    <img
-                        src={loginLeftSide}
-                        alt="Login left side"
-                        className="object-cover w-full h-full shadow-lg shadow-black"
-                    />
                 </div>
             </div>
         </>
