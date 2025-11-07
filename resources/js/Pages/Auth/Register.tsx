@@ -242,20 +242,20 @@ export default function Register() {
                                 message={errors.role}
                                 className="mt-2 text-primary"
                             />
-                        <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-2 mt-2">
-                            <Link
-                                href={route("login")}
-                                className="text-sm text-muted hover:text-primary"
-                            >
-                                Already registered?
-                            </Link>
-                            <PrimaryButton
-                                className="w-full sm:w-auto"
-                                disabled={processing}
-                            >
-                                Register
-                            </PrimaryButton>
-                        </div>
+                            <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-2 mt-2">
+                                <Link
+                                    href={route("login")}
+                                    className="text-sm text-muted hover:text-primary"
+                                >
+                                    Already registered?
+                                </Link>
+                                <PrimaryButton
+                                    className="w-full sm:w-auto"
+                                    disabled={processing}
+                                >
+                                    Register
+                                </PrimaryButton>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -264,7 +264,7 @@ export default function Register() {
                     <img
                         src={registerRightSide}
                         alt="Register right side"
-                        className="object-cover w-full h-full"
+                        className="object-cover w-full h-full shadow-2xl shadow-blue-500/50"
                     />
                 </div>
                 {/* Background color for medium screens */}

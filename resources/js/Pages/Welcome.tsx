@@ -18,19 +18,19 @@ const Welcome = () => {
             <nav className="relative z-10 pt-4 sm:pt-8 px-4 w-full">
                 <div className="mx-auto w-full max-w-lg sm:max-w-none flex flex-col sm:flex-row items-center sm:justify-center gap-3 sm:gap-4">
                     <Link href={route("login")}>
-                        <PrimaryButton className="w-full sm:w-auto sm:min-w-[120px] text-xs sm:text-sm text-center flex items-center justify-center hover:bg-transparent">
+                        <PrimaryButton className="w-full sm:w-auto sm:min-w-[120px] text-xs sm:text-sm text-center flex items-center justify-center hover:bg-transparent focus:outline-none">
                             Login
                         </PrimaryButton>
                     </Link>
                     <Link href={route("register")}>
-                        <PrimaryButton className="w-full sm:w-auto sm:min-w-[120px] text-xs sm:text-sm text-center flex items-center justify-center hover:bg-transparent">
+                        <PrimaryButton className="w-full sm:w-auto sm:min-w-[120px] text-xs sm:text-sm text-center flex items-center justify-center hover:bg-transparent focus:outline-none">
                             Register
                         </PrimaryButton>
                     </Link>
                     <Link href={route("register")}>
-                    <PrimaryButton className="w-full sm:w-auto sm:min-w-[180px] text-xs sm:text-sm text-center flex items-center justify-center bg-primary border-primary hover:bg-transparent hover:border-primary">
-                        Go to Marketplace
-                    </PrimaryButton>
+                        <PrimaryButton className="w-full sm:w-auto sm:min-w-[180px] text-xs sm:text-sm text-center flex items-center justify-center bg-primary border-primary hover:bg-transparent hover:border-primary focus:outline-none">
+                            Go to Marketplace
+                        </PrimaryButton>
                     </Link>
                 </div>
             </nav>

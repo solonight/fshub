@@ -6,6 +6,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
 import loginLeftSide from "@/assets/login_left_side.png";
+import SFlogo from "@/assets/SFlogo.png";
 
 export default function Login({
     status,
@@ -36,9 +37,9 @@ export default function Login({
         <>
             <Head title="Log in" />
 
-            <div className="flex h-screen w-screen bg-[#2596be]">
+            <div className="flex h-screen w-screen bg-primary">
                 {/* Left side: Login form */}
-                <div className="flex flex-col justify-center items-center w-full md:w-1/2 h-full bg-[#2596be] px-6 sm:px-12 md:px-24 transition-all duration-500">
+                <div className="flex flex-col justify-center items-center w-full md:w-1/2 h-full bg-primary px-6 sm:px-12 md:px-24 transition-all duration-500">
                     {status && (
                         <div className="mb-4 font-medium text-sm text-green-600">
                             {status}
@@ -47,14 +48,18 @@ export default function Login({
 
                     <form onSubmit={submit} className="space-y-3 w-full">
                         <div>
-                            <InputLabel htmlFor="email" value="Email" />
+                            <InputLabel
+                                htmlFor="email"
+                                value="Email"
+                                className="text-lg font-bold text-[#1D1B1B]"
+                            />
 
                             <TextInput
                                 id="email"
                                 type="email"
                                 name="email"
                                 value={data.email}
-                                className="mt-1 block w-full"
+                                className="mt-1 block w-full shadow-md shadow-black bg-[#D9D9D9]"
                                 autoComplete="username"
                                 isFocused={true}
                                 onChange={(e) =>
@@ -69,14 +74,18 @@ export default function Login({
                         </div>
 
                         <div className="mt-4">
-                            <InputLabel htmlFor="password" value="Password" />
+                            <InputLabel
+                                htmlFor="password"
+                                value="Password"
+                                className="text-lg font-bold text-[#1D1B1B]"
+                            />
 
                             <TextInput
                                 id="password"
                                 type="password"
                                 name="password"
                                 value={data.password}
-                                className="mt-1 block w-full"
+                                className="mt-1 block w-full shadow-md shadow-black bg-[#D9D9D9]"
                                 autoComplete="current-password"
                                 onChange={(e) =>
                                     setData("password", e.target.value)
@@ -98,7 +107,7 @@ export default function Login({
                                         setData("remember", e.target.checked)
                                     }
                                 />
-                                <span className="ms-2 text-sm text-gray-600">
+                                <span className="ms-2 text-lg font-bold text-[#1D1B1B]">
                                     Remember me
                                 </span>
                             </label>
@@ -108,14 +117,14 @@ export default function Login({
                             {canResetPassword && (
                                 <Link
                                     href={route("password.request")}
-                                    className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    className="underline text-lg font-bold text-[#1D1B1B] hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                                 >
                                     Forgot your password?
                                 </Link>
                             )}
 
                             <PrimaryButton
-                                className="ms-4"
+                                className="ms-4 shadow-md shadow-black text-lg font-bold text-[#1D1B1B]"
                                 disabled={processing}
                             >
                                 Log in
@@ -124,11 +133,11 @@ export default function Login({
                     </form>
                 </div>
                 {/* Right side: Image */}
-                <div className="hidden md:flex w-1/2 h-full items-center justify-center bg-[#2596be] transition-all duration-500">
+                <div className="hidden md:flex w-1/2 h-full items-center justify-center bg-primary transition-all duration-500">
                     <img
                         src={loginLeftSide}
                         alt="Login left side"
-                        className="object-cover w-full h-full"
+                        className="object-cover w-full h-full shadow-lg shadow-black"
                     />
                 </div>
             </div>
