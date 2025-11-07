@@ -6,6 +6,7 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -137,13 +138,15 @@ export default function Register() {
                                 />
                                 <button
                                     type="button"
-                                    className="absolute top-1/2 right-3 -translate-y-1/2 text-xs text-primary bg-transparent"
-                                    onClick={() =>
-                                        setShowPassword((v: boolean) => !v)
-                                    }
+                                    className="absolute top-1/2 right-3 -translate-y-1/2 text-primary bg-transparent"
+                                    onClick={() => setShowPassword((v) => !v)}
                                     tabIndex={-1}
                                 >
-                                    {showPassword ? "Hide" : "Show"}
+                                    {showPassword ? (
+                                        <EyeOff size={20} />
+                                    ) : (
+                                        <Eye size={20} />
+                                    )}
                                 </button>
                             </div>
                             <InputError
@@ -179,15 +182,17 @@ export default function Register() {
                                 />
                                 <button
                                     type="button"
-                                    className="absolute top-1/2 right-3 -translate-y-1/2 text-xs text-primary bg-transparent"
+                                    className="absolute top-1/2 right-3 -translate-y-1/2 text-primary bg-transparent"
                                     onClick={() =>
-                                        setShowPasswordConfirm(
-                                            (v: boolean) => !v
-                                        )
+                                        setShowPasswordConfirm((v) => !v)
                                     }
                                     tabIndex={-1}
                                 >
-                                    {showPasswordConfirm ? "Hide" : "Show"}
+                                    {showPasswordConfirm ? (
+                                        <EyeOff size={20} />
+                                    ) : (
+                                        <Eye size={20} />
+                                    )}
                                 </button>
                             </div>
                             <InputError

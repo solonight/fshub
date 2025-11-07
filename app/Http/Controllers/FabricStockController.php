@@ -54,6 +54,7 @@ class FabricStockController extends Controller
             'description' => 'nullable|string',
             'auto_delete' => 'boolean',
             'samples_availability' => 'boolean',
+            // ADD STOCK LOCATION LATER ON 
         ]);
         $fabricStock->update($validated);
         return $fabricStock;

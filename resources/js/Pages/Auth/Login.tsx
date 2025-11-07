@@ -1,4 +1,4 @@
-import { useEffect, FormEventHandler } from "react";
+import { useEffect, FormEventHandler, useState } from "react";
 import Checkbox from "@/Components/Checkbox";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
@@ -7,6 +7,7 @@ import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
 import loginLeftSide from "@/assets/login_left_side.png";
 import SFlogo from "@/assets/Sfhublogo.jpg";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function Login({
     status,
@@ -20,6 +21,8 @@ export default function Login({
         password: "",
         remember: false,
     });
+
+    const [showPassword, setShowPassword] = useState<boolean>(false);
 
     useEffect(() => {
         return () => {
@@ -49,11 +52,13 @@ export default function Login({
                 {/* Right side: Login form */}
                 <div className="flex flex-col justify-center items-center w-full md:w-1/2 h-full bg-primary px-6 sm:px-12 md:px-24 transition-all duration-500 shadow-2xl shadow-black/50">
                     <div className="mb-6">
-                        <img
-                            src={SFlogo}
-                            alt="Logo"
-                            className="w-24 h-24 md:w-48 md:h-48 rounded-full shadow-lg"
-                        />
+                        <Link href={route("welcome")}>
+                            <img
+                                src={SFlogo}
+                                alt="Logo"
+                                className="w-24 h-24 md:w-48 md:h-48 rounded-full shadow-lg cursor-pointer"
+                            />
+                        </Link>
                     </div>
 
                     {status && (
@@ -96,17 +101,31 @@ export default function Login({
                                 className="text-lg font-bold text-[#1D1B1B]"
                             />
 
-                            <TextInput
-                                id="password"
-                                type="password"
-                                name="password"
-                                value={data.password}
-                                className="mt-1 block w-full shadow-md shadow-black bg-[#D9D9D9]"
-                                autoComplete="current-password"
-                                onChange={(e) =>
-                                    setData("password", e.target.value)
-                                }
-                            />
+                            <div className="relative">
+                                <TextInput
+                                    id="password"
+                                    type={showPassword ? "text" : "password"}
+                                    name="password"
+                                    value={data.password}
+                                    className="mt-1 block w-full shadow-md shadow-black bg-[#D9D9D9] pr-10"
+                                    autoComplete="current-password"
+                                    onChange={(e) =>
+                                        setData("password", e.target.value)
+                                    }
+                                />
+                                <button
+                                    type="button"
+                                    className="absolute top-1/2 right-3 -translate-y-1/2 text-primary bg-transparent"
+                                    onClick={() => setShowPassword((v) => !v)}
+                                    tabIndex={-1}
+                                >
+                                    {showPassword ? (
+                                        <EyeOff size={20} />
+                                    ) : (
+                                        <Eye size={20} />
+                                    )}
+                                </button>
+                            </div>
 
                             <InputError
                                 message={errors.password}
