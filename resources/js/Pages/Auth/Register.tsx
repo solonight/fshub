@@ -6,7 +6,14 @@ import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
-import { Eye, EyeOff } from "lucide-react";
+import {
+    Eye,
+    EyeOff,
+    Shield,
+    Truck,
+    BriefcaseBusiness,
+    Warehouse,
+} from "lucide-react";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -208,39 +215,44 @@ export default function Register() {
                             />
                             <div className="flex flex-row justify-between gap-6 w-full">
                                 {[
-                                    { value: "admin", label: "Admin" },
+                                    {
+                                        value: "admin",
+                                        label: "Admin",
+                                        icon: <Shield size={32} />,
+                                    },
                                     {
                                         value: "StockOwner",
                                         label: "Stock Owner",
+                                        icon: <BriefcaseBusiness size={32} />,
                                     },
                                     {
                                         value: "WarehouseProvider",
                                         label: "Warehouse Provider",
+                                        icon: <Warehouse size={32} />,
                                     },
                                     {
                                         value: "Transporter",
                                         label: "Transporter",
+                                        icon: <Truck size={32} />,
                                     },
                                 ].map((role) => (
-                                    <label
+                                    <button
+                                        type="button"
                                         key={role.value}
-                                        className="flex flex-col items-center"
+                                        onClick={() =>
+                                            setData("role", role.value)
+                                        }
+                                        className={`flex flex-col items-center p-2 rounded-lg border-2 transition-colors duration-200 focus:outline-none ${
+                                            data.role === role.value
+                                                ? "border-primary bg-primary/10 text-primary"
+                                                : "border-gray-400 text-white hover:border-primary"
+                                        }`}
                                     >
-                                        <input
-                                            type="radio"
-                                            name="role"
-                                            value={role.value}
-                                            checked={data.role === role.value}
-                                            onChange={(e) =>
-                                                setData("role", e.target.value)
-                                            }
-                                            className="form-radio h-5 w-5 text-primary focus:ring-primary border-primary"
-                                            required
-                                        />
+                                        {role.icon}
                                         <span className="mt-1 text-primary text-xs font-semibold">
                                             {role.label}
                                         </span>
-                                    </label>
+                                    </button>
                                 ))}
                             </div>
                             <InputError
