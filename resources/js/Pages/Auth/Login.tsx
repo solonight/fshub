@@ -6,7 +6,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import { Head, Link, useForm } from "@inertiajs/react";
 import loginLeftSide from "@/assets/login_left_side.png";
-import SFlogo from "@/assets/SFlogo.png";
+import SFlogo from "@/assets/Sfhublogo.jpg";
 
 export default function Login({
     status,
@@ -48,6 +48,7 @@ export default function Login({
                 </div>
                 {/* Right side: Login form */}
                 <div className="flex flex-col justify-center items-center w-full md:w-1/2 h-full bg-primary px-6 sm:px-12 md:px-24 transition-all duration-500 shadow-2xl shadow-black/50">
+
                     {status && (
                         <div className="mb-4 font-medium text-sm text-green-600">
                             {status}
@@ -55,6 +56,9 @@ export default function Login({
                     )}
 
                     <form onSubmit={submit} className="space-y-3 w-full">
+                    <div className="absolute top-4 left-4">
+                        <img src={SFlogo} alt="Logo" className="w-16 h-16" />
+                    </div>
                         <div>
                             <InputLabel
                                 htmlFor="email"

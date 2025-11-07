@@ -18,8 +18,5 @@
     </head>
     <body class="font-sans antialiased">
         @inertia
-        @if(request()->routeIs('login'))
-            <img src="{{ asset('resources/js/assets/Fslogo.png') }}" alt="Fslogo" class="mx-auto my-4">
-        @endif
     </body>
 </html>
