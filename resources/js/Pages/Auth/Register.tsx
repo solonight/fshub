@@ -14,6 +14,8 @@ import {
     BriefcaseBusiness,
     Warehouse,
 } from "lucide-react";
+// @ts-ignore
+import InputMask from "react-input-mask";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -108,16 +110,19 @@ export default function Register() {
                                     optional
                                 </span>
                             </div>
-                            <TextInput
+                            <InputMask
+                                mask="+212 9 99 99 99 99"
+                                maskChar={null}
                                 id="phone"
                                 name="phone"
                                 type="tel"
                                 value={data.phone}
-                                className="mt-1 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary"
+                                className="mt-1 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary rounded-md py-2 px-3"
                                 autoComplete="tel"
-                                onChange={(e) =>
-                                    setData("phone", e.target.value)
-                                }
+                                onChange={(
+                                    e: React.ChangeEvent<HTMLInputElement>
+                                ) => setData("phone", e.target.value)}
+                                placeholder="+212 * ** ** ** **"
                             />
                             <InputError
                                 message={errors.phone}

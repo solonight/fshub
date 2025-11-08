@@ -20,6 +20,7 @@ class SaleRecord extends Model
         'total_amount',
         'notes',
         'sale_date'
+        // add is payed boolean
     ];
 
     protected $casts = [

@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "lucide": "^0.553.0",
-        "lucide-react": "^0.553.0"
+        "lucide-react": "^0.553.0",
+        "react-input-mask": "^2.0.4"
     }
 }
