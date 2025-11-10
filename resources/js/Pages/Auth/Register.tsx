@@ -288,12 +288,14 @@ export default function Register() {
                         </form>
                     </div>
                     {/* Right side: Image (hidden on screens smaller than md) */}
-                    <div className="hidden sm:flex w-full md:w-1/2 items-center justify-center bg-dark transition-all duration-500 min-h-[200px] md:min-h-screen h-64 md:h-full">
-                        <img
-                            src={registerRightSide}
-                            alt="Register right side"
-                            className="object-cover max-w-full max-h-full shadow-2xl shadow-blue-500/50 rounded-none md:rounded-l-3xl mx-auto"
-                        />
+                    <div className="hidden sm:flex w-full md:w-1/2 h-full min-h-[200px] md:min-h-screen items-center justify-center bg-dark transition-all duration-500">
+                        <div className="flex items-center justify-center w-full h-full">
+                            <img
+                                src={registerRightSide}
+                                alt="Register right side"
+                                className="object-contain max-w-full max-h-full shadow-2xl shadow-blue-500/50 rounded-none md:rounded-l-3xl"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
