@@ -43,219 +43,234 @@ export default function Register() {
     return (
         <>
             <Head title="Register" />
-            <div className="flex h-screen w-screen">
-                {/* Left side: Register form */}
-                <div className="flex flex-col justify-center items-center w-full md:w-1/2 h-full bg-dark px-6 sm:px-12 md:px-24 transition-all duration-500">
-                    <h2 className="text-4xl font-bold text-white mb-10 text-center w-full">
-                        <span className="text-primary">S</span>ign{" "}
-                        <span className="text-primary">U</span>p
-                    </h2>
-                    <form onSubmit={submit} className="space-y-3 w-full">
-                        <div className="mb-2">
-                            <InputLabel
-                                htmlFor="name"
-                                value="Name"
-                                className="text-white"
-                            />
-                            <TextInput
-                                id="name"
-                                name="name"
-                                value={data.name}
-                                className="mt-1 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary"
-                                autoComplete="name"
-                                isFocused={true}
-                                onChange={(e) =>
-                                    setData("name", e.target.value)
-                                }
-                                required
-                            />
-                            <InputError
-                                message={errors.name}
-                                className="mt-2 text-primary"
-                            />
-                        </div>
-                        <div className="mb-2">
-                            <InputLabel
-                                htmlFor="email"
-                                value="Email"
-                                className="text-white"
-                            />
-                            <TextInput
-                                id="email"
-                                type="email"
-                                name="email"
-                                value={data.email}
-                                className="mt-1 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary"
-                                autoComplete="username"
-                                onChange={(e) =>
-                                    setData("email", e.target.value)
-                                }
-                                required
-                            />
-                            <InputError
-                                message={errors.email}
-                                className="mt-2 text-primary"
-                            />
-                        </div>
-                        <div className="mb-2">
-                            <div className="flex items-center justify-between">
+            <div className="flex flex-col min-h-screen w-full bg-dark">
+                <div className="flex flex-1 flex-col md:flex-row w-full h-full">
+                    {/* Left side: Register form */}
+                    <div className="flex flex-col justify-center items-center w-full md:w-1/2 h-full min-h-screen bg-dark px-4 sm:px-6 md:px-12 lg:px-24 py-8 overflow-auto">
+                        <h2 className="text-4xl font-bold text-white mb-10 text-center w-full">
+                            <span className="text-primary">S</span>ign{" "}
+                            <span className="text-primary">U</span>p
+                        </h2>
+                        <form
+                            onSubmit={submit}
+                            className="space-y-3 w-full max-w-md mx-auto"
+                        >
+                            <div className="mb-2">
                                 <InputLabel
-                                    htmlFor="phone"
-                                    value="Phone"
+                                    htmlFor="name"
+                                    value="Name"
                                     className="text-white"
                                 />
-                                <span className="text-xs text-muted ml-2">
-                                    optional
-                                </span>
-                            </div>
-                            <InputMask
-                                mask="+212 9 99 99 99 99"
-                                maskChar={null}
-                                id="phone"
-                                name="phone"
-                                type="tel"
-                                value={data.phone}
-                                className="mt-1 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary rounded-md py-2 px-3"
-                                autoComplete="tel"
-                                onChange={(
-                                    e: React.ChangeEvent<HTMLInputElement>
-                                ) => setData("phone", e.target.value)}
-                                placeholder="+212 * ** ** ** **"
-                            />
-                            <InputError
-                                message={errors.phone}
-                                className="mt-2 text-primary"
-                            />
-                        </div>
-                        <div className="mb-2">
-                            <InputLabel
-                                htmlFor="password"
-                                value="Password"
-                                className="text-white"
-                            />
-                            <div className="relative">
                                 <TextInput
-                                    id="password"
-                                    type={showPassword ? "text" : "password"}
-                                    name="password"
-                                    value={data.password}
-                                    className="mt-1 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary pr-10"
-                                    autoComplete="new-password"
+                                    id="name"
+                                    name="name"
+                                    value={data.name}
+                                    className="mt-1 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary"
+                                    autoComplete="name"
+                                    isFocused={true}
                                     onChange={(e) =>
-                                        setData("password", e.target.value)
+                                        setData("name", e.target.value)
                                     }
                                     required
                                 />
-                                <button
-                                    type="button"
-                                    className="absolute top-1/2 right-3 -translate-y-1/2 text-primary bg-transparent"
-                                    onClick={() => setShowPassword((v) => !v)}
-                                    tabIndex={-1}
-                                >
-                                    {showPassword ? (
-                                        <EyeOff size={20} />
-                                    ) : (
-                                        <Eye size={20} />
-                                    )}
-                                </button>
+                                <InputError
+                                    message={errors.name}
+                                    className="mt-2 text-primary"
+                                />
                             </div>
-                            <InputError
-                                message={errors.password}
-                                className="mt-2 text-primary"
-                            />
-                        </div>
-                        <div className="mb-2">
-                            <InputLabel
-                                htmlFor="password_confirmation"
-                                value="Confirm Password"
-                                className="text-white"
-                            />
-                            <div className="relative">
+                            <div className="mb-2">
+                                <InputLabel
+                                    htmlFor="email"
+                                    value="Email"
+                                    className="text-white"
+                                />
                                 <TextInput
-                                    id="password_confirmation"
-                                    type={showPassword ? "text" : "password"}
-                                    name="password_confirmation"
-                                    value={data.password_confirmation}
-                                    className="mt-1 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary pr-10"
-                                    autoComplete="new-password"
+                                    id="email"
+                                    type="email"
+                                    name="email"
+                                    value={data.email}
+                                    className="mt-1 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary"
+                                    autoComplete="username"
                                     onChange={(e) =>
-                                        setData(
-                                            "password_confirmation",
-                                            e.target.value
-                                        )
+                                        setData("email", e.target.value)
                                     }
                                     required
                                 />
-                                <button
-                                    type="button"
-                                    className="absolute top-1/2 right-3 -translate-y-1/2 text-primary bg-transparent"
-                                    onClick={() => setShowPassword((v) => !v)}
-                                    tabIndex={-1}
-                                >
-                                    {showPassword ? (
-                                        <EyeOff size={20} />
-                                    ) : (
-                                        <Eye size={20} />
-                                    )}
-                                </button>
+                                <InputError
+                                    message={errors.email}
+                                    className="mt-2 text-primary"
+                                />
                             </div>
-                            <InputError
-                                message={errors.password_confirmation}
-                                className="mt-2 text-primary"
-                            />
-                        </div>
-                        <div className="mb-2">
-                            <InputLabel
-                                htmlFor="role"
-                                value="Role"
-                                className="text-white mb-2"
-                            />
-                            <div className="flex flex-row justify-between gap-6 w-full">
-                                {[
-                                    {
-                                        value: "admin",
-                                        label: "Admin",
-                                        icon: <Shield size={32} />,
-                                    },
-                                    {
-                                        value: "StockOwner",
-                                        label: "Stock Owner",
-                                        icon: <BriefcaseBusiness size={32} />,
-                                    },
-                                    {
-                                        value: "WarehouseProvider",
-                                        label: "Warehouse Provider",
-                                        icon: <Warehouse size={32} />,
-                                    },
-                                    {
-                                        value: "Transporter",
-                                        label: "Transporter",
-                                        icon: <Truck size={32} />,
-                                    },
-                                ].map((role) => (
+                            <div className="mb-2">
+                                <div className="flex items-center justify-between">
+                                    <InputLabel
+                                        htmlFor="phone"
+                                        value="Phone"
+                                        className="text-white"
+                                    />
+                                    <span className="text-xs text-muted ml-2">
+                                        optional
+                                    </span>
+                                </div>
+                                <InputMask
+                                    mask="+212 9 99 99 99 99"
+                                    maskChar={null}
+                                    id="phone"
+                                    name="phone"
+                                    type="tel"
+                                    value={data.phone}
+                                    className="mt-1 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary rounded-md py-2 px-3"
+                                    autoComplete="tel"
+                                    onChange={(
+                                        e: React.ChangeEvent<HTMLInputElement>
+                                    ) => setData("phone", e.target.value)}
+                                    placeholder="+212 * ** ** ** **"
+                                />
+                                <InputError
+                                    message={errors.phone}
+                                    className="mt-2 text-primary"
+                                />
+                            </div>
+                            <div className="mb-2">
+                                <InputLabel
+                                    htmlFor="password"
+                                    value="Password"
+                                    className="text-white"
+                                />
+                                <div className="relative">
+                                    <TextInput
+                                        id="password"
+                                        type={
+                                            showPassword ? "text" : "password"
+                                        }
+                                        name="password"
+                                        value={data.password}
+                                        className="mt-1 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary pr-10"
+                                        autoComplete="new-password"
+                                        onChange={(e) =>
+                                            setData("password", e.target.value)
+                                        }
+                                        required
+                                    />
                                     <button
                                         type="button"
-                                        key={role.value}
+                                        className="absolute top-1/2 right-3 -translate-y-1/2 text-primary bg-transparent"
                                         onClick={() =>
-                                            setData("role", role.value)
+                                            setShowPassword((v) => !v)
                                         }
-                                        className={`flex flex-col items-center p-2 rounded-lg border-2 transition-colors duration-200 focus:outline-none ${
-                                            data.role === role.value
-                                                ? "border-primary bg-primary/10 text-primary"
-                                                : "border-gray-400 text-white hover:border-primary"
-                                        }`}
+                                        tabIndex={-1}
                                     >
-                                        {role.icon}
-                                        <span className="mt-1 text-primary text-xs font-semibold">
-                                            {role.label}
-                                        </span>
+                                        {showPassword ? (
+                                            <EyeOff size={20} />
+                                        ) : (
+                                            <Eye size={20} />
+                                        )}
                                     </button>
-                                ))}
+                                </div>
+                                <InputError
+                                    message={errors.password}
+                                    className="mt-2 text-primary"
+                                />
                             </div>
-                            <InputError
-                                message={errors.role}
-                                className="mt-2 text-primary"
-                            />
+                            <div className="mb-2">
+                                <InputLabel
+                                    htmlFor="password_confirmation"
+                                    value="Confirm Password"
+                                    className="text-white"
+                                />
+                                <div className="relative">
+                                    <TextInput
+                                        id="password_confirmation"
+                                        type={
+                                            showPassword ? "text" : "password"
+                                        }
+                                        name="password_confirmation"
+                                        value={data.password_confirmation}
+                                        className="mt-1 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary pr-10"
+                                        autoComplete="new-password"
+                                        onChange={(e) =>
+                                            setData(
+                                                "password_confirmation",
+                                                e.target.value
+                                            )
+                                        }
+                                        required
+                                    />
+                                    <button
+                                        type="button"
+                                        className="absolute top-1/2 right-3 -translate-y-1/2 text-primary bg-transparent"
+                                        onClick={() =>
+                                            setShowPassword((v) => !v)
+                                        }
+                                        tabIndex={-1}
+                                    >
+                                        {showPassword ? (
+                                            <EyeOff size={20} />
+                                        ) : (
+                                            <Eye size={20} />
+                                        )}
+                                    </button>
+                                </div>
+                                <InputError
+                                    message={errors.password_confirmation}
+                                    className="mt-2 text-primary"
+                                />
+                            </div>
+                            <div className="mb-2">
+                                <InputLabel
+                                    htmlFor="role"
+                                    value="Role"
+                                    className="text-white mb-2"
+                                />
+                                <div className="flex flex-row flex-wrap justify-between gap-3 w-full">
+                                    {[
+                                        {
+                                            value: "admin",
+                                            label: "Admin",
+                                            icon: <Shield size={32} />,
+                                        },
+                                        {
+                                            value: "StockOwner",
+                                            label: "Stock Owner",
+                                            icon: (
+                                                <BriefcaseBusiness size={32} />
+                                            ),
+                                        },
+                                        {
+                                            value: "WarehouseProvider",
+                                            label: "Warehouse Provider",
+                                            icon: <Warehouse size={32} />,
+                                        },
+                                        {
+                                            value: "Transporter",
+                                            label: "Transporter",
+                                            icon: <Truck size={32} />,
+                                        },
+                                    ].map((role) => (
+                                        <button
+                                            type="button"
+                                            key={role.value}
+                                            onClick={() =>
+                                                setData("role", role.value)
+                                            }
+                                            className={`flex flex-col items-center p-2 rounded-lg border-2 transition-colors duration-200 focus:outline-none min-w-[90px] max-w-[120px] flex-1 ${
+                                                data.role === role.value
+                                                    ? "border-primary bg-primary/10 text-primary"
+                                                    : "border-gray-400 text-white hover:border-primary"
+                                            }`}
+                                        >
+                                            {role.icon}
+                                            <span className="mt-1 text-primary text-xs font-semibold">
+                                                {role.label}
+                                            </span>
+                                        </button>
+                                    ))}
+                                </div>
+                                <InputError
+                                    message={errors.role}
+                                    className="mt-2 text-primary"
+                                />
+                            </div>
                             <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-2 mt-2">
                                 <Link
                                     href={route("login")}
@@ -270,19 +285,17 @@ export default function Register() {
                                     Register
                                 </PrimaryButton>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
+                    {/* Right side: Image (hidden on screens smaller than md) */}
+                    <div className="hidden sm:flex w-full md:w-1/2 items-center justify-center bg-dark transition-all duration-500 min-h-[200px] md:min-h-screen h-64 md:h-full">
+                        <img
+                            src={registerRightSide}
+                            alt="Register right side"
+                            className="object-cover max-w-full max-h-full shadow-2xl shadow-blue-500/50 rounded-none md:rounded-l-3xl mx-auto"
+                        />
+                    </div>
                 </div>
-                {/* Right side: Image */}
-                <div className="hidden md:flex w-1/2 h-full items-center justify-center bg-dark transition-all duration-500">
-                    <img
-                        src={registerRightSide}
-                        alt="Register right side"
-                        className="object-cover w-full h-full shadow-2xl shadow-blue-500/50"
-                    />
-                </div>
-                {/* Background color for medium screens */}
-                <div className="md:hidden w-1/2 h-full bg-dark"></div>
             </div>
         </>
     );
