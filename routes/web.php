@@ -16,6 +16,9 @@ use Inertia\Inertia;
 |
 */
 
+
+
+
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
@@ -38,5 +41,9 @@ Route::middleware('auth')->group(function () {
 Route::get('/welcome', function () {
     return Inertia::render('Welcome');
 })->name('welcome');
+
+Route::get('/marketplace', function () {
+    return Inertia::render('Marketplace');
+})->middleware(['auth', 'verified'])->name('marketplace');
 
 require __DIR__.'/auth.php';

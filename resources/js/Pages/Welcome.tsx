@@ -27,7 +27,7 @@ const Welcome = () => {
                             Register
                         </PrimaryButton>
                     </Link>
-                    <Link href={route("register")}>
+                    <Link href={route("marketplace")}>
                         <PrimaryButton className="w-full sm:w-auto sm:min-w-[180px] text-xs sm:text-sm text-center flex items-center justify-center bg-primary border-primary hover:bg-transparent hover:border-primary focus:outline-none focus:ring-0">
                             Go to Marketplace
                         </PrimaryButton>

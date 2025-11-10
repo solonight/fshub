@@ -54,7 +54,7 @@ export default function Authenticated({
 
                     <div className="flex-1 flex justify-between items-center">
                         <div className="shrink-0 flex items-center">
-                            <Link href="/">
+                            <Link href={route("marketplace")}>
                                 <ApplicationLogo className="block w-[87px] h-[87px]" />
                             </Link>
                         </div>
