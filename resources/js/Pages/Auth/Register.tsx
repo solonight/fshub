@@ -47,15 +47,15 @@ export default function Register() {
                 <div className="flex flex-1 flex-col md:flex-row w-full h-full">
                     {/* Left side: Register form */}
                     <div className="flex flex-col justify-center items-center w-full md:w-1/2 h-full min-h-screen bg-dark px-4 sm:px-6 md:px-12 lg:px-24 py-8 overflow-auto">
-                        <h2 className="text-4xl font-bold text-white mb-10 text-center w-full">
+                        <h2 className="text-2xl font-bold text-white mb-4 text-center w-full">
                             <span className="text-primary">S</span>ign{" "}
                             <span className="text-primary">U</span>p
                         </h2>
                         <form
                             onSubmit={submit}
-                            className="space-y-3 w-full max-w-md mx-auto"
+                            className="space-y-1 w-full max-w-xs mx-auto"
                         >
-                            <div className="mb-2">
+                            <div className="mb-1">
                                 <InputLabel
                                     htmlFor="name"
                                     value="Name"
@@ -65,7 +65,7 @@ export default function Register() {
                                     id="name"
                                     name="name"
                                     value={data.name}
-                                    className="mt-1 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary"
+                                    className="mt-0.5 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary text-sm py-1 px-2"
                                     autoComplete="name"
                                     isFocused={true}
                                     onChange={(e) =>
@@ -78,7 +78,7 @@ export default function Register() {
                                     className="mt-2 text-primary"
                                 />
                             </div>
-                            <div className="mb-2">
+                            <div className="mb-1.5">
                                 <InputLabel
                                     htmlFor="email"
                                     value="Email"
@@ -89,7 +89,7 @@ export default function Register() {
                                     type="email"
                                     name="email"
                                     value={data.email}
-                                    className="mt-1 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary"
+                                    className="mt-0.5 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary text-sm py-1 px-2"
                                     autoComplete="username"
                                     onChange={(e) =>
                                         setData("email", e.target.value)
@@ -101,7 +101,7 @@ export default function Register() {
                                     className="mt-2 text-primary"
                                 />
                             </div>
-                            <div className="mb-2">
+                            <div className="mb-1.5">
                                 <div className="flex items-center justify-between">
                                     <InputLabel
                                         htmlFor="phone"
@@ -119,7 +119,7 @@ export default function Register() {
                                     name="phone"
                                     type="tel"
                                     value={data.phone}
-                                    className="mt-1 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary rounded-md py-2 px-3"
+                                    className="mt-0.5 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary rounded-md text-sm py-1 px-2"
                                     autoComplete="tel"
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>
@@ -131,7 +131,7 @@ export default function Register() {
                                     className="mt-2 text-primary"
                                 />
                             </div>
-                            <div className="mb-2">
+                            <div className="mb-1.5">
                                 <InputLabel
                                     htmlFor="password"
                                     value="Password"
@@ -145,7 +145,7 @@ export default function Register() {
                                         }
                                         name="password"
                                         value={data.password}
-                                        className="mt-1 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary pr-10"
+                                        className="mt-0.5 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary pr-8 text-sm py-1 px-2"
                                         autoComplete="new-password"
                                         onChange={(e) =>
                                             setData("password", e.target.value)
@@ -172,7 +172,7 @@ export default function Register() {
                                     className="mt-2 text-primary"
                                 />
                             </div>
-                            <div className="mb-2">
+                            <div className="mb-1.5">
                                 <InputLabel
                                     htmlFor="password_confirmation"
                                     value="Confirm Password"
@@ -186,7 +186,7 @@ export default function Register() {
                                         }
                                         name="password_confirmation"
                                         value={data.password_confirmation}
-                                        className="mt-1 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary pr-10"
+                                        className="mt-0.5 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary pr-8 text-sm py-1 px-2"
                                         autoComplete="new-password"
                                         onChange={(e) =>
                                             setData(
@@ -216,13 +216,13 @@ export default function Register() {
                                     className="mt-2 text-primary"
                                 />
                             </div>
-                            <div className="mb-2">
+                            <div className="mb-1.5">
                                 <InputLabel
                                     htmlFor="role"
                                     value="Role"
                                     className="text-white mb-2"
                                 />
-                                <div className="flex flex-row flex-wrap justify-between gap-3 w-full">
+                                <div className="flex flex-row flex-wrap justify-between gap-2 w-full">
                                     {[
                                         {
                                             value: "admin",
@@ -253,14 +253,20 @@ export default function Register() {
                                             onClick={() =>
                                                 setData("role", role.value)
                                             }
-                                            className={`flex flex-col items-center p-2 rounded-lg border-2 transition-colors duration-200 focus:outline-none min-w-[90px] max-w-[120px] flex-1 ${
+                                            className={`flex flex-col items-center p-1 rounded-md border transition-colors duration-200 focus:outline-none min-w-[60px] max-w-[80px] flex-1 ${
                                                 data.role === role.value
                                                     ? "border-primary bg-primary/10 text-primary"
                                                     : "border-gray-400 text-white hover:border-primary"
                                             }`}
                                         >
-                                            {role.icon}
-                                            <span className="mt-1 text-primary text-xs font-semibold">
+                                            {role.icon &&
+                                                typeof role.icon ===
+                                                    "object" && (
+                                                    <span className="scale-75">
+                                                        {role.icon}
+                                                    </span>
+                                                )}
+                                            <span className="mt-0.5 text-primary text-[10px] font-semibold">
                                                 {role.label}
                                             </span>
                                         </button>
@@ -271,7 +277,7 @@ export default function Register() {
                                     className="mt-2 text-primary"
                                 />
                             </div>
-                            <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-2 mt-2">
+                            <div className="flex flex-col sm:flex-row items-center sm:justify-between gap-1.5 mt-1.5">
                                 <Link
                                     href={route("login")}
                                     className="text-sm text-muted hover:text-primary"
@@ -279,7 +285,7 @@ export default function Register() {
                                     Already registered?
                                 </Link>
                                 <PrimaryButton
-                                    className="w-full sm:w-auto"
+                                    className="w-full sm:w-auto text-xs py-1 px-3"
                                     disabled={processing}
                                 >
                                     Register

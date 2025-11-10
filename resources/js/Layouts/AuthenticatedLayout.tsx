@@ -15,8 +15,8 @@ export default function Authenticated({
         useState(false);
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <nav className="border-b border-gray-100 bg-[#1D1B1B]">
+        <div className="min-h-screen bg-[#1D1B1B]">
+            <nav className="border-b border-[#2596be] bg-[#2596be]">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex">
@@ -30,6 +30,7 @@ export default function Authenticated({
                                 <NavLink
                                     href={route("dashboard")}
                                     active={route().current("dashboard")}
+                                    className="text-[#1D1B1B] font-bold"
                                 >
                                     Dashboard
                                 </NavLink>
@@ -43,7 +44,7 @@ export default function Authenticated({
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-[#1D1B1B] bg-[#D9D9D9] hover:text-[#2596be] focus:outline-none transition ease-in-out duration-150"
                                             >
                                                 {user.name}
 
@@ -66,6 +67,7 @@ export default function Authenticated({
                                     <Dropdown.Content>
                                         <Dropdown.Link
                                             href={route("profile.edit")}
+                                            className="text-[#2596be]"
                                         >
                                             Profile
                                         </Dropdown.Link>
@@ -73,6 +75,7 @@ export default function Authenticated({
                                             href={route("logout")}
                                             method="post"
                                             as="button"
+                                            className="text-[#2596be]"
                                         >
                                             Log Out
                                         </Dropdown.Link>
@@ -88,7 +91,7 @@ export default function Authenticated({
                                         (previousState) => !previousState
                                     )
                                 }
-                                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
+                                className="inline-flex items-center justify-center p-2 rounded-md text-[#D9D9D9] hover:text-[#2596be] hover:bg-[#1D1B1B] focus:outline-none focus:bg-[#1D1B1B] focus:text-[#2596be] transition duration-150 ease-in-out"
                             >
                                 <svg
                                     className="h-6 w-6"
@@ -134,29 +137,34 @@ export default function Authenticated({
                         <ResponsiveNavLink
                             href={route("dashboard")}
                             active={route().current("dashboard")}
+                            className="text-[#1D1B1B] font-bold"
                         >
                             Dashboard
                         </ResponsiveNavLink>
                     </div>
 
-                    <div className="pt-4 pb-1 border-t border-gray-200">
+                    <div className="pt-4 pb-1 border-t border-[#2596be]">
                         <div className="px-4">
-                            <div className="font-medium text-base text-gray-800">
+                            <div className="font-medium text-base text-[#D9D9D9]">
                                 {user.name}
                             </div>
-                            <div className="font-medium text-sm text-gray-500">
+                            <div className="font-medium text-sm text-[#2596be]">
                                 {user.email}
                             </div>
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route("profile.edit")}>
+                            <ResponsiveNavLink
+                                href={route("profile.edit")}
+                                className="text-[#2596be]"
+                            >
                                 Profile
                             </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"
                                 href={route("logout")}
                                 as="button"
+                                className="text-[#2596be]"
                             >
                                 Log Out
                             </ResponsiveNavLink>
@@ -166,9 +174,9 @@ export default function Authenticated({
             </nav>
 
             {header && (
-                <header className="bg-white shadow">
+                <header className="bg-[#D9D9D9] shadow">
                     <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {header}
+                        <span className="text-[#2596be]">{header}</span>
                     </div>
                 </header>
             )}
