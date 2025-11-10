@@ -29,6 +29,7 @@ class SaleRecordController extends Controller
             'customer_phone' => 'nullable|string',
             'quantity_sold' => 'required|numeric|min:0.01',
             'total_amount' => 'required|numeric',
+            'is_payed' => 'boolean',
             'notes' => 'nullable|string',
             'sale_date' => 'nullable|date',
         ]);
@@ -59,9 +60,16 @@ class SaleRecordController extends Controller
             'customer_phone' => 'sometimes|string',
             'quantity_sold' => 'sometimes|numeric|min:0.01',
             'total_amount' => 'sometimes|numeric',
+            'is_payed' => 'boolean',
             'notes' => 'nullable|string',
             'sale_date' => 'nullable|date',
         ]);
+
+        // If is_payed is being updated, update related StockHistory
+        if (array_key_exists('is_payed', $validated)) {
+            \App\Models\StockHistory::where('reference_id', $saleRecord->record_id)
+                ->update(['is_payed' => $validated['is_payed']]);
+        }
 
         // If quantity_sold is being updated, adjust FabricStock available_quantity
         if (isset($validated['quantity_sold'])) {

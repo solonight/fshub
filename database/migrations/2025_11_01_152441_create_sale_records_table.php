@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('customer_phone')->nullable();
             $table->decimal('quantity_sold', 10, 2);
             $table->decimal('total_amount', 10, 2);
+            $table->boolean('is_payed')->default(true);
             $table->text('notes')->nullable();
             $table->timestamp('sale_date')->useCurrent();
             $table->timestamps();

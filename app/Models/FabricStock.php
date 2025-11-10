@@ -15,6 +15,7 @@ class FabricStock extends Model
     protected $fillable = [
         'user_id',
         'fabric_type',
+        'stock_location',
         'color',
         'price_per_unit',
         'total_quantity',

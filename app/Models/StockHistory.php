@@ -23,12 +23,14 @@ class StockHistory extends Model
         'reference_id',
         'fabric_type_snapshot',
         'color_snapshot',
-        'price_per_unit_snapshot'
+        'price_per_unit_snapshot',
+        'is_payed'
     ];
 
     protected $casts = [
         'quantity' => 'decimal:2',
-        'price_per_unit_snapshot' => 'decimal:2'
+        'price_per_unit_snapshot' => 'decimal:2',
+        'is_payed' => 'boolean'
     ];
 
     public function fabricStock()

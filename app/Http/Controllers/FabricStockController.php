@@ -25,7 +25,12 @@ class FabricStockController extends Controller
     {
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
-            'fabric_type' => 'required|string',
+            'fabric_type' => [
+                'required',
+                'string',
+                'in:Cotton,Linen,Wool,Silk,Hemp,Polyester,Nylon,Acrylic,Spandex,Viscose/Rayon,Lyocell (Tencel),Denim,Jersey,Flannel,Satin'
+            ],
+            'stock_location' => 'nullable|string',
             'color' => 'required|string',
             'price_per_unit' => 'required|numeric',
             'total_quantity' => 'required|numeric',
@@ -46,7 +51,12 @@ class FabricStockController extends Controller
             return response()->json(['message' => 'Forbidden: You can only update your own stocks.'], 403);
         }
         $validated = $request->validate([
-            'fabric_type' => 'sometimes|string',
+            'fabric_type' => [
+                'sometimes',
+                'string',
+                'in:Cotton,Linen,Wool,Silk,Hemp,Polyester,Nylon,Acrylic,Spandex,Viscose/Rayon,Lyocell (Tencel),Denim,Jersey,Flannel,Satin'
+            ],
+            'stock_location' => 'sometimes|string',
             'color' => 'sometimes|string',
             'price_per_unit' => 'sometimes|numeric',
             'total_quantity' => 'sometimes|numeric',
@@ -54,7 +64,6 @@ class FabricStockController extends Controller
             'description' => 'nullable|string',
             'auto_delete' => 'boolean',
             'samples_availability' => 'boolean',
-            // ADD STOCK LOCATION LATER ON 
         ]);
         $fabricStock->update($validated);
         return $fabricStock;

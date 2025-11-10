@@ -18,14 +18,15 @@ class SaleRecord extends Model
         'customer_phone',
         'quantity_sold',
         'total_amount',
+        'is_payed',
         'notes',
         'sale_date'
-        // add is payed boolean
     ];
 
     protected $casts = [
         'quantity_sold' => 'decimal:2',
         'total_amount' => 'decimal:2',
+        'is_payed' => 'boolean',
         'sale_date' => 'datetime'
     ];
 
