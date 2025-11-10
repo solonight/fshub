@@ -25,6 +25,7 @@ export default function Register() {
         password: "",
         password_confirmation: "",
         role: "",
+        admin_secret: "",
     });
 
     useEffect(() => {
@@ -250,9 +251,11 @@ export default function Register() {
                                         <button
                                             type="button"
                                             key={role.value}
-                                            onClick={() =>
-                                                setData("role", role.value)
-                                            }
+                                            onClick={() => {
+                                                setData("role", role.value);
+                                                if (role.value !== "admin")
+                                                    setData("admin_secret", "");
+                                            }}
                                             className={`flex flex-col items-center p-1 rounded-md border transition-colors duration-200 focus:outline-none min-w-[60px] max-w-[80px] flex-1 ${
                                                 data.role === role.value
                                                     ? "border-primary bg-primary/10 text-primary"
@@ -272,6 +275,34 @@ export default function Register() {
                                         </button>
                                     ))}
                                 </div>
+                                {data.role === "admin" && (
+                                    <div className="mt-2">
+                                        <InputLabel
+                                            htmlFor="admin_secret"
+                                            value="Admin Secret Key"
+                                            className="text-white"
+                                        />
+                                        <TextInput
+                                            id="admin_secret"
+                                            name="admin_secret"
+                                            type="password"
+                                            value={data.admin_secret}
+                                            onChange={(e) =>
+                                                setData(
+                                                    "admin_secret",
+                                                    e.target.value
+                                                )
+                                            }
+                                            className="mt-1 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary text-sm py-1 px-2"
+                                            placeholder="Enter admin secret key"
+                                            required
+                                        />
+                                        <InputError
+                                            message={errors.admin_secret}
+                                            className="mt-2 text-primary"
+                                        />
+                                    </div>
+                                )}
                                 <InputError
                                     message={errors.role}
                                     className="mt-2 text-primary"

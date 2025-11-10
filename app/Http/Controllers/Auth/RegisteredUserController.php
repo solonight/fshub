@@ -31,14 +31,27 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+
         $roles = ['admin', 'StockOwner', 'WarehouseProvider', 'Transporter', 'customer'];
-        $request->validate([
+        $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
             'phone' => 'nullable|string|max:30',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'role' => 'nullable|string|in:' . implode(',', $roles),
-        ]);
+        ];
+        if ($request->role === 'admin') {
+            $rules['admin_secret'] = 'required|string';
+        }
+        $validated = $request->validate($rules);
+
+        // If admin, check secret key
+        if ($request->role === 'admin') {
+            $envSecret = env('ADMIN_SECRET_KEY');
+            if (!$envSecret || $request->admin_secret !== $envSecret) {
+                return back()->withErrors(['admin_secret' => 'Invalid admin secret key.'])->withInput();
+            }
+        }
 
         $user = User::create([
             'name' => $request->name,
