@@ -34,8 +34,6 @@ export default function Register() {
     }, []);
 
     const [showPassword, setShowPassword] = useState<boolean>(false);
-    const [showPasswordConfirm, setShowPasswordConfirm] =
-        useState<boolean>(false);
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -175,11 +173,7 @@ export default function Register() {
                             <div className="relative">
                                 <TextInput
                                     id="password_confirmation"
-                                    type={
-                                        showPasswordConfirm
-                                            ? "text"
-                                            : "password"
-                                    }
+                                    type={showPassword ? "text" : "password"}
                                     name="password_confirmation"
                                     value={data.password_confirmation}
                                     className="mt-1 block w-full border-primary text-white bg-dark placeholder:text-muted focus:border-primary focus:ring-primary pr-10"
@@ -195,12 +189,10 @@ export default function Register() {
                                 <button
                                     type="button"
                                     className="absolute top-1/2 right-3 -translate-y-1/2 text-primary bg-transparent"
-                                    onClick={() =>
-                                        setShowPasswordConfirm((v) => !v)
-                                    }
+                                    onClick={() => setShowPassword((v) => !v)}
                                     tabIndex={-1}
                                 >
-                                    {showPasswordConfirm ? (
+                                    {showPassword ? (
                                         <EyeOff size={20} />
                                     ) : (
                                         <Eye size={20} />
