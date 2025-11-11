@@ -148,7 +148,18 @@ export default function Login({
                             </label>
                         </div>
 
-                        <div className="flex items-center justify-end mt-4">
+                        <div className="flex items-center justify-between mt-4 gap-4 w-full">
+                            <Link
+                                href={route("register")}
+                                className="no-underline"
+                            >
+                                <PrimaryButton
+                                    className="shadow-md shadow-black text-lg font-bold text-[#1D1B1B]"
+                                    type="button"
+                                >
+                                    Register
+                                </PrimaryButton>
+                            </Link>
                             {canResetPassword && (
                                 <Link
                                     href={route("password.request")}
@@ -159,7 +170,7 @@ export default function Login({
                             )}
 
                             <PrimaryButton
-                                className="ms-4 shadow-md shadow-black text-lg font-bold text-[#1D1B1B]"
+                                className="shadow-md shadow-black text-lg font-bold text-[#1D1B1B]"
                                 disabled={processing}
                             >
                                 Log in
