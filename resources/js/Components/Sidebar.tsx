@@ -40,7 +40,7 @@ export default function Sidebar({ children, user }: SidebarProps) {
             >
                 <div className="w-full">
                     <div className="absolute inset-0 bg-black/40 z-0" />
-                    <div className="mb-8 z-10 relative">
+                    <div className="mb-8 z-10 relative flex justify-center items-center">
                         <span className="text-2xl font-bold text-primary">
                             {user?.name || "FSHub"}
                         </span>
