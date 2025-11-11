@@ -14,7 +14,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ["Figtree", ...defaultTheme.fontFamily.sans],
+                sans: ["Momo Trust Display", ...defaultTheme.fontFamily.sans],
             },
             colors: {
                 primary: "#2596be",
