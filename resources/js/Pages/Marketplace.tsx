@@ -8,14 +8,16 @@ export default function Marketplace({ auth, fabricStocks }: any) {
         <AuthenticatedLayout user={auth.user}>
             <Head title="Marketplace" />
             <div className="flex flex-col items-center min-h-[60vh] w-full px-2 md:px-8">
-                <h1 className="text-3xl font-bold text-primary mb-6 text-center">
-                    Marketplace
-                </h1>
-                <p className="text-lg text-center text-[#1D1B1B] dark:text-[#D9D9D9] max-w-2xl mb-8">
-                    Welcome to the FSHub Marketplace! Here you can browse, buy,
-                    and sell fabric stock, manage logistics, and connect with
-                    providers.
-                </p>
+                <div className="flex flex-col items-center mt-8">
+                    <h1 className="text-3xl font-bold text-primary mb-6 text-center">
+                        Marketplace
+                    </h1>
+                    <p className="text-lg text-center text-[#1D1B1B] dark:text-[#D9D9D9] max-w-2xl mb-8">
+                        Welcome to the FSHub Marketplace! Here you can browse,
+                        buy, and sell fabric stock, manage logistics, and
+                        connect with providers.
+                    </p>
+                </div>
                 <div className="w-full">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {stocks.length === 0 ? (
