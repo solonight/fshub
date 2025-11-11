@@ -1,67 +1,45 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Fabric Stock Hub
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**Fabric Stock Hub** is a full-stack AI-assisted application that manages and promotes fabric stock. The main purpose of the app is to:
 
-## About Laravel
+-   Keep track of all user stock operations, accounting, and data storage
+-   Provide an additional service through a customized AI agent that processes user data and responds to user instructions
+-   Serve as a hub connecting stock owners with warehousing and transportation services, plus a promotion section
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Problems Addressed
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Some of the problems the app addresses include:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+-   Networking all fabric trading operations
+-   Streamlining logistics
+-   Tracking all user operations
 
-## Learning Laravel
+## Technologies Used
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+The app will be built using technologies like **React, TypeScript, Redux, and Laravel** to ensure a fully operational platform.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## Features
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+The landing page will feature registration and login functionality. During registration, users can select one or all three options to register as:
 
-## Laravel Sponsors
+1. **Stock User**
+2. **Transporter**
+3. **Warehouse Provider**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Once logged in as a regular user, they will be welcomed by a chatbot that can either:
 
-### Premium Partners
+-   Answer user instructions through AI assistance, or
+-   Allow users to conduct business manually
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+## Project Context
 
-## Contributing
+This project was developed as part of the final training with the **Simplon WEBdev program**.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Useful Links
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# fshub
+-   [Figma Design](https://www.figma.com/design/mP4mZQld89AFVN52pwDkah/SFhub?node-id=16-7&p=f&t=X23DOhH2FdmJCEf0-0)
+-   [Trello Board](https://trello.com/b/dPDqd0IM/fshubtrello)
+-   [Lucidchart Diagram 1](https://lucid.app/lucidchart/125e78e3-a15c-4d9d-a51b-323336c7a59c/edit?invitationId=inv_5d259261-ecc9-4012-adfa-5012563e7682&page=0_0#)
+-   [Lucidchart Diagram 2](https://lucid.app/lucidchart/13ffc442-19b4-44e2-abc5-8b4a1bc3fe69/edit?page=0_0&invitationId=inv_d7cfb8f1-1bf1-42c4-a8a6-097a021a77fb#)
+-   [Lucidchart Diagram 3](https://lucid.app/lucidchart/8b70dd4e-91fb-4d19-8366-865e173b15cf/edit?page=0_0&invitationId=inv_601a4f10-8309-4e64-8d65-d4b9cc62035b#)
+-   [Microsoft Word Document](https://word.cloud.microsoft/open/onedrive/?docId=693AD00BF4E33579%21sec0fed98bec04c25b72e7ab5d41a6b32&driveId=693AD00BF4E33579)
