@@ -37,7 +37,7 @@ export default function Authenticated({
     return (
         <div className="min-h-screen bg-white dark:bg-[#1D1B1B] text-[#1D1B1B] dark:text-[#D9D9D9] transition-colors duration-300 flex">
             {/* Sidebar toggle and sidebar */}
-            {sidebarOpen && <Sidebar />}
+            {sidebarOpen && <Sidebar user={user} />}
             <div className="flex-1 flex flex-col">
                 <nav className="border-b border-[#2596be] bg-[#2596be] flex items-center justify-between h-16 px-4">
                     <button

@@ -5,6 +5,7 @@ import sidebarBg from "@/assets/sidebarbg.jpg";
 
 interface SidebarProps {
     children?: ReactNode;
+    user?: { name: string };
 }
 
 const navItems = [
@@ -14,7 +15,7 @@ const navItems = [
     { label: "Logout", icon: <LogOut />, href: "/logout", method: "post" },
 ];
 
-export default function Sidebar({ children }: SidebarProps) {
+export default function Sidebar({ children, user }: SidebarProps) {
     return (
         <div className="flex h-screen">
             <aside
@@ -29,7 +30,7 @@ export default function Sidebar({ children }: SidebarProps) {
                 <div className="absolute inset-0 bg-black/40 z-0" />
                 <div className="mb-8 z-10 relative">
                     <span className="text-2xl font-bold text-primary">
-                        FSHub
+                        {user?.name || "FSHub"}
                     </span>
                 </div>
                 <nav className="flex flex-col gap-6 w-full items-center md:items-start z-10 relative">
