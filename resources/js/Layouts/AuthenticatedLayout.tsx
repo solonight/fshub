@@ -39,7 +39,7 @@ export default function Authenticated({
             {/* Sidebar toggle and sidebar */}
             {sidebarOpen && <Sidebar user={user} />}
             <div className="flex-1 flex flex-col">
-                <nav className="border-b border-[#2596be] bg-[#2596be] flex items-center justify-between h-16 px-4">
+                <nav className="border-b border-[#2596be] bg-[#2596be] flex items-center justify-between h-27 px-6 shadow-2xl">
                     <button
                         aria-label="Toggle sidebar"
                         onClick={() => setSidebarOpen((open) => !open)}
@@ -55,7 +55,7 @@ export default function Authenticated({
                     <div className="flex-1 flex justify-between items-center">
                         <div className="shrink-0 flex items-center">
                             <Link href={route("marketplace")}>
-                                <ApplicationLogo className="block w-[87px] h-[87px]" />
+                                <ApplicationLogo className="block w-[87px] h-[87px] bg-[#1D1B1B] rounded-full" />
                             </Link>
                         </div>
 
