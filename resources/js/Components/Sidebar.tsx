@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Home, User, Settings, LogOut } from "lucide-react";
+import { Gauge, User, Settings, LogOut } from "lucide-react";
 import { Link } from "@inertiajs/react";
 import sidebarBg from "@/assets/sidebarbg.jpg";
 
@@ -16,7 +16,7 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-    { label: "Home", icon: <Home />, href: "/dashboard" },
+    { label: "Dashboard", icon: <Gauge />, href: "/dashboard" },
     { label: "Profile", icon: <User />, href: route("profile.edit") },
 ];
 const logoutItem: NavItem = {
