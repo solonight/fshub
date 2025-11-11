@@ -14,8 +14,7 @@ export default function Marketplace({ auth, fabricStocks }: any) {
                     </h1>
                     <p className="text-lg text-center text-[#1D1B1B] dark:text-[#D9D9D9] max-w-2xl mb-8">
                         Welcome to the FSHub Marketplace! Here you can browse,
-                        buy, and sell fabric stock, manage logistics, and
-                        connect with providers.
+                        buy, and sell fabric stock, and connect with providers.
                     </p>
                 </div>
                 <div className="w-full">
