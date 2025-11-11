@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Models\FabricStock;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,8 +43,12 @@ Route::get('/welcome', function () {
     return Inertia::render('Welcome');
 })->name('welcome');
 
+
 Route::get('/marketplace', function () {
-    return Inertia::render('Marketplace');
+    $fabricStocks = FabricStock::paginate(15);
+    return Inertia::render('Marketplace', [
+        'fabricStocks' => $fabricStocks,
+    ]);
 })->middleware(['auth', 'verified'])->name('marketplace');
 
 require __DIR__.'/auth.php';
