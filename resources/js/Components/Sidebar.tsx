@@ -9,7 +9,7 @@ interface SidebarProps {
 
 const navItems = [
     { label: "Home", icon: <Home />, href: "/dashboard" },
-    { label: "Profile", icon: <User />, href: "/profile/edit" },
+    { label: "Profile", icon: <User />, href: route("profile.edit") },
     { label: "Settings", icon: <Settings />, href: "/settings" },
     { label: "Logout", icon: <LogOut />, href: "/logout", method: "post" },
 ];
