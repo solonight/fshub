@@ -30,7 +30,21 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    $user = auth()->user();
+
+    if ($user->hasRole('admin')) {
+        return redirect()->route('admin.dashboard');
+    } elseif ($user->hasRole('StockOwner')) {
+        return redirect()->route('stock.dashboard');
+    } elseif ($user->hasRole('WarehouseProvider')) {
+        return redirect()->route('warehouses.dashboard');
+    } elseif ($user->hasRole('Transporter')) {
+        return redirect()->route('transporter.dashboard');
+    } elseif ($user->hasRole('customer')) {
+        return redirect()->route('purchase.page');
+    }
+
+    return abort(403, 'Unauthorized action.');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
