@@ -38,55 +38,38 @@ export default function Authenticated({
         <div className="min-h-screen bg-white dark:bg-[#1D1B1B] text-[#1D1B1B] dark:text-[#D9D9D9] transition-colors duration-300 flex">
             {/* Sidebar toggle and sidebar */}
             {sidebarOpen && <Sidebar user={user} />}
-            <div className="flex-1 flex flex-col">
-                <nav className="border-b border-[#2596be] bg-[#2596be] flex items-center justify-between h-27 px-6 shadow-2xl">
-                    <button
-                        aria-label="Toggle sidebar"
-                        onClick={() => setSidebarOpen((open) => !open)}
-                        className="mr-4 p-2 rounded-full bg-[#D9D9D9] hover:bg-[#2596be] transition-colors duration-200 flex items-center justify-center"
-                    >
-                        {sidebarOpen ? (
-                            <ChevronLeft className="w-5 h-5 text-[#1D1B1B]" />
-                        ) : (
-                            <ChevronRight className="w-5 h-5 text-[#1D1B1B]" />
-                        )}
-                    </button>
+            <div className="flex-1 flex flex-col ">
+                <nav className="border-b border-[#2596be] bg-[#2596be] flex items-center h-27 px-6 shadow-2xl">
+                    <div className="flex items-center justify-between w-full">
+                        <button
+                            aria-label="Toggle sidebar"
+                            onClick={() => setSidebarOpen((open) => !open)}
+                            className="mr-4 p-2 rounded-full bg-[#D9D9D9] hover:bg-[#2596be] transition-colors duration-200 flex items-center justify-center"
+                        >
+                            {sidebarOpen ? (
+                                <ChevronLeft className="w-5 h-5 text-[#1D1B1B]" />
+                            ) : (
+                                <ChevronRight className="w-5 h-5 text-[#1D1B1B]" />
+                            )}
+                        </button>
 
-                    <div className="flex-1 flex justify-between items-center">
-                        <div className="shrink-0 flex items-center">
-                            <Link href={route("marketplace")}>
-                                <ApplicationLogo className="block w-[87px] h-[87px] bg-[#1D1B1B] rounded-full" />
-                            </Link>
-                        </div>
+                        <Link href={route("marketplace")}>
+                            <ApplicationLogo className="block w-[87px] h-[87px] rounded-full" />
+                        </Link>
 
-                        <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                            <NavLink
-                                href={route("dashboard")}
-                                active={route().current("dashboard")}
-                                className="text-[#1D1B1B] font-bold"
-                            >
-                                Dashboard
-                            </NavLink>
-                        </div>
-
-                        <div className="flex items-center ms-6 gap-4">
-                            {/* Theme toggle button */}
-                            <button
-                                aria-label="Toggle dark mode"
-                                onClick={() =>
-                                    setTheme(
-                                        theme === "dark" ? "light" : "dark"
-                                    )
-                                }
-                                className="p-2 rounded-full bg-[#D9D9D9] hover:bg-[#2596be] transition-colors duration-200 flex items-center justify-center"
-                            >
-                                {theme === "dark" ? (
-                                    <Sun className="w-5 h-5 text-[#1D1B1B]" />
-                                ) : (
-                                    <Moon className="w-5 h-5 text-[#1D1B1B]" />
-                                )}
-                            </button>
-                        </div>
+                        <button
+                            aria-label="Toggle dark mode"
+                            onClick={() =>
+                                setTheme(theme === "dark" ? "light" : "dark")
+                            }
+                            className="p-2 rounded-full bg-[#D9D9D9] hover:bg-[#2596be] transition-colors duration-200 flex items-center justify-center"
+                        >
+                            {theme === "dark" ? (
+                                <Sun className="w-5 h-5 text-[#1D1B1B]" />
+                            ) : (
+                                <Moon className="w-5 h-5 text-[#1D1B1B]" />
+                            )}
+                        </button>
                     </div>
                 </nav>
 
