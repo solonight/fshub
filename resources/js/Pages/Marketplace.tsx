@@ -69,38 +69,41 @@ export default function Marketplace({ auth, fabricStocks }: any) {
                     {/* Pagination Controls */}
                     {fabricStocks && (
                         <div className="flex justify-center items-center gap-2 mt-8 flex-wrap">
-                            {fabricStocks.links &&
-                                fabricStocks.links.map(
-                                    (link: any, idx: number) =>
-                                        link.url ? (
-                                            <Link
-                                                key={idx}
-                                                href={link.url}
-                                                className={`px-3 py-1 rounded border text-sm transition-colors ${
-                                                    link.active
-                                                        ? "bg-primary text-white"
-                                                        : "bg-white dark:bg-[#232323] text-primary hover:bg-primary/10"
-                                                }`}
-                                                preserveScroll
-                                            >
-                                                {/* Remove HTML tags from label for clean display */}
-                                                {link.label.replace(
-                                                    /<[^>]+>/g,
-                                                    ""
-                                                )}
-                                            </Link>
-                                        ) : (
-                                            <span
-                                                key={idx}
-                                                className="px-3 py-1 rounded border text-sm text-gray-400"
-                                            >
-                                                {link.label.replace(
-                                                    /<[^>]+>/g,
-                                                    ""
-                                                )}
-                                            </span>
-                                        )
-                                )}
+                            {fabricStocks.links && (
+                                <>
+                                    {fabricStocks.links.map(
+                                        (link: any, idx: number) =>
+                                            link.url ? (
+                                                <Link
+                                                    key={idx}
+                                                    href={link.url}
+                                                    className={`px-3 py-1 rounded border text-sm transition-colors ${
+                                                        link.active
+                                                            ? "bg-primary text-white"
+                                                            : "bg-white dark:bg-[#232323] text-primary hover:bg-primary/10"
+                                                    }`}
+                                                    preserveScroll
+                                                >
+                                                    {/* Remove HTML tags from label for clean display */}
+                                                    {link.label.replace(
+                                                        /&laquo;|&raquo;|<[^>]+>/g,
+                                                        ""
+                                                    )}
+                                                </Link>
+                                            ) : (
+                                                <span
+                                                    key={idx}
+                                                    className="px-3 py-1 rounded border text-sm text-gray-400"
+                                                >
+                                                    {link.label.replace(
+                                                        /&laquo;|&raquo;|<[^>]+>/g,
+                                                        ""
+                                                    )}
+                                                </span>
+                                            )
+                                    )}
+                                </>
+                            )}
                         </div>
                     )}
                 </div>
