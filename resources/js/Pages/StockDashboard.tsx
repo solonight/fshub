@@ -65,7 +65,7 @@ export default function StockDashboard({ auth }: PageProps) {
                                                     e.target.value
                                                 )
                                             }
-                                            className="w-full border rounded px-3 py-2"
+                                            className="w-full border rounded px-3 py-2 text-[#1D1B1B]"
                                             required
                                         >
                                             <option value="">
@@ -117,7 +117,7 @@ export default function StockDashboard({ auth }: PageProps) {
                                                     e.target.value
                                                 )
                                             }
-                                            className="w-full border rounded px-3 py-2"
+                                            className="w-full border rounded px-3 py-2 text-[#1D1B1B]"
                                         />
                                     </div>
                                     <div>
@@ -130,7 +130,7 @@ export default function StockDashboard({ auth }: PageProps) {
                                             onChange={(e) =>
                                                 setData("color", e.target.value)
                                             }
-                                            className="w-full border rounded px-3 py-2"
+                                            className="w-full border rounded px-3 py-2 text-[#1D1B1B]"
                                             required
                                         />
                                     </div>
@@ -147,7 +147,7 @@ export default function StockDashboard({ auth }: PageProps) {
                                                     e.target.value
                                                 )
                                             }
-                                            className="w-full border rounded px-3 py-2"
+                                            className="w-full border rounded px-3 py-2 text-[#1D1B1B]"
                                             required
                                         />
                                     </div>
@@ -164,7 +164,7 @@ export default function StockDashboard({ auth }: PageProps) {
                                                     e.target.value
                                                 )
                                             }
-                                            className="w-full border rounded px-3 py-2"
+                                            className="w-full border rounded px-3 py-2 text-[#1D1B1B]"
                                             required
                                         />
                                     </div>
@@ -180,7 +180,7 @@ export default function StockDashboard({ auth }: PageProps) {
                                                     e.target.value
                                                 )
                                             }
-                                            className="w-full border rounded px-3 py-2"
+                                            className="w-full border rounded px-3 py-2 text-[#1D1B1B]"
                                         ></textarea>
                                     </div>
                                     <div className="flex items-center">
