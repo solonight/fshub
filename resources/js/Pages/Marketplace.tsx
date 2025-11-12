@@ -2,7 +2,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 
 export default function Marketplace({ auth, fabricStocks }: any) {
-    // fabricStocks is now a pagination object from Laravel
+
     const stocks = fabricStocks?.data || [];
     return (
         <AuthenticatedLayout user={auth.user}>

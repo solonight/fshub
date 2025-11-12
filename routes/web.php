@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Models\FabricStock;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,5 +50,35 @@ Route::get('/marketplace', function () {
         'fabricStocks' => $fabricStocks,
     ]);
 })->middleware(['auth', 'verified'])->name('marketplace');
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin-dashboard', function () {
+        return Inertia::render('AdminDashboard');
+    })->name('admin.dashboard');
+});
+
+Route::middleware(['auth', 'role:StockOwner'])->group(function () {
+    Route::get('/stock-dashboard', function () {
+        return Inertia::render('StockDashboard');
+    })->name('stock.dashboard');
+});
+
+Route::middleware(['auth', 'role:WarehouseProvider'])->group(function () {
+    Route::get('/warehouses-dashboard', function () {
+        return Inertia::render('WarehousesDashboard');
+    })->name('warehouses.dashboard');
+});
+
+Route::middleware(['auth', 'role:Transporter'])->group(function () {
+    Route::get('/transporter-dashboard', function () {
+        return Inertia::render('TransporterDashboard');
+    })->name('transporter.dashboard');
+});
+
+Route::middleware(['auth', 'role:customer'])->group(function () {
+    Route::get('/purchase-page', function () {
+        return Inertia::render('PurchasePage');
+    })->name('purchase.page');
+});
 
 require __DIR__.'/auth.php';
