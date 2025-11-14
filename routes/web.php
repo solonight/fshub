@@ -7,6 +7,8 @@ use Inertia\Inertia;
 use App\Models\FabricStock;
 use App\Http\Controllers\FabricStockController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -77,7 +79,12 @@ Route::get('/services', function () {
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin-dashboard', function () {
-        return Inertia::render('AdminDashboard');
+        return Inertia::render('AdminDashboard', [
+            'auth' => [
+                'user' => Auth::user(),
+            ],
+            'users' => User::paginate(35),
+        ]);
     })->name('admin.dashboard');
 });
 
