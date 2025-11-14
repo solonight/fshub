@@ -24,7 +24,6 @@ class FabricStockController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
             'fabric_type' => [
                 'required',
                 'string',
@@ -39,7 +38,12 @@ class FabricStockController extends Controller
             'auto_delete' => 'boolean',
             'samples_availability' => 'boolean',
         ]);
-        return FabricStock::create($validated);
+        $validated['user_id'] = auth()->id();
+        if (!isset($validated['available_quantity'])) {
+            $validated['available_quantity'] = $validated['total_quantity'];
+        }
+        FabricStock::create($validated);
+        return redirect()->route('stock.dashboard')->with('success', 'Stock added successfully!');
     }
 
     // Update an existing fabric stock
