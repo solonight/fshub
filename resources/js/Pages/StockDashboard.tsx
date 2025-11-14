@@ -3,7 +3,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 import { PageProps } from "@/types";
 
-export default function StockDashboard({ auth }: PageProps) {
+export default function StockDashboard({ auth, fabricStocks }: any) {
     const [showForm, setShowForm] = useState(false);
     const { data, setData, post, processing, reset } = useForm({
         fabric_type: "",
@@ -208,6 +208,87 @@ export default function StockDashboard({ auth }: PageProps) {
                                     </button>
                                 </form>
                             )}
+                        </div>
+                    </div>
+
+                    <div className="mt-8 p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
+                        <h3 className="text-lg font-bold text-primary mb-4 text-center">
+                            Manage Your Stocks
+                        </h3>
+                        <div className="overflow-x-auto">
+                            <table className="min-w-full divide-y divide-[#2596be] bg-white dark:bg-[#1D1B1B] border border-[#2596be] rounded-lg">
+                                <thead>
+                                    <tr>
+                                        <th className="px-4 py-2 font-semibold bg-[#2596be] text-white dark:bg-[#232323] dark:text-[#2596be]">
+                                            ID
+                                        </th>
+                                        <th className="px-4 py-2 font-semibold bg-[#2596be] text-white dark:bg-[#232323] dark:text-[#2596be]">
+                                            Type
+                                        </th>
+                                        <th className="px-4 py-2 font-semibold bg-[#2596be] text-white dark:bg-[#232323] dark:text-[#2596be]">
+                                            Color
+                                        </th>
+                                        <th className="px-4 py-2 font-semibold bg-[#2596be] text-white dark:bg-[#232323] dark:text-[#2596be]">
+                                            Location
+                                        </th>
+                                        <th className="px-4 py-2 font-semibold bg-[#2596be] text-white dark:bg-[#232323] dark:text-[#2596be]">
+                                            Price
+                                        </th>
+                                        <th className="px-4 py-2 font-semibold bg-[#2596be] text-white dark:bg-[#232323] dark:text-[#2596be]">
+                                            Total Qty
+                                        </th>
+                                        <th className="px-4 py-2 font-semibold bg-[#2596be] text-white dark:bg-[#232323] dark:text-[#2596be]">
+                                            Available Qty
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-[#2596be]">
+                                    {fabricStocks &&
+                                    fabricStocks.data &&
+                                    fabricStocks.data.length === 0 ? (
+                                        <tr>
+                                            <td
+                                                colSpan={7}
+                                                className="text-center text-gray-500 dark:text-gray-300 py-12"
+                                            >
+                                                No stocks found.
+                                            </td>
+                                        </tr>
+                                    ) : (
+                                        fabricStocks &&
+                                        fabricStocks.data &&
+                                        fabricStocks.data.map((stock: any) => (
+                                            <tr
+                                                key={stock.stock_id}
+                                                className="hover:bg-[#f0f8ff] dark:hover:bg-[#232323]"
+                                            >
+                                                <td className="px-4 py-2">
+                                                    {stock.stock_id}
+                                                </td>
+                                                <td className="px-4 py-2">
+                                                    {stock.fabric_type}
+                                                </td>
+                                                <td className="px-4 py-2">
+                                                    {stock.color}
+                                                </td>
+                                                <td className="px-4 py-2">
+                                                    {stock.stock_location ||
+                                                        "-"}
+                                                </td>
+                                                <td className="px-4 py-2">
+                                                    {stock.price_per_unit}
+                                                </td>
+                                                <td className="px-4 py-2">
+                                                    {stock.total_quantity}
+                                                </td>
+                                                <td className="px-4 py-2">
+                                                    {stock.available_quantity}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
