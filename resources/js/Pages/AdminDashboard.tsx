@@ -22,6 +22,15 @@ export default function AdminDashboard({ auth }: PageProps) {
                             You're logged in!
                         </div>
                     </div>
+                    {/* Manage Users Section */}
+                    <div className="p-6 font-semibold text-[#1D1B1B]">
+                        <h3 className="text-lg font-bold text-primary mb-4 text-center">
+                            Manage Users
+                        </h3>
+                        <div className="text-center text-muted">
+                            User management features go here.
+                        </div>
+                    </div>
                 </div>
             </div>
         </AuthenticatedLayout>
