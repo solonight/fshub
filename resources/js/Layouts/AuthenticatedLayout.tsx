@@ -21,7 +21,7 @@ export default function Authenticated({
         }
         return "dark";
     });
-    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(true);
 
     useEffect(() => {
         if (theme === "dark") {
