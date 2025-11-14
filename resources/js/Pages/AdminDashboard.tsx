@@ -1,10 +1,29 @@
 import React from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 import { PageProps } from "@/types";
 
 export default function AdminDashboard({ auth, users }: any) {
-    const userList = users?.data || [];
+    const [userList, setUserList] = React.useState(users?.data || []);
+
+    React.useEffect(() => {
+        setUserList(users?.data || []);
+    }, [users]);
+
+    const handleDelete = (userId: number) => {
+        router.delete(`/admin-dashboard/users/${userId}`, {
+            onSuccess: () => {
+                setUserList((prev: any[]) =>
+                    prev.filter((u) => u.id !== userId)
+                );
+            },
+            onError: (errors: any) => {
+                alert(errors.message || "Failed to delete user.");
+            },
+            preserveScroll: true,
+        });
+    };
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -63,21 +82,51 @@ export default function AdminDashboard({ auth, users }: any) {
                                     <tbody className="divide-y divide-[#2596be]">
                                         {userList.length === 0 ? (
                                             <tr>
-                                                <td colSpan={7} className="text-center text-gray-500 dark:text-gray-300 py-12">
+                                                <td
+                                                    colSpan={7}
+                                                    className="text-center text-gray-500 dark:text-gray-300 py-12"
+                                                >
                                                     No users found.
                                                 </td>
                                             </tr>
                                         ) : (
                                             userList.map((user: any) => (
-                                                <tr key={user.id} className="hover:bg-[#f0f8ff] dark:hover:bg-[#232323]">
-                                                    <td className="px-4 py-2 text-[#1D1B1B] dark:text-[#D9D9D9]">{user.id}</td>
-                                                    <td className="px-4 py-2 text-[#1D1B1B] dark:text-[#D9D9D9]">{user.name}</td>
-                                                    <td className="px-4 py-2 text-[#1D1B1B] dark:text-[#D9D9D9]">{user.email}</td>
-                                                    <td className="px-4 py-2 text-[#1D1B1B] dark:text-[#D9D9D9]">{user.phone_number || '-'}</td>
-                                                    <td className="px-4 py-2 text-[#1D1B1B] dark:text-[#D9D9D9]">{user.roles ? user.roles.join(', ') : '-'}</td>
-                                                    <td className="px-4 py-2 text-[#1D1B1B] dark:text-[#D9D9D9]">{user.created_at}</td>
+                                                <tr
+                                                    key={user.id}
+                                                    className="hover:bg-[#f0f8ff] dark:hover:bg-[#232323]"
+                                                >
+                                                    <td className="px-4 py-2 text-[#1D1B1B] dark:text-[#D9D9D9]">
+                                                        {user.id}
+                                                    </td>
+                                                    <td className="px-4 py-2 text-[#1D1B1B] dark:text-[#D9D9D9]">
+                                                        {user.name}
+                                                    </td>
+                                                    <td className="px-4 py-2 text-[#1D1B1B] dark:text-[#D9D9D9]">
+                                                        {user.email}
+                                                    </td>
+                                                    <td className="px-4 py-2 text-[#1D1B1B] dark:text-[#D9D9D9]">
+                                                        {user.phone_number ||
+                                                            "-"}
+                                                    </td>
+                                                    <td className="px-4 py-2 text-[#1D1B1B] dark:text-[#D9D9D9]">
+                                                        {user.roles
+                                                            ? user.roles.join(
+                                                                  ", "
+                                                              )
+                                                            : "-"}
+                                                    </td>
+                                                    <td className="px-4 py-2 text-[#1D1B1B] dark:text-[#D9D9D9]">
+                                                        {user.created_at}
+                                                    </td>
                                                     <td className="px-4 py-2">
-                                                        <button className="bg-red-500 hover:bg-red-700 text-white dark:bg-red-700 dark:hover:bg-red-900 dark:text-[#F5F5F5] font-bold py-1 px-3 rounded transition-colors duration-200">
+                                                        <button
+                                                            className="bg-red-500 hover:bg-red-700 text-white dark:bg-red-700 dark:hover:bg-red-900 dark:text-[#F5F5F5] font-bold py-1 px-3 rounded transition-colors duration-200"
+                                                            onClick={() =>
+                                                                handleDelete(
+                                                                    user.id
+                                                                )
+                                                            }
+                                                        >
                                                             Delete
                                                         </button>
                                                     </td>

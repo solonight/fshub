@@ -122,4 +122,13 @@ Route::get('/services', function () {
     ]);
 })->middleware(['auth', 'verified'])->name('services');
 
+Route::delete('/admin-dashboard/users/{id}', function ($id) {
+    $user = User::findOrFail($id);
+    if (Auth::user()->id === $user->id) {
+        return back()->with('error', 'You cannot delete your own account.');
+    }
+    $user->delete();
+    return redirect()->route('admin.dashboard')->with('success', 'User deleted.');
+})->middleware(['auth', 'role:admin'])->name('admin.users.delete');
+
 require __DIR__.'/auth.php';
