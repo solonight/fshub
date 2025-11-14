@@ -90,7 +90,14 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 Route::middleware(['auth', 'role:StockOwner'])->group(function () {
     Route::get('/stock-dashboard', function () {
-        return Inertia::render('StockDashboard');
+        $user = Auth::user();
+        $fabricStocks = \App\Models\FabricStock::where('user_id', $user->id)->orderByDesc('created_at')->paginate(20);
+        return Inertia::render('StockDashboard', [
+            'auth' => [
+                'user' => $user,
+            ],
+            'fabricStocks' => $fabricStocks,
+        ]);
     })->name('stock.dashboard');
 });
 
