@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Inertia\Inertia;
+
 use App\Models\FabricStock;
 use App\Http\Controllers\FabricStockController;
 use Illuminate\Support\Facades\Route;
@@ -59,12 +60,20 @@ Route::get('/welcome', function () {
 })->name('welcome');
 
 
+
 Route::get('/marketplace', function () {
     $fabricStocks = FabricStock::paginate(15);
     return Inertia::render('Marketplace', [
         'fabricStocks' => $fabricStocks,
     ]);
 })->middleware(['auth', 'verified'])->name('marketplace');
+
+// Services page route for sidebar nav items
+Route::get('/services', function () {
+    return Inertia::render('ServicesPage', [
+        'services' => [], // Replace with actual data if available
+    ]);
+})->middleware(['auth', 'verified'])->name('services');
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin-dashboard', function () {
@@ -97,5 +106,13 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 });
 
 Route::resource('fabric-stocks', FabricStockController::class)->middleware(['auth', 'role:StockOwner']);
+
+
+// Services page route for sidebar nav items
+Route::get('/services', function () {
+    return Inertia::render('ServicesPage', [
+        'services' => [], // Replace with actual data if available
+    ]);
+})->middleware(['auth', 'verified'])->name('services');
 
 require __DIR__.'/auth.php';
