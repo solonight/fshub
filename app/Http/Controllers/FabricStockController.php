@@ -34,7 +34,7 @@ class FabricStockController extends Controller
             'color' => 'required|string',
             'price_per_unit' => 'required|numeric',
             'total_quantity' => 'required|numeric',
-            'available_quantity' => 'required|numeric',
+            'available_quantity' => 'nullable|numeric',
             'description' => 'nullable|string',
             'auto_delete' => 'boolean',
             'samples_availability' => 'boolean',

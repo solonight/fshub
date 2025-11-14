@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Inertia\Inertia;
 use App\Models\FabricStock;
+use App\Http\Controllers\FabricStockController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -94,5 +95,7 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
         return Inertia::render('PurchasePage');
     })->name('purchase.page');
 });
+
+Route::resource('fabric-stocks', FabricStockController::class)->middleware(['auth', 'role:StockOwner']);
 
 require __DIR__.'/auth.php';
