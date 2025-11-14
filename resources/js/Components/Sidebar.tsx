@@ -68,7 +68,9 @@ export default function Sidebar({ children, user }: SidebarProps) {
                         ))}
                         {/* Services Section */}
                         <div className="w-full mt-6">
-                            <div className="uppercase text-xs text-primary font-bold mb-2 px-3 hidden md:block">Services</div>
+                            <div className="uppercase text-xs text-primary font-bold mb-2 px-3 hidden md:block">
+                                Services
+                            </div>
                             <div className="flex flex-col gap-2">
                                 {servicesNav.map((item) => (
                                     <Link
@@ -76,7 +78,9 @@ export default function Sidebar({ children, user }: SidebarProps) {
                                         href={item.href}
                                         className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/20 transition-colors w-16 md:w-full justify-center md:justify-start"
                                     >
-                                        <span className="w-6 h-6">{item.icon}</span>
+                                        <span className="w-6 h-6">
+                                            {item.icon}
+                                        </span>
                                         <span className="hidden md:inline text-sm font-medium">
                                             {item.label}
                                         </span>

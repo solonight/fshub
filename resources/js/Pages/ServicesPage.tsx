@@ -14,7 +14,8 @@ export default function ServicesPage({ auth, services }: any) {
                         Services
                     </h1>
                     <p className="text-lg text-center text-[#1D1B1B] dark:text-[#D9D9D9] max-w-2xl mb-8">
-                        Discover warehousing, transportation, and other services available on FSHub.
+                        Discover warehousing, transportation, and other services
+                        available on FSHub.
                     </p>
                 </div>
                 <div className="w-full">
@@ -33,10 +34,16 @@ export default function ServicesPage({ auth, services }: any) {
                                         {service.name}
                                     </div>
                                     <div className="text-sm text-[#1D1B1B] dark:text-[#D9D9D9]">
-                                        <span className="font-semibold">Type:</span> {service.type}
+                                        <span className="font-semibold">
+                                            Type:
+                                        </span>{" "}
+                                        {service.type}
                                     </div>
                                     <div className="text-sm text-[#1D1B1B] dark:text-[#D9D9D9]">
-                                        <span className="font-semibold">Location:</span> {service.location || "N/A"}
+                                        <span className="font-semibold">
+                                            Location:
+                                        </span>{" "}
+                                        {service.location || "N/A"}
                                     </div>
                                     {service.description && (
                                         <div className="text-xs text-gray-500 dark:text-gray-400 mt-2">
