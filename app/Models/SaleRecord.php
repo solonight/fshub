@@ -65,6 +65,12 @@ class SaleRecord extends Model
                     'notes' => $saleRecord->notes,
                     'reference_id' => $saleRecord->record_id,
                 ]);
+
+                // BEGINNER LOGIC: Auto-delete stock if needed
+                // Check if auto_delete is true and available_quantity is now 0 or less
+                if ($stock->shouldAutoDelete()) {
+                    $stock->delete(); // This will soft-delete the stock (move to trash)
+                }
             }
         });
     }
