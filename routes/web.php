@@ -93,11 +93,13 @@ Route::middleware(['auth', 'role:StockOwner'])->group(function () {
     Route::get('/stock-dashboard', function () {
         $user = Auth::user();
         $fabricStocks = \App\Models\FabricStock::where('user_id', $user->id)->orderByDesc('created_at')->paginate(20);
+        $unpaidSales = \App\Models\SaleRecord::where('is_payed', false)->get();
         return Inertia::render('StockDashboard', [
             'auth' => [
                 'user' => $user,
             ],
             'fabricStocks' => $fabricStocks,
+            'unpaidSales' => $unpaidSales,
         ]);
     })->name('stock.dashboard');
 });
@@ -140,5 +142,6 @@ Route::delete('/admin-dashboard/users/{id}', function ($id) {
 })->middleware(['auth', 'role:admin'])->name('admin.users.delete');
 
 Route::post('/fabric-stocks/{stock_id}/sales', [SaleRecordController::class, 'store']);
+Route::patch('/sales-records/{id}/pay', [SaleRecordController::class, 'update'])->middleware(['auth', 'role:StockOwner']);
 
 require __DIR__.'/auth.php';

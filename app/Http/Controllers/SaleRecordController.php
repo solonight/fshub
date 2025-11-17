@@ -18,6 +18,13 @@ class SaleRecordController extends Controller
     {
         return SaleRecord::findOrFail($id);
     }
+    
+        // List unpaid sale records
+        public function unpaid()
+        {
+            $unpaidSales = SaleRecord::where('is_payed', false)->get();
+            return response()->json($unpaidSales);
+        }
 
     // Create a new sale record
     public function store(Request $request)
@@ -60,9 +67,9 @@ class SaleRecordController extends Controller
             'customer_phone' => 'sometimes|string',
             'quantity_sold' => 'sometimes|numeric|min:0.01',
             'total_amount' => 'sometimes|numeric',
-            'is_payed' => 'boolean',
+            'is_payed' => 'sometimes|boolean',
             'notes' => 'nullable|string',
-            'sale_date' => 'required|date',
+            'sale_date' => 'sometimes|date',
         ]);
 
         // If is_payed is being updated, update related StockHistory
@@ -92,6 +99,9 @@ class SaleRecordController extends Controller
         }
 
         $saleRecord->update($validated);
+        if ($request->header('X-Inertia')) {
+            return redirect()->back()->with('success', 'Sale record updated successfully.');
+        }
         return $saleRecord;
     }
 

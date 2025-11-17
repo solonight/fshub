@@ -1,3 +1,13 @@
+// Handler to mark sale record as paid
+const handleMarkAsPaid = (saleId: number) => {
+    router.patch(
+        `/sales-records/${saleId}/pay`,
+        { is_payed: true },
+        {
+            preserveScroll: true,
+        }
+    );
+};
 import React, { useState } from "react";
 // @ts-ignore
 import InputMask from "react-input-mask";
@@ -5,7 +15,11 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, router } from "@inertiajs/react";
 import { PageProps } from "@/types";
 
-export default function StockDashboard({ auth, fabricStocks }: any) {
+export default function StockDashboard({
+    auth,
+    fabricStocks,
+    unpaidSales,
+}: any) {
     // Delete handler for a stock
     const handleDelete = (stockId: number) => {
         router.delete(`/fabric-stocks/${stockId}`);
@@ -786,12 +800,71 @@ export default function StockDashboard({ auth, fabricStocks }: any) {
                 {/* Sales Records Section */}
                 <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
                     <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
-                        Sales Records
+                        Unpaid Sales Records
                     </h3>
-                    <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
-                        {/* TODO: Render sales records here */}
-                        Sales records content goes here.
-                    </div>
+                    {unpaidSales && unpaidSales.length > 0 ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                            {unpaidSales.map((sale: any) => (
+                                <div
+                                    key={sale.record_id}
+                                    className="bg-white dark:bg-[#232323] text-black dark:text-white rounded-lg p-4 border-2 border-red-400 shadow-lg hover:shadow-2xl hover:border-red-600 transition-all duration-200 flex flex-col"
+                                >
+                                    <div className="mb-2">
+                                        <span className="font-semibold">
+                                            Customer:
+                                        </span>{" "}
+                                        {sale.customer_name}
+                                    </div>
+                                    <div className="mb-2">
+                                        <span className="font-semibold">
+                                            Phone:
+                                        </span>{" "}
+                                        {sale.customer_phone}
+                                    </div>
+                                    <div className="mb-2">
+                                        <span className="font-semibold">
+                                            Quantity Sold:
+                                        </span>{" "}
+                                        {sale.quantity_sold}
+                                    </div>
+                                    <div className="mb-2">
+                                        <span className="font-semibold">
+                                            Total Amount:
+                                        </span>
+                                        <span className="bg-red-500 text-white px-2 py-1 rounded ml-2">
+                                            {sale.total_amount} MAD
+                                        </span>
+                                    </div>
+                                    <div className="mb-2">
+                                        <span className="font-semibold">
+                                            Sale Date:
+                                        </span>{" "}
+                                        {sale.sale_date
+                                            ? sale.sale_date.split("T")[0]
+                                            : ""}
+                                    </div>
+                                    <div className="mb-2">
+                                        <span className="font-semibold">
+                                            Notes:
+                                        </span>{" "}
+                                        {sale.notes}
+                                    </div>
+                                    <button
+                                        className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors font-bold"
+                                        onClick={() =>
+                                            handleMarkAsPaid(sale.record_id)
+                                        }
+                                    >
+                                        Is Payed
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
+                            No unpaid sales records found.
+                        </div>
+                    )}
                 </div>
 
                 {/* Stock Histories Section */}
