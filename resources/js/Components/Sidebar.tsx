@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Gauge, User, Settings, LogOut, Warehouse, Truck } from "lucide-react";
+import { Gauge, User, Settings, LogOut, Warehouse, Truck, DollarSign } from "lucide-react";
 import { Link } from "@inertiajs/react";
 import sidebarBg from "@/assets/sidebarbg.jpg";
 
@@ -21,6 +21,7 @@ const navItems: NavItem[] = [
 ];
 
 const servicesNav: NavItem[] = [
+    { label: "Marketplace", icon: <DollarSign />, href: "/marketplace" },
     { label: "Warehouses", icon: <Warehouse />, href: "/services" },
     { label: "Transporters", icon: <Truck />, href: "/services" },
 ];
