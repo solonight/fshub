@@ -70,7 +70,7 @@ class FabricStockController extends Controller
             'samples_availability' => 'boolean',
         ]);
         $fabricStock->update($validated);
-        return $fabricStock;
+        return redirect()->route('stock.dashboard')->with('success', 'Stock updated successfully!');
     }
 
     // Delete a fabric stock
