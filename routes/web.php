@@ -6,6 +6,7 @@ use Inertia\Inertia;
 
 use App\Models\FabricStock;
 use App\Http\Controllers\FabricStockController;
+use App\Http\Controllers\SaleRecordController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -137,5 +138,7 @@ Route::delete('/admin-dashboard/users/{id}', function ($id) {
     $user->delete();
     return redirect()->route('admin.dashboard')->with('success', 'User deleted.');
 })->middleware(['auth', 'role:admin'])->name('admin.users.delete');
+
+Route::post('/fabric-stocks/{stock_id}/sales', [SaleRecordController::class, 'store']);
 
 require __DIR__.'/auth.php';

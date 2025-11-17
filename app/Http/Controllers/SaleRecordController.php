@@ -48,7 +48,7 @@ class SaleRecordController extends Controller
 
         $saleRecord = SaleRecord::create($validated);
         // available_quantity and StockHistory handled by SaleRecord model boot method
-        return $saleRecord;
+        return redirect()->back()->with('success', 'Sale record created successfully.');
     }
 
     // Update an existing sale record
@@ -62,7 +62,7 @@ class SaleRecordController extends Controller
             'total_amount' => 'sometimes|numeric',
             'is_payed' => 'boolean',
             'notes' => 'nullable|string',
-            'sale_date' => 'nullable|date',
+            'sale_date' => 'required|date',
         ]);
 
         // If is_payed is being updated, update related StockHistory
