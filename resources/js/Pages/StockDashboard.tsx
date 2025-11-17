@@ -310,14 +310,28 @@ export default function StockDashboard({ auth, fabricStocks }: any) {
                                                     {stock.available_quantity}
                                                 </span>
                                             </div>
-                                            <button
-                                                onClick={() =>
-                                                    handleDelete(stock.stock_id)
-                                                }
-                                                className="mt-auto px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors"
-                                            >
-                                                Delete
-                                            </button>
+                                            <div className="flex gap-2 mt-auto">
+                                                <button
+                                                    onClick={() =>
+                                                        alert(
+                                                            `Add sale for stock ID: ${stock.stock_id}`
+                                                        )
+                                                    }
+                                                    className="px-3 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600 transition-colors"
+                                                >
+                                                    Add Sale
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        handleDelete(
+                                                            stock.stock_id
+                                                        )
+                                                    }
+                                                    className="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors"
+                                                >
+                                                    Delete
+                                                </button>
+                                            </div>
                                         </div>
                                     ))}
                             </div>
