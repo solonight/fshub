@@ -1,5 +1,13 @@
 import { ReactNode } from "react";
-import { Gauge, User, Settings, LogOut, Warehouse, Truck, DollarSign } from "lucide-react";
+import {
+    Gauge,
+    User,
+    Settings,
+    LogOut,
+    Warehouse,
+    Truck,
+    DollarSign,
+} from "lucide-react";
 import { Link } from "@inertiajs/react";
 import sidebarBg from "@/assets/sidebarbg.jpg";
 
