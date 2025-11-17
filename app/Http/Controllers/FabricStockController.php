@@ -82,6 +82,6 @@ class FabricStockController extends Controller
             return response()->json(['message' => 'Forbidden: You can only delete your own stocks.'], 403);
         }
         $fabricStock->delete();
-        return response()->json(['message' => 'Deleted successfully']);
+        return redirect()->route('stock.dashboard')->with('success', 'Deleted successfully');
     }
 }

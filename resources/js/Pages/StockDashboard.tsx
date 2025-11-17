@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, useForm, router } from "@inertiajs/react";
 import { PageProps } from "@/types";
 
 export default function StockDashboard({ auth, fabricStocks }: any) {
+    // Delete handler for a stock
+    const handleDelete = (stockId: number) => {
+        router.delete(`/fabric-stocks/${stockId}`);
+    };
     const [showForm, setShowForm] = useState(false);
     const { data, setData, post, processing, reset } = useForm({
         fabric_type: "",
@@ -298,7 +302,7 @@ export default function StockDashboard({ auth, fabricStocks }: any) {
                                                     {stock.total_quantity}
                                                 </span>
                                             </div>
-                                            <div>
+                                            <div className="mb-2">
                                                 <span className="font-semibold text-xs text-gray-700 dark:text-gray-200">
                                                     Available Qty:{" "}
                                                 </span>
@@ -306,6 +310,14 @@ export default function StockDashboard({ auth, fabricStocks }: any) {
                                                     {stock.available_quantity}
                                                 </span>
                                             </div>
+                                            <button
+                                                onClick={() =>
+                                                    handleDelete(stock.stock_id)
+                                                }
+                                                className="mt-auto px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors"
+                                            >
+                                                Delete
+                                            </button>
                                         </div>
                                     ))}
                             </div>
