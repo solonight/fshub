@@ -253,7 +253,7 @@ export default function StockDashboard({ auth, fabricStocks }: any) {
                                 No stocks found.
                             </div>
                         ) : (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
                                 {fabricStocks &&
                                     fabricStocks.data &&
                                     fabricStocks.data.map((stock: any) => (
@@ -310,16 +310,26 @@ export default function StockDashboard({ auth, fabricStocks }: any) {
                                                     {stock.available_quantity}
                                                 </span>
                                             </div>
-                                            <div className="flex gap-2 mt-auto">
+                                            <div className="flex flex-col sm:flex-row gap-2 mt-auto w-full">
                                                 <button
                                                     onClick={() =>
                                                         alert(
                                                             `Add sale for stock ID: ${stock.stock_id}`
                                                         )
                                                     }
-                                                    className="px-3 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600 transition-colors"
+                                                    className="w-full sm:w-auto px-2 sm:px-3 py-1 bg-green-500 text-white text-xs sm:text-sm rounded hover:bg-green-600 transition-colors"
                                                 >
                                                     Add Sale
+                                                </button>
+                                                <button
+                                                    onClick={() =>
+                                                        alert(
+                                                            `Update stock ID: ${stock.stock_id}`
+                                                        )
+                                                    }
+                                                    className="w-full sm:w-auto px-2 sm:px-3 py-1 bg-yellow-400 text-black text-xs sm:text-sm rounded hover:bg-yellow-500 transition-colors"
+                                                >
+                                                    Update
                                                 </button>
                                                 <button
                                                     onClick={() =>
@@ -327,7 +337,7 @@ export default function StockDashboard({ auth, fabricStocks }: any) {
                                                             stock.stock_id
                                                         )
                                                     }
-                                                    className="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition-colors"
+                                                    className="w-full sm:w-auto px-2 sm:px-3 py-1 bg-red-500 text-white text-xs sm:text-sm rounded hover:bg-red-600 transition-colors"
                                                 >
                                                     Delete
                                                 </button>
