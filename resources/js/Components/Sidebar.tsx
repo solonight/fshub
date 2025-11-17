@@ -65,7 +65,10 @@ export default function Sidebar({ children, user }: SidebarProps) {
                                 key={item.label}
                                 href={item.href}
                                 {...(item.method
-                                    ? { method: item.method as any }
+                                    ? {
+                                          method: item.method as any,
+                                          as: "button",
+                                      }
                                     : {})}
                                 className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/20 transition-colors w-16 md:w-full justify-center md:justify-start"
                             >
@@ -104,6 +107,7 @@ export default function Sidebar({ children, user }: SidebarProps) {
                         key={logoutItem.label}
                         href={logoutItem.href}
                         method={logoutItem.method as any}
+                        as="button"
                         className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/20 transition-colors w-16 md:w-full justify-center md:justify-start"
                     >
                         <span className="w-6 h-6">{logoutItem.icon}</span>
