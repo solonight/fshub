@@ -37,17 +37,17 @@ export default function StockDashboard({ auth, fabricStocks }: any) {
         >
             <Head title="Stock Dashboard" />
 
-            <div className="py-12 min-h-screen dark:bg-[#1D1B1B] bg-[#F5F5F5]">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div className="py-6 min-h-screen dark:bg-[#1D1B1B] bg-[#F5F5F5]">
+                <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
                     <div
-                        className={`overflow-hidden shadow-sm sm:rounded-lg border border-[#2596be] dark:bg-[#1D1B1B] bg-[#D9D9D9] ${
+                        className={`overflow-hidden shadow-sm rounded-lg border border-[#2596be] dark:bg-[#1D1B1B] bg-[#D9D9D9] ${
                             showForm ? "w-full md:w-1/2 mx-auto" : ""
                         }`}
                     >
-                        <div className="p-6 font-semibold dark:text-[#D9D9D9] text-[#1D1B1B]">
+                        <div className="p-4 sm:p-6 font-semibold dark:text-[#D9D9D9] text-[#1D1B1B]">
                             <button
                                 onClick={() => setShowForm(!showForm)}
-                                className="px-4 py-2 bg-[#2596be] text-white rounded hover:bg-[#1d7a9e]"
+                                className="w-full sm:w-auto mb-4 px-4 py-2 bg-[#2596be] text-white rounded hover:bg-[#1d7a9e]"
                             >
                                 {showForm ? "Cancel" : "Add New Stock"}
                             </button>
@@ -56,11 +56,10 @@ export default function StockDashboard({ auth, fabricStocks }: any) {
                                 <div className="w-full flex justify-center">
                                     <form
                                         onSubmit={handleSubmit}
-                                        className="mt-4 space-y-4 w-full "
+                                        className="mt-2 sm:mt-4 space-y-3 sm:space-y-4 w-full px-1 sm:px-0"
                                     >
-                                        {/* ...existing code for form fields... */}
                                         <div>
-                                            <label className="block text-sm font-medium">
+                                            <label className="block text-xs sm:text-sm font-medium">
                                                 Fabric Type
                                             </label>
                                             <select
@@ -71,7 +70,7 @@ export default function StockDashboard({ auth, fabricStocks }: any) {
                                                         e.target.value
                                                     )
                                                 }
-                                                className="w-full border rounded px-3 py-2 text-[#1D1B1B]"
+                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
                                                 required
                                             >
                                                 <option value="">
@@ -125,7 +124,7 @@ export default function StockDashboard({ auth, fabricStocks }: any) {
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium">
+                                            <label className="block text-xs sm:text-sm font-medium">
                                                 Stock Location
                                             </label>
                                             <input
@@ -137,11 +136,11 @@ export default function StockDashboard({ auth, fabricStocks }: any) {
                                                         e.target.value
                                                     )
                                                 }
-                                                className="w-full border rounded px-3 py-2 text-[#1D1B1B]"
+                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium">
+                                            <label className="block text-xs sm:text-sm font-medium">
                                                 Color
                                             </label>
                                             <input
@@ -153,12 +152,12 @@ export default function StockDashboard({ auth, fabricStocks }: any) {
                                                         e.target.value
                                                     )
                                                 }
-                                                className="w-full border rounded px-3 py-2 text-[#1D1B1B]"
+                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
                                                 required
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium">
+                                            <label className="block text-xs sm:text-sm font-medium">
                                                 Price Per Unit (MAD/meter)
                                             </label>
                                             <input
@@ -170,12 +169,12 @@ export default function StockDashboard({ auth, fabricStocks }: any) {
                                                         e.target.value
                                                     )
                                                 }
-                                                className="w-full border rounded px-3 py-2 text-[#1D1B1B]"
+                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
                                                 required
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium">
+                                            <label className="block text-xs sm:text-sm font-medium">
                                                 Total Quantity
                                             </label>
                                             <input
@@ -187,12 +186,12 @@ export default function StockDashboard({ auth, fabricStocks }: any) {
                                                         e.target.value
                                                     )
                                                 }
-                                                className="w-full border rounded px-3 py-2 text-[#1D1B1B]"
+                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
                                                 required
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium">
+                                            <label className="block text-xs sm:text-sm font-medium">
                                                 Description
                                             </label>
                                             <textarea
@@ -203,7 +202,7 @@ export default function StockDashboard({ auth, fabricStocks }: any) {
                                                         e.target.value
                                                     )
                                                 }
-                                                className="w-full border rounded px-3 py-2 text-[#1D1B1B]"
+                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
                                             ></textarea>
                                         </div>
                                         <div className="flex items-center">
@@ -220,11 +219,13 @@ export default function StockDashboard({ auth, fabricStocks }: any) {
                                                 }
                                                 className="mr-2"
                                             />
-                                            <label>Samples Availability</label>
+                                            <label className="text-xs sm:text-sm">
+                                                Samples Availability
+                                            </label>
                                         </div>
                                         <button
                                             type="submit"
-                                            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                                            className="w-full sm:w-auto px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                                             disabled={processing}
                                         >
                                             {processing
@@ -237,85 +238,78 @@ export default function StockDashboard({ auth, fabricStocks }: any) {
                         </div>
                     </div>
 
-                    <div className="mt-8 p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
-                        <h3 className="text-lg font-bold text-primary mb-4 text-center">
+                    <div className="mt-6 sm:mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
+                        <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
                             Manage Your Stocks
                         </h3>
-                        <div className="overflow-x-auto">
-                            <table className="min-w-full divide-y divide-[#2596be] bg-white dark:bg-[#1D1B1B] border border-[#2596be] rounded-lg">
-                                <thead>
-                                    <tr>
-                                        <th className="px-4 py-2 font-semibold bg-[#2596be] text-white dark:bg-[#232323] dark:text-[#2596be]">
-                                            ID
-                                        </th>
-                                        <th className="px-4 py-2 font-semibold bg-[#2596be] text-white dark:bg-[#232323] dark:text-[#2596be]">
-                                            Type
-                                        </th>
-                                        <th className="px-4 py-2 font-semibold bg-[#2596be] text-white dark:bg-[#232323] dark:text-[#2596be]">
-                                            Color
-                                        </th>
-                                        <th className="px-4 py-2 font-semibold bg-[#2596be] text-white dark:bg-[#232323] dark:text-[#2596be]">
-                                            Location
-                                        </th>
-                                        <th className="px-4 py-2 font-semibold bg-[#2596be] text-white dark:bg-[#232323] dark:text-[#2596be]">
-                                            Price
-                                        </th>
-                                        <th className="px-4 py-2 font-semibold bg-[#2596be] text-white dark:bg-[#232323] dark:text-[#2596be]">
-                                            Total Qty
-                                        </th>
-                                        <th className="px-4 py-2 font-semibold bg-[#2596be] text-white dark:bg-[#232323] dark:text-[#2596be]">
-                                            Available Qty
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-[#2596be]">
-                                    {fabricStocks &&
+                        {fabricStocks &&
+                        fabricStocks.data &&
+                        fabricStocks.data.length === 0 ? (
+                            <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
+                                No stocks found.
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                {fabricStocks &&
                                     fabricStocks.data &&
-                                    fabricStocks.data.length === 0 ? (
-                                        <tr>
-                                            <td
-                                                colSpan={7}
-                                                className="text-center text-gray-500 dark:text-gray-300 py-12"
-                                            >
-                                                No stocks found.
-                                            </td>
-                                        </tr>
-                                    ) : (
-                                        fabricStocks &&
-                                        fabricStocks.data &&
-                                        fabricStocks.data.map((stock: any) => (
-                                            <tr
-                                                key={stock.stock_id}
-                                                className="hover:bg-[#f0f8ff] dark:hover:bg-[#232323]"
-                                            >
-                                                <td className="px-4 py-2">
-                                                    {stock.stock_id}
-                                                </td>
-                                                <td className="px-4 py-2">
+                                    fabricStocks.data.map((stock: any) => (
+                                        <div
+                                            key={stock.stock_id}
+                                            className="bg-[#F5F5F5] dark:bg-[#1D1B1B] border border-[#2596be] rounded-lg p-4 shadow hover:shadow-lg transition-shadow flex flex-col"
+                                        >
+                                            <div className="flex items-center justify-between mb-2">
+                                                <span className="text-xs font-bold text-primary">
+                                                    ID: {stock.stock_id}
+                                                </span>
+                                                <span className="text-xs bg-[#2596be] text-white rounded px-2 py-0.5">
                                                     {stock.fabric_type}
-                                                </td>
-                                                <td className="px-4 py-2">
+                                                </span>
+                                            </div>
+                                            <div className="mb-1">
+                                                <span className="font-semibold text-xs text-gray-700 dark:text-gray-200">
+                                                    Color:{" "}
+                                                </span>
+                                                <span className="text-xs">
                                                     {stock.color}
-                                                </td>
-                                                <td className="px-4 py-2">
+                                                </span>
+                                            </div>
+                                            <div className="mb-1">
+                                                <span className="font-semibold text-xs text-gray-700 dark:text-gray-200">
+                                                    Location:{" "}
+                                                </span>
+                                                <span className="text-xs">
                                                     {stock.stock_location ||
                                                         "-"}
-                                                </td>
-                                                <td className="px-4 py-2">
-                                                    {stock.price_per_unit}
-                                                </td>
-                                                <td className="px-4 py-2">
+                                                </span>
+                                            </div>
+                                            <div className="mb-1">
+                                                <span className="font-semibold text-xs text-gray-700 dark:text-gray-200">
+                                                    Price:{" "}
+                                                </span>
+                                                <span className="text-xs">
+                                                    {stock.price_per_unit} MAD/m
+                                                </span>
+                                            </div>
+                                            <div className="mb-1">
+                                                <span className="font-semibold text-xs text-gray-700 dark:text-gray-200">
+                                                    Total Qty:{" "}
+                                                </span>
+                                                <span className="text-xs">
                                                     {stock.total_quantity}
-                                                </td>
-                                                <td className="px-4 py-2">
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span className="font-semibold text-xs text-gray-700 dark:text-gray-200">
+                                                    Available Qty:{" "}
+                                                </span>
+                                                <span className="text-xs">
                                                     {stock.available_quantity}
-                                                </td>
-                                            </tr>
-                                        ))
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
