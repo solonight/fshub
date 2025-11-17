@@ -324,6 +324,28 @@ export default function StockDashboard({ auth, fabricStocks }: any) {
                         )}
                     </div>
                 </div>
+
+                {/* Sales Records Section */}
+                <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
+                    <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
+                        Sales Records
+                    </h3>
+                    <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
+                        {/* TODO: Render sales records here */}
+                        Sales records content goes here.
+                    </div>
+                </div>
+
+                {/* Stock Histories Section */}
+                <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
+                    <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
+                        Stock Histories
+                    </h3>
+                    <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
+                        {/* TODO: Render stock histories here */}
+                        Stock histories content goes here.
+                    </div>
+                </div>
             </div>
         </AuthenticatedLayout>
     );
