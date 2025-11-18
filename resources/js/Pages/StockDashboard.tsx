@@ -8,7 +8,8 @@ const handleMarkAsPaid = (saleId: number) => {
         }
     );
 };
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 // @ts-ignore
 import InputMask from "react-input-mask";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
@@ -133,6 +134,27 @@ export default function StockDashboard({
                     setSelectedStockForSale(null);
                 },
             }
+        );
+    };
+
+    // Stock Histories State
+    const [stockHistories, setStockHistories] = useState<any>({});
+    const [expandedStockIds, setExpandedStockIds] = useState<number[]>([]);
+    const [loadingHistories, setLoadingHistories] = useState(false);
+    useEffect(() => {
+        setLoadingHistories(true);
+        axios
+            .get("/user-stock-histories")
+            .then((res) => {
+                setStockHistories(res.data);
+            })
+            .finally(() => setLoadingHistories(false));
+    }, []);
+    const toggleExpand = (stockId: number) => {
+        setExpandedStockIds((prev) =>
+            prev.includes(stockId)
+                ? prev.filter((id) => id !== stockId)
+                : [...prev, stockId]
         );
     };
 
@@ -872,10 +894,120 @@ export default function StockDashboard({
                     <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
                         Stock Histories
                     </h3>
-                    <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
-                        {/* TODO: Render stock histories here */}
-                        Stock histories content goes here.
-                    </div>
+                    {loadingHistories ? (
+                        <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
+                            Loading stock histories...
+                        </div>
+                    ) : stockHistories &&
+                      Object.keys(stockHistories).length > 0 ? (
+                        <div className="space-y-4">
+                            {Object.entries(stockHistories).map(
+                                ([stockId, histories]) => (
+                                    <div key={stockId}>
+                                        <button
+                                            className={`w-full text-left px-4 py-2 rounded font-semibold border border-primary bg-muted dark:bg-dark hover:bg-primary hover:text-white transition-colors ${
+                                                expandedStockIds.includes(
+                                                    Number(stockId)
+                                                )
+                                                    ? "bg-primary text-white"
+                                                    : ""
+                                            }`}
+                                            onClick={() =>
+                                                toggleExpand(Number(stockId))
+                                            }
+                                        >
+                                            Stock #{stockId} (
+                                            {Array.isArray(histories)
+                                                ? histories.length
+                                                : 0}{" "}
+                                            history record
+                                            {Array.isArray(histories) &&
+                                            histories.length > 1
+                                                ? "s"
+                                                : ""}
+                                            )
+                                        </button>
+                                        {expandedStockIds.includes(
+                                            Number(stockId)
+                                        ) &&
+                                            Array.isArray(histories) && (
+                                                <div className="pl-6 pt-2">
+                                                    {histories.map(
+                                                        (history: any) => (
+                                                            <div
+                                                                key={
+                                                                    history.history_id
+                                                                }
+                                                                className="mb-4 p-4 rounded border border-gray-300 bg-gray-50 dark:bg-[#232323]"
+                                                            >
+                                                                <div className="font-bold text-primary">
+                                                                    Change Type:{" "}
+                                                                    {
+                                                                        history.change_type
+                                                                    }
+                                                                </div>
+                                                                <div>
+                                                                    Quantity:{" "}
+                                                                    {
+                                                                        history.quantity
+                                                                    }
+                                                                </div>
+                                                                <div>
+                                                                    Notes:{" "}
+                                                                    {history.notes ||
+                                                                        "-"}
+                                                                </div>
+                                                                <div>
+                                                                    Reference
+                                                                    ID:{" "}
+                                                                    {history.reference_id ||
+                                                                        "-"}
+                                                                </div>
+                                                                <div>
+                                                                    Is Payed:{" "}
+                                                                    {history.is_payed
+                                                                        ? "Yes"
+                                                                        : "No"}
+                                                                </div>
+                                                                <div>
+                                                                    Fabric Type:{" "}
+                                                                    {history.fabric_type_snapshot ||
+                                                                        "-"}
+                                                                </div>
+                                                                <div>
+                                                                    Color:{" "}
+                                                                    {history.color_snapshot ||
+                                                                        "-"}
+                                                                </div>
+                                                                <div>
+                                                                    Price Per
+                                                                    Unit:{" "}
+                                                                    {history.price_per_unit_snapshot
+                                                                        ? `${history.price_per_unit_snapshot} MAD`
+                                                                        : "-"}
+                                                                </div>
+                                                                <div>
+                                                                    Date:{" "}
+                                                                    {history.created_at
+                                                                        ? new Date(
+                                                                              history.created_at
+                                                                          ).toLocaleString()
+                                                                        : "-"}
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    )}
+                                                </div>
+                                            )}
+                                    </div>
+                                )
+                            )}
+                        </div>
+                    ) : (
+                        <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
+                            No stock histories found.
+                        </div>
+                    )}
                 </div>
             </div>
         </AuthenticatedLayout>

@@ -10,6 +10,7 @@ use App\Http\Controllers\SaleRecordController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Http\Controllers\StockHistoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -102,6 +103,7 @@ Route::middleware(['auth', 'role:StockOwner'])->group(function () {
             'unpaidSales' => $unpaidSales,
         ]);
     })->name('stock.dashboard');
+    Route::get('/user-stock-histories', [StockHistoryController::class, 'userGroupedHistories'])->name('user.stock.histories');
 });
 
 Route::middleware(['auth', 'role:WarehouseProvider'])->group(function () {
