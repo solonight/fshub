@@ -1,3 +1,11 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+// @ts-ignore
+import InputMask from "react-input-mask";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head, useForm, router } from "@inertiajs/react";
+import { PageProps } from "@/types";
+
 // Handler to mark sale record as paid
 const handleMarkAsPaid = (saleId: number) => {
     router.patch(
@@ -8,14 +16,6 @@ const handleMarkAsPaid = (saleId: number) => {
         }
     );
 };
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-// @ts-ignore
-import InputMask from "react-input-mask";
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm, router } from "@inertiajs/react";
-import { PageProps } from "@/types";
-
 export default function StockDashboard({
     auth,
     fabricStocks,
@@ -367,6 +367,18 @@ export default function StockDashboard({
                                     </form>
                                 </div>
                             )}
+                        </div>
+                    </div>
+
+                    <div className="mt-6 sm:mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
+                        <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
+                            Stocks Tracking
+                        </h3>
+                        <div className="flex justify-center items-center">
+                            <p className="text-gray-500 dark:text-gray-300">
+                                Chart for tracking stocks will be displayed
+                                here.
+                            </p>
                         </div>
                     </div>
 
