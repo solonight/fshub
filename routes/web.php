@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Http\Controllers\StockHistoryController;
+use App\Http\Controllers\TransporterCardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -116,6 +117,7 @@ Route::middleware(['auth', 'role:Transporter'])->group(function () {
     Route::get('/transporter-dashboard', function () {
         return Inertia::render('TransporterDashboard');
     })->name('transporter.dashboard');
+    Route::post('/transporter-cards', [TransporterCardController::class, 'store'])->name('transporter-cards.store');
 });
 
 Route::middleware(['auth', 'role:customer'])->group(function () {

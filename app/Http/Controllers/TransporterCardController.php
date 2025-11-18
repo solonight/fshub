@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\TransporterCard;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class TransporterCardController extends Controller
 {
@@ -28,7 +29,13 @@ class TransporterCardController extends Controller
             'capacity' => 'required|integer',
             'serviceAreas' => 'required|string',
         ]);
-        return TransporterCard::create($validated);
+
+        $transporterCard = TransporterCard::create($validated);
+
+        return Inertia::render('TransporterDashboard', [
+            'successMessage' => 'Transporter card created successfully!',
+            'transporterCard' => $transporterCard,
+        ]);
     }
 
     // Update an existing transporter card
