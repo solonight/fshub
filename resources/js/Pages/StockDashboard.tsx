@@ -48,6 +48,7 @@ export default function StockDashboard({
         notes: "",
         sale_date: "",
     });
+    const [saleError, setSaleError] = useState<string | null>(null);
 
     // State for Update Stock form
     const [selectedStockForUpdate, setSelectedStockForUpdate] =
@@ -106,6 +107,8 @@ export default function StockDashboard({
 
     const handleSaleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+        setSaleError(null); // Reset error before submission
+
         // Prepare payload to match controller validation
         const payload = {
             stock_id: selectedStockForSale.stock_id,
@@ -132,6 +135,11 @@ export default function StockDashboard({
                         sale_date: "",
                     });
                     setSelectedStockForSale(null);
+                },
+                onError: (errors) => {
+                    if (errors.message) {
+                        setSaleError(errors.message);
+                    }
                 },
             }
         );
@@ -810,6 +818,12 @@ export default function StockDashboard({
                                     className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
                                 />
                             </div>
+                            {/* Display sale error message */}
+                            {saleError && (
+                                <div className="text-red-500 text-sm mt-2">
+                                    {saleError}
+                                </div>
+                            )}
                             <div className="flex gap-2">
                                 <button
                                     type="submit"

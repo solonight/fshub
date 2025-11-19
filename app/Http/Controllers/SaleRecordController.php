@@ -43,7 +43,9 @@ class SaleRecordController extends Controller
 
         $stock = \App\Models\FabricStock::findOrFail($validated['stock_id']);
         if ($stock->available_quantity < $validated['quantity_sold']) {
-            return response()->json(['message' => 'Not enough stock available'], 400);
+            return back()->withErrors([
+                'quantity_sold' => 'Not enough stock available',
+            ]);
         }
 
         // Set user_id: if authenticated, use their id; else use stock owner
