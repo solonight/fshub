@@ -7,7 +7,7 @@ export default function Guest({ children }: PropsWithChildren) {
         <div className="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-white dark:bg-[#1D1B1B] transition-colors duration-300">
             <div>
                 <Link href="/">
-                    <ApplicationLogo className="w-10 h-10" />
+                    <ApplicationLogo />
                 </Link>
             </div>
 

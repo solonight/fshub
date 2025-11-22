@@ -8,8 +8,8 @@ export default function ApplicationLogo(
         <img
             src={DashboardLogo}
             alt="Dashboard Logo"
-            width={props.width || 40}
-            height={props.height || 40}
+            width={props.width || 77}
+            height={props.height || 77}
             style={{ maxWidth: "100%", height: "auto", ...props.style }}
             {...props}
         />
