@@ -115,8 +115,16 @@ Route::middleware(['auth', 'role:WarehouseProvider'])->group(function () {
 
 Route::middleware(['auth', 'role:Transporter'])->group(function () {
     Route::get('/transporter-dashboard', function () {
-        return Inertia::render('TransporterDashboard');
+        $user = Auth::user();
+        $transporterCards = \App\Models\TransporterCard::where('user_id', $user->id)->orderByDesc('created_at')->get();
+        return Inertia::render('TransporterDashboard', [
+            'auth' => [
+                'user' => $user,
+            ],
+            'transporterCards' => $transporterCards,
+        ]);
     })->name('transporter.dashboard');
+    Route::get('/transporter-cards', [TransporterCardController::class, 'myCards'])->name('transporter-cards.index');
     Route::post('/transporter-cards', [TransporterCardController::class, 'store'])->name('transporter-cards.store');
 });
 

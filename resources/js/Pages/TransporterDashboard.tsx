@@ -3,7 +3,10 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 import { PageProps } from "@/types";
 
-export default function TransporterDashboard({ auth }: PageProps) {
+export default function TransporterDashboard({
+    auth,
+    transporterCards = [],
+}: any) {
     const [showForm, setShowForm] = useState(false);
     const { data, setData, post, processing, reset } = useForm({
         vehicleType: "",
@@ -58,10 +61,41 @@ export default function TransporterDashboard({ auth }: PageProps) {
                             My Cards
                         </h3>
                         <div className="bg-white dark:bg-[#232323] border border-[#2596be] rounded shadow p-4">
-                            {/* TODO: Render user's transporter cards here */}
-                            <p className="text-gray-600 dark:text-gray-300">
-                                You have no cards yet.
-                            </p>
+                            {transporterCards && transporterCards.length > 0 ? (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                                    {transporterCards.map((card: any) => (
+                                        <div
+                                            key={card.id}
+                                            className="bg-[#F5F5F5] dark:bg-[#1D1B1B] border border-[#2596be] rounded-lg p-4 shadow hover:shadow-lg transition-shadow flex flex-col"
+                                        >
+                                            <div className="font-bold text-[#2596be] dark:text-[#D9D9D9] mb-2">
+                                                {card.vehicleType}
+                                            </div>
+                                            <div className="text-sm text-[#1D1B1B] dark:text-[#D9D9D9]">
+                                                License Plate:{" "}
+                                                {card.licensePlate}
+                                            </div>
+                                            <div className="text-sm text-[#1D1B1B] dark:text-[#D9D9D9]">
+                                                Capacity: {card.capacity}
+                                            </div>
+                                            <div className="text-sm text-[#1D1B1B] dark:text-[#D9D9D9]">
+                                                Service Areas:{" "}
+                                                {card.serviceAreas}
+                                            </div>
+                                            <div className="text-xs text-gray-500 mt-2">
+                                                Created:{" "}
+                                                {new Date(
+                                                    card.created_at
+                                                ).toLocaleDateString()}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-gray-600 dark:text-gray-300">
+                                    You have no cards yet.
+                                </p>
+                            )}
                         </div>
                     </div>
                 </div>

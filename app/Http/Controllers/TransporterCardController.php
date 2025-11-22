@@ -8,6 +8,16 @@ use Inertia\Inertia;
 
 class TransporterCardController extends Controller
 {
+    // List transporter cards for the authenticated user
+    public function myCards()
+    {
+        $userId = auth()->id();
+        $cards = TransporterCard::where('user_id', $userId)->get();
+        return Inertia::render('TransporterDashboard', [
+            'auth' => auth()->user(),
+            'transporterCards' => $cards,
+        ]);
+    }
     // List all transporter cards
     public function index()
     {
