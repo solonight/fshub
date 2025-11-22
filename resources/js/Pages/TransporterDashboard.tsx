@@ -51,107 +51,118 @@ export default function TransporterDashboard({ auth }: PageProps) {
                         </button>
                     </div>
 
-                    {/* Form Modal */}
-                    {showForm && (
-                        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                            <div className="dark:bg-[#1D1B1B] bg-[#D9D9D9] p-6 rounded shadow-md w-96 border border-[#2596be]">
-                                <h3 className="text-lg font-semibold mb-4 dark:text-[#D9D9D9] text-[#1D1B1B]">
-                                    Create New Transporter Card
-                                </h3>
-                                <form onSubmit={handleSubmit}>
-                                    <div className="mb-4">
-                                        <label className="block text-sm font-medium mb-1 dark:text-[#D9D9D9] text-[#1D1B1B]">
-                                            Vehicle Type
-                                        </label>
-                                        <input
-                                            type="text"
-                                            name="vehicleType"
-                                            value={data.vehicleType}
-                                            onChange={(e) =>
-                                                setData(
-                                                    "vehicleType",
-                                                    e.target.value
-                                                )
-                                            }
-                                            className="w-full border rounded px-3 py-2 dark:bg-[#1D1B1B] bg-[#F5F5F5] dark:text-[#D9D9D9] text-[#1D1B1B]"
-                                            required
-                                        />
-                                    </div>
-                                    <div className="mb-4">
-                                        <label className="block text-sm font-medium mb-1 dark:text-[#D9D9D9] text-[#1D1B1B]">
-                                            License Plate
-                                        </label>
-                                        <input
-                                            type="text"
-                                            name="licensePlate"
-                                            value={data.licensePlate}
-                                            onChange={(e) =>
-                                                setData(
-                                                    "licensePlate",
-                                                    e.target.value
-                                                )
-                                            }
-                                            className="w-full border rounded px-3 py-2 dark:bg-[#1D1B1B] bg-[#F5F5F5] dark:text-[#D9D9D9] text-[#1D1B1B]"
-                                            required
-                                        />
-                                    </div>
-                                    <div className="mb-4">
-                                        <label className="block text-sm font-medium mb-1 dark:text-[#D9D9D9] text-[#1D1B1B]">
-                                            Capacity
-                                        </label>
-                                        <input
-                                            type="number"
-                                            name="capacity"
-                                            value={data.capacity}
-                                            onChange={(e) =>
-                                                setData(
-                                                    "capacity",
-                                                    e.target.value
-                                                )
-                                            }
-                                            className="w-full border rounded px-3 py-2 dark:bg-[#1D1B1B] bg-[#F5F5F5] dark:text-[#D9D9D9] text-[#1D1B1B]"
-                                            required
-                                        />
-                                    </div>
-                                    <div className="mb-4">
-                                        <label className="block text-sm font-medium mb-1 dark:text-[#D9D9D9] text-[#1D1B1B]">
-                                            Service Areas
-                                        </label>
-                                        <input
-                                            type="text"
-                                            name="serviceAreas"
-                                            value={data.serviceAreas}
-                                            onChange={(e) =>
-                                                setData(
-                                                    "serviceAreas",
-                                                    e.target.value
-                                                )
-                                            }
-                                            className="w-full border rounded px-3 py-2 dark:bg-[#1D1B1B] bg-[#F5F5F5] dark:text-[#D9D9D9] text-[#1D1B1B]"
-                                            required
-                                        />
-                                    </div>
-                                    <div className="flex justify-end">
-                                        <button
-                                            type="button"
-                                            onClick={() => setShowForm(false)}
-                                            className="px-4 py-2 mr-2 bg-gray-300 rounded hover:bg-gray-400 dark:bg-[#1D1B1B] dark:text-[#D9D9D9]"
-                                        >
-                                            Cancel
-                                        </button>
-                                        <button
-                                            type="submit"
-                                            className="px-4 py-2 bg-[#2596be] text-white rounded hover:bg-[#1d7a9e]"
-                                            disabled={processing}
-                                        >
-                                            Submit
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
+                    {/* My Cards Section */}
+                    {/* My Cards Section */}
+                    <div className="mt-10">
+                        <h3 className="text-lg font-semibold mb-4 dark:text-[#D9D9D9] text-[#1D1B1B]">
+                            My Cards
+                        </h3>
+                        <div className="bg-white dark:bg-[#232323] border border-[#2596be] rounded shadow p-4">
+                            {/* TODO: Render user's transporter cards here */}
+                            <p className="text-gray-600 dark:text-gray-300">
+                                You have no cards yet.
+                            </p>
                         </div>
-                    )}
+                    </div>
                 </div>
+
+                {/* Form Modal */}
+                {showForm && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                        <div className="dark:bg-[#1D1B1B] bg-[#D9D9D9] p-6 rounded shadow-md w-96 border border-[#2596be]">
+                            <h3 className="text-lg font-semibold mb-4 dark:text-[#D9D9D9] text-[#1D1B1B]">
+                                Create New Transporter Card
+                            </h3>
+                            <form onSubmit={handleSubmit}>
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium mb-1 dark:text-[#D9D9D9] text-[#1D1B1B]">
+                                        Vehicle Type
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="vehicleType"
+                                        value={data.vehicleType}
+                                        onChange={(e) =>
+                                            setData(
+                                                "vehicleType",
+                                                e.target.value
+                                            )
+                                        }
+                                        className="w-full border rounded px-3 py-2 dark:bg-[#1D1B1B] bg-[#F5F5F5] dark:text-[#D9D9D9] text-[#1D1B1B]"
+                                        required
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium mb-1 dark:text-[#D9D9D9] text-[#1D1B1B]">
+                                        License Plate
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="licensePlate"
+                                        value={data.licensePlate}
+                                        onChange={(e) =>
+                                            setData(
+                                                "licensePlate",
+                                                e.target.value
+                                            )
+                                        }
+                                        className="w-full border rounded px-3 py-2 dark:bg-[#1D1B1B] bg-[#F5F5F5] dark:text-[#D9D9D9] text-[#1D1B1B]"
+                                        required
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium mb-1 dark:text-[#D9D9D9] text-[#1D1B1B]">
+                                        Capacity
+                                    </label>
+                                    <input
+                                        type="number"
+                                        name="capacity"
+                                        value={data.capacity}
+                                        onChange={(e) =>
+                                            setData("capacity", e.target.value)
+                                        }
+                                        className="w-full border rounded px-3 py-2 dark:bg-[#1D1B1B] bg-[#F5F5F5] dark:text-[#D9D9D9] text-[#1D1B1B]"
+                                        required
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium mb-1 dark:text-[#D9D9D9] text-[#1D1B1B]">
+                                        Service Areas
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="serviceAreas"
+                                        value={data.serviceAreas}
+                                        onChange={(e) =>
+                                            setData(
+                                                "serviceAreas",
+                                                e.target.value
+                                            )
+                                        }
+                                        className="w-full border rounded px-3 py-2 dark:bg-[#1D1B1B] bg-[#F5F5F5] dark:text-[#D9D9D9] text-[#1D1B1B]"
+                                        required
+                                    />
+                                </div>
+                                <div className="flex justify-end">
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowForm(false)}
+                                        className="px-4 py-2 mr-2 bg-gray-300 rounded hover:bg-gray-400 dark:bg-[#1D1B1B] dark:text-[#D9D9D9]"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="px-4 py-2 bg-[#2596be] text-white rounded hover:bg-[#1d7a9e]"
+                                        disabled={processing}
+                                    >
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
             </div>
         </AuthenticatedLayout>
     );
