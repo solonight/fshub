@@ -14,5 +14,11 @@ class Warehouse extends Model
         'totalCapacity',
         'availableCapacity',
         'pricePerUnit',
+        'user_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

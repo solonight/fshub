@@ -30,6 +30,7 @@ class TransporterCardController extends Controller
             'serviceAreas' => 'required|string',
         ]);
 
+        $validated['user_id'] = auth()->id();
         $transporterCard = TransporterCard::create($validated);
 
         return Inertia::render('TransporterDashboard', [

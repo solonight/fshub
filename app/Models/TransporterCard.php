@@ -13,5 +13,11 @@ class TransporterCard extends Model
         'licensePlate',
         'capacity',
         'serviceAreas',
+        'user_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

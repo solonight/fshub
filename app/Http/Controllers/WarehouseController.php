@@ -29,6 +29,7 @@ class WarehouseController extends Controller
             'availableCapacity' => 'required|integer',
             'pricePerUnit' => 'required|numeric',
         ]);
+        $validated['user_id'] = auth()->id();
         return Warehouse::create($validated);
     }
 
