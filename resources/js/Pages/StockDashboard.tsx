@@ -388,28 +388,22 @@ export default function StockDashboard({
                                 <PieChart
                                     data={[
                                         {
-                                            id: "Cotton",
-                                            label: "Cotton",
-                                            value: 40,
-                                            color: "hsl(205, 70%, 50%)",
+                                            id: "Sold",
+                                            label: "Sold",
+                                            value: 40, // Replace with actual sold value
+                                            color: "#4CAF50", // green
                                         },
                                         {
-                                            id: "Linen",
-                                            label: "Linen",
-                                            value: 30,
-                                            color: "hsl(100, 70%, 50%)",
+                                            id: "Unpayed",
+                                            label: "Unpayed",
+                                            value: 20, // Replace with actual unpayed value
+                                            color: "#FF9800", // orange
                                         },
                                         {
-                                            id: "Wool",
-                                            label: "Wool",
-                                            value: 20,
-                                            color: "hsl(50, 70%, 50%)",
-                                        },
-                                        {
-                                            id: "Silk",
-                                            label: "Silk",
-                                            value: 10,
-                                            color: "hsl(10, 70%, 50%)",
+                                            id: "Instock",
+                                            label: "Instock",
+                                            value: 60, // Replace with actual instock value
+                                            color: "#2196F3", // blue
                                         },
                                     ]}
                                     height={400}
