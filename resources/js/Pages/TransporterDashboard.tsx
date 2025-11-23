@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, router } from "@inertiajs/react";
 import { PageProps } from "@/types";
+// @ts-ignore
+import InputMask from "react-input-mask";
 
 export default function TransporterDashboard({
     auth,
@@ -13,6 +15,7 @@ export default function TransporterDashboard({
         licensePlate: "",
         capacity: "",
         serviceAreas: "",
+        phone_number: "",
     });
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -89,6 +92,9 @@ export default function TransporterDashboard({
                                             <div className="text-sm text-[#1D1B1B] dark:text-[#D9D9D9]">
                                                 Service Areas:{" "}
                                                 {card.serviceAreas}
+                                            </div>
+                                            <div className="text-sm text-[#1D1B1B] dark:text-[#D9D9D9]">
+                                                Phone: {card.phone_number}
                                             </div>
                                             <div className="text-xs text-gray-500 mt-2">
                                                 Created:{" "}
@@ -201,6 +207,31 @@ export default function TransporterDashboard({
                                             )
                                         }
                                         className="w-full border rounded px-3 py-2 dark:bg-[#1D1B1B] bg-[#F5F5F5] dark:text-[#D9D9D9] text-[#1D1B1B]"
+                                        required
+                                    />
+                                </div>
+                                <div className="mb-4">
+                                    <label className="block text-sm font-medium mb-1 dark:text-[#D9D9D9] text-[#1D1B1B]">
+                                        Phone Number
+                                    </label>
+                                    <InputMask
+                                        mask="+212 9 99 99 99 99"
+                                        maskChar={null}
+                                        id="phone_number"
+                                        name="phone_number"
+                                        type="tel"
+                                        value={data.phone_number}
+                                        className="w-full border rounded px-3 py-2 dark:bg-[#1D1B1B] bg-[#F5F5F5] dark:text-[#D9D9D9] text-[#1D1B1B]"
+                                        autoComplete="tel"
+                                        onChange={(
+                                            e: React.ChangeEvent<HTMLInputElement>
+                                        ) =>
+                                            setData(
+                                                "phone_number",
+                                                e.target.value
+                                            )
+                                        }
+                                        placeholder="+212 * ** ** ** **"
                                         required
                                     />
                                 </div>

@@ -38,14 +38,18 @@ class TransporterCardController extends Controller
             'licensePlate' => 'required|string',
             'capacity' => 'required|integer',
             'serviceAreas' => 'required|string',
+            'phone_number' => 'required|string',
         ]);
 
         $validated['user_id'] = auth()->id();
         $transporterCard = TransporterCard::create($validated);
 
+        $userId = auth()->id();
+        $cards = TransporterCard::where('user_id', $userId)->get();
         return Inertia::render('TransporterDashboard', [
             'successMessage' => 'Transporter card created successfully!',
-            'transporterCard' => $transporterCard,
+            'auth' => auth()->user(),
+            'transporterCards' => $cards,
         ]);
     }
 
@@ -58,9 +62,16 @@ class TransporterCardController extends Controller
             'licensePlate' => 'sometimes|string',
             'capacity' => 'sometimes|integer',
             'serviceAreas' => 'sometimes|string',
+            'phone_number' => 'sometimes|string',
         ]);
         $transporterCard->update($validated);
-        return $transporterCard;
+        $userId = auth()->id();
+        $cards = TransporterCard::where('user_id', $userId)->get();
+        return Inertia::render('TransporterDashboard', [
+            'successMessage' => 'Transporter card updated successfully!',
+            'auth' => auth()->user(),
+            'transporterCards' => $cards,
+        ]);
     }
 
     // Delete a transporter card

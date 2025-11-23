@@ -10,12 +10,13 @@ return new class extends Migration
     {
         Schema::create('transporter_cards', function (Blueprint $table) {
             $table->id();
-                $table->unsignedBigInteger('user_id');
-                $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('vehicleType');
             $table->string('licensePlate');
             $table->integer('capacity');
             $table->string('serviceAreas');
+            $table->string('phone_number');
             $table->timestamps();
         });
     }

@@ -9,11 +9,12 @@ class TransporterCard extends Model
     protected $table = 'transporter_cards';
 
     protected $fillable = [
-        'vehicleType',
-        'licensePlate',
-        'capacity',
-        'serviceAreas',
-        'user_id',
+           'vehicleType',
+           'licensePlate',
+           'capacity',
+           'serviceAreas',
+           'phone_number',
+           'user_id',
     ];
 
     public function user()
