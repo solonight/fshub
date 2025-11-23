@@ -10,7 +10,9 @@ export default function TransporterDashboard({
     transporterCards = [],
 }: any) {
     const [showForm, setShowForm] = useState(false);
-    const { data, setData, post, processing, reset } = useForm({
+    const [editMode, setEditMode] = useState(false);
+    const [editCardId, setEditCardId] = useState<number | null>(null);
+    const { data, setData, post, patch, processing, reset } = useForm({
         vehicleType: "",
         licensePlate: "",
         capacity: "",
@@ -18,14 +20,45 @@ export default function TransporterDashboard({
         phone_number: "",
     });
 
+    const openCreateForm = () => {
+        reset();
+        setEditMode(false);
+        setEditCardId(null);
+        setShowForm(true);
+    };
+
+    const openEditForm = (card: any) => {
+        setData({
+            vehicleType: card.vehicleType || "",
+            licensePlate: card.licensePlate || "",
+            capacity: card.capacity || "",
+            serviceAreas: card.serviceAreas || "",
+            phone_number: card.phone_number || "",
+        });
+        setEditMode(true);
+        setEditCardId(card.id);
+        setShowForm(true);
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(route("transporter-cards.store"), {
-            onSuccess: () => {
-                reset();
-                setShowForm(false);
-            },
-        });
+        if (editMode && editCardId !== null) {
+            patch(route("transporter-cards.update", editCardId), {
+                onSuccess: () => {
+                    reset();
+                    setShowForm(false);
+                    setEditMode(false);
+                    setEditCardId(null);
+                },
+            });
+        } else {
+            post(route("transporter-cards.store"), {
+                onSuccess: () => {
+                    reset();
+                    setShowForm(false);
+                },
+            });
+        }
     };
 
     const handleDelete = (cardId: number) => {
@@ -58,7 +91,7 @@ export default function TransporterDashboard({
                     {/* Add New Card Button */}
                     <div className="mt-6">
                         <button
-                            onClick={() => setShowForm(true)}
+                            onClick={openCreateForm}
                             className="px-4 py-2 bg-[#2596be] text-white rounded hover:bg-[#1d7a9e]"
                         >
                             Add New Card
@@ -105,10 +138,9 @@ export default function TransporterDashboard({
                                             <div className="mt-auto flex flex-col gap-2">
                                                 <button
                                                     className="w-full px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-                                                    // TODO: Add update logic here
-                                                    onClick={() => {
-                                                        /* handleUpdate(card.id) */
-                                                    }}
+                                                    onClick={() =>
+                                                        openEditForm(card)
+                                                    }
                                                 >
                                                     Update
                                                 </button>
@@ -138,7 +170,9 @@ export default function TransporterDashboard({
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                         <div className="dark:bg-[#1D1B1B] bg-[#D9D9D9] p-6 rounded shadow-md w-96 border border-[#2596be]">
                             <h3 className="text-lg font-semibold mb-4 dark:text-[#D9D9D9] text-[#1D1B1B]">
-                                Create New Transporter Card
+                                {editMode
+                                    ? "Update Transporter Card"
+                                    : "Create New Transporter Card"}
                             </h3>
                             <form onSubmit={handleSubmit}>
                                 <div className="mb-4">
