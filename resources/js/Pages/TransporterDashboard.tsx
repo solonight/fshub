@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, useForm, router } from "@inertiajs/react";
 import { PageProps } from "@/types";
 
 export default function TransporterDashboard({
@@ -21,6 +21,14 @@ export default function TransporterDashboard({
             onSuccess: () => {
                 reset();
                 setShowForm(false);
+            },
+        });
+    };
+
+    const handleDelete = (cardId: number) => {
+        router.delete(route("transporter-cards.destroy", cardId), {
+            onSuccess: () => {
+                // Optionally, you can add a notification or refresh logic here
             },
         });
     };
@@ -66,7 +74,7 @@ export default function TransporterDashboard({
                                     {transporterCards.map((card: any) => (
                                         <div
                                             key={card.id}
-                                            className="bg-[#F5F5F5] dark:bg-[#1D1B1B] border border-[#2596be] rounded-lg p-4 shadow hover:shadow-lg transition-shadow flex flex-col"
+                                            className="bg-[#F5F5F5] dark:bg-[#1D1B1B] border border-[#2596be] rounded-lg p-4 shadow hover:shadow-lg transition-shadow flex flex-col h-full"
                                         >
                                             <div className="font-bold text-[#2596be] dark:text-[#D9D9D9] mb-2">
                                                 {card.vehicleType}
@@ -87,6 +95,25 @@ export default function TransporterDashboard({
                                                 {new Date(
                                                     card.created_at
                                                 ).toLocaleDateString()}
+                                            </div>
+                                            <div className="mt-auto flex flex-col gap-2">
+                                                <button
+                                                    className="w-full px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                                                    // TODO: Add update logic here
+                                                    onClick={() => {
+                                                        /* handleUpdate(card.id) */
+                                                    }}
+                                                >
+                                                    Update
+                                                </button>
+                                                <button
+                                                    className="w-full px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                                                    onClick={() =>
+                                                        handleDelete(card.id)
+                                                    }
+                                                >
+                                                    Delete
+                                                </button>
                                             </div>
                                         </div>
                                     ))}
