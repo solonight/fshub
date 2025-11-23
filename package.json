@@ -25,6 +25,7 @@
     },
     "dependencies": {
         "@fontsource/momo-trust-display": "^5.2.1",
+        "@nivo/pie": "^0.99.0",
         "lucide": "^0.553.0",
         "lucide-react": "^0.553.0",
         "react-input-mask": "^2.0.4"

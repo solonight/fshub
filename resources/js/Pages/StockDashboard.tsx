@@ -4,6 +4,7 @@ import axios from "axios";
 import InputMask from "react-input-mask";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, router } from "@inertiajs/react";
+import PieChart, { PieChartData } from "@/Components/PieChart";
 import { PageProps } from "@/types";
 
 // Handler to mark sale record as paid
@@ -382,11 +383,39 @@ export default function StockDashboard({
                         <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
                             Stocks Tracking
                         </h3>
-                        <div className="flex justify-center items-center">
-                            <p className="text-gray-500 dark:text-gray-300">
-                                Chart for tracking stocks will be displayed
-                                here.
-                            </p>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-center items-stretch">
+                            <div className="flex justify-center items-center w-full">
+                                <PieChart
+                                    data={[
+                                        {
+                                            id: "Cotton",
+                                            label: "Cotton",
+                                            value: 40,
+                                            color: "hsl(205, 70%, 50%)",
+                                        },
+                                        {
+                                            id: "Linen",
+                                            label: "Linen",
+                                            value: 30,
+                                            color: "hsl(100, 70%, 50%)",
+                                        },
+                                        {
+                                            id: "Wool",
+                                            label: "Wool",
+                                            value: 20,
+                                            color: "hsl(50, 70%, 50%)",
+                                        },
+                                        {
+                                            id: "Silk",
+                                            label: "Silk",
+                                            value: 10,
+                                            color: "hsl(10, 70%, 50%)",
+                                        },
+                                    ]}
+                                    height={400}
+                                />
+                            </div>
+                            <div className="flex justify-center items-center w-full"></div>
                         </div>
                     </div>
 
