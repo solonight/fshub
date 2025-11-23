@@ -68,6 +68,13 @@ class TransporterCardController extends Controller
     {
         $transporterCard = TransporterCard::findOrFail($id);
         $transporterCard->delete();
-        return response()->json(['message' => 'Deleted successfully']);
+        // Redirect back to the dashboard with updated cards
+        $userId = auth()->id();
+        $cards = TransporterCard::where('user_id', $userId)->get();
+        return Inertia::render('TransporterDashboard', [
+            'auth' => auth()->user(),
+            'transporterCards' => $cards,
+            'successMessage' => 'Deleted successfully',
+        ]);
     }
 }

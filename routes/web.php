@@ -114,6 +114,7 @@ Route::middleware(['auth', 'role:WarehouseProvider'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:Transporter'])->group(function () {
+        Route::delete('/transporter-cards/{id}', [TransporterCardController::class, 'destroy'])->name('transporter-cards.destroy');
     Route::get('/transporter-dashboard', function () {
         $user = Auth::user();
         $transporterCards = \App\Models\TransporterCard::where('user_id', $user->id)->orderByDesc('created_at')->get();
