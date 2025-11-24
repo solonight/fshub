@@ -5,6 +5,7 @@ import InputMask from "react-input-mask";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm, router } from "@inertiajs/react";
 import PieChart, { PieChartData } from "@/Components/PieChart";
+import AreaBumpChart from "@/Components/AreaBumpChart";
 import { PageProps } from "@/types";
 
 // Handler to mark sale record as paid
@@ -409,7 +410,49 @@ export default function StockDashboard({
                                     height={400}
                                 />
                             </div>
-                            <div className="flex justify-center items-center w-full"></div>
+                            <div className="flex justify-center items-center w-full">
+                                {/* AreaBumpChart added for Stocks Tracking */}
+                                <div
+                                    style={{
+                                        width: "100%",
+                                        maxWidth: 500,
+                                        height: 400,
+                                    }}
+                                    className="overflow-hidden"
+                                >
+                                    <AreaBumpChart
+                                        data={[
+                                            {
+                                                id: "Cotton",
+                                                data: [
+                                                    { x: "Jan", y: 10 },
+                                                    { x: "Feb", y: 20 },
+                                                    { x: "Mar", y: 15 },
+                                                    { x: "Apr", y: 25 },
+                                                ],
+                                            },
+                                            {
+                                                id: "Linen",
+                                                data: [
+                                                    { x: "Jan", y: 8 },
+                                                    { x: "Feb", y: 18 },
+                                                    { x: "Mar", y: 12 },
+                                                    { x: "Apr", y: 22 },
+                                                ],
+                                            },
+                                            {
+                                                id: "Wool",
+                                                data: [
+                                                    { x: "Jan", y: 5 },
+                                                    { x: "Feb", y: 10 },
+                                                    { x: "Mar", y: 8 },
+                                                    { x: "Apr", y: 12 },
+                                                ],
+                                            },
+                                        ]}
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
 
