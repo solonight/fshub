@@ -19,7 +19,7 @@ const PieChart: React.FC<PieChartProps> = ({ data, height = 400 }) => (
             height,
             width: "100%",
             maxWidth: 500,
-            background: "#232323", // match Stocks Tracking dark background
+            background: "transparent",
             borderRadius: 12,
             display: "flex",
             alignItems: "center",

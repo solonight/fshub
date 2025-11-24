@@ -44,7 +44,6 @@ class SaleRecord extends Model
     {
         return $this->hasMany(StockHistory::class, 'reference_id');
     }
-
     protected static function boot()
     {
         parent::boot();
@@ -56,20 +55,40 @@ class SaleRecord extends Model
                 $stock->available_quantity -= $saleRecord->quantity_sold;
                 $stock->save();
 
-                // Create StockHistory record
-                \App\Models\StockHistory::create([
-                    'stock_id' => $stock->stock_id,
-                    'user_id' => $saleRecord->user_id,
-                    'change_type' => 'SALE',
-                    'quantity' => -$saleRecord->quantity_sold,
-                    'notes' => $saleRecord->notes,
-                    'reference_id' => $saleRecord->record_id,
-                ]);
+                // Only create StockHistory if the sale is payed
+                if ($saleRecord->is_payed) {
+                    \App\Models\StockHistory::create([
+                        'stock_id' => $stock->stock_id,
+                        'user_id' => $saleRecord->user_id,
+                        'change_type' => 'SALE',
+                        'quantity' => -$saleRecord->quantity_sold,
+                        'notes' => $saleRecord->notes,
+                        'reference_id' => $saleRecord->record_id,
+                    ]);
+                }
 
                 // BEGINNER LOGIC: Auto-delete stock if needed
                 // Check if auto_delete is true and available_quantity is now 0 or less
                 if ($stock->shouldAutoDelete()) {
                     $stock->delete(); // This will soft-delete the stock (move to trash)
+                }
+            }
+        });
+
+        // When a sale record is updated, check if is_payed changed from false to true
+        static::updating(function ($saleRecord) {
+            // Only act if is_payed is being changed from false to true
+            if ($saleRecord->isDirty('is_payed') && $saleRecord->is_payed && !$saleRecord->getOriginal('is_payed')) {
+                $stock = $saleRecord->stock;
+                if ($stock) {
+                    \App\Models\StockHistory::create([
+                        'stock_id' => $stock->stock_id,
+                        'user_id' => $saleRecord->user_id,
+                        'change_type' => 'SALE',
+                        'quantity' => -$saleRecord->quantity_sold,
+                        'notes' => $saleRecord->notes,
+                        'reference_id' => $saleRecord->record_id,
+                    ]);
                 }
             }
         });
