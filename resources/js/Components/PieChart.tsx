@@ -19,9 +19,8 @@ const PieChart: React.FC<PieChartProps> = ({ data, height = 400 }) => (
             height,
             width: "100%",
             maxWidth: 500,
-            background: "#fff",
+            background: "#232323", // match Stocks Tracking dark background
             borderRadius: 12,
-            boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -39,13 +38,26 @@ const PieChart: React.FC<PieChartProps> = ({ data, height = 400 }) => (
                 borderWidth={1}
                 borderColor={{ from: "color", modifiers: [["darker", 0.2]] }}
                 arcLinkLabelsSkipAngle={10}
-                arcLinkLabelsTextColor="#333333"
+                arcLinkLabelsTextColor="#D9D9D9" // light text for dark bg
                 arcLinkLabelsThickness={2}
                 arcLinkLabelsColor={{ from: "color" }}
                 arcLabelsSkipAngle={10}
                 arcLabelsTextColor={{
                     from: "color",
-                    modifiers: [["darker", 2]],
+                    modifiers: [["brighter", 2]], // make text lighter
+                }}
+                theme={{
+                    labels: {
+                        text: {
+                            fill: "#D9D9D9", // light text for dark bg
+                        },
+                    },
+                    tooltip: {
+                        container: {
+                            background: "#232323",
+                            color: "#D9D9D9",
+                        },
+                    },
                 }}
             />
         </div>

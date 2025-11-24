@@ -388,22 +388,22 @@ export default function StockDashboard({
                                 <PieChart
                                     data={[
                                         {
-                                            id: "Sold",
-                                            label: "Sold",
+                                            id: "Instock",
+                                            label: "Instock",
                                             value: 40, // Replace with actual sold value
-                                            color: "#4CAF50", // green
+                                            color: "#2196F3", // green
                                         },
                                         {
                                             id: "Unpayed",
                                             label: "Unpayed",
                                             value: 20, // Replace with actual unpayed value
-                                            color: "#FF9800", // orange
+                                            color: "#FF2D2D", // red
                                         },
                                         {
-                                            id: "Instock",
-                                            label: "Instock",
+                                            id: "Sold",
+                                            label: "Sold",
                                             value: 60, // Replace with actual instock value
-                                            color: "#2196F3", // blue
+                                            color: "#4CAF50", // blue
                                         },
                                     ]}
                                     height={400}
