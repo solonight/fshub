@@ -64,6 +64,8 @@ class SaleRecord extends Model
                         'quantity' => -$saleRecord->quantity_sold,
                         'notes' => $saleRecord->notes,
                         'reference_id' => $saleRecord->record_id,
+                        'customer_name' => $saleRecord->customer_name,
+                        'customer_phone' => $saleRecord->customer_phone,
                     ]);
                 }
 
@@ -88,6 +90,8 @@ class SaleRecord extends Model
                         'quantity' => -$saleRecord->quantity_sold,
                         'notes' => $saleRecord->notes,
                         'reference_id' => $saleRecord->record_id,
+                        'customer_name' => $saleRecord->customer_name,
+                        'customer_phone' => $saleRecord->customer_phone,
                     ]);
                 }
             }

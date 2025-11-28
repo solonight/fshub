@@ -24,7 +24,9 @@ class StockHistory extends Model
         'fabric_type_snapshot',
         'color_snapshot',
         'price_per_unit_snapshot',
-        'is_payed'
+        'is_payed',
+        'customer_name',
+        'customer_phone',
     ];
 
     protected $casts = [
