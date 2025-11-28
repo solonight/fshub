@@ -1062,6 +1062,18 @@ export default function StockDashboard({
                                                                         : "No"}
                                                                 </div>
                                                                 <div>
+                                                                    Customer
+                                                                    Name:{" "}
+                                                                    {history.customer_name ||
+                                                                        "-"}
+                                                                </div>
+                                                                <div>
+                                                                    Customer
+                                                                    Phone:{" "}
+                                                                    {history.customer_phone ||
+                                                                        "-"}
+                                                                </div>
+                                                                <div>
                                                                     Fabric Type:{" "}
                                                                     {history.fabric_type_snapshot ||
                                                                         "-"}
