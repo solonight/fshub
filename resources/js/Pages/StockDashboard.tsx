@@ -380,7 +380,16 @@ export default function StockDashboard({
                         </div>
                     </div>
 
-                    <div className="mt-6 sm:mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
+                    {/* Choose Your Chart Button above Stock Tracking */}
+                    <div className="flex justify-center mt-6 sm:mt-8 w-full">
+                        <button
+                            type="button"
+                            className="w-full sm:w-auto px-4 py-2 bg-[#2596be] text-white rounded hover:bg-[#1d7a9e] font-semibold shadow text-center"
+                        >
+                            Switch Your Chart
+                        </button>
+                    </div>
+                    <div className="mt-4 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
                         <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
                             Stocks Tracking
                         </h3>
