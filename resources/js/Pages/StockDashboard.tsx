@@ -458,7 +458,7 @@ export default function StockDashboard({
                                     <div
                                         style={{
                                             width: "100%",
-                                            maxWidth: 500,
+                                            maxWidth: "100%",
                                             height: 400,
                                         }}
                                         className="overflow-hidden"
