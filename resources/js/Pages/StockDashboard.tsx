@@ -393,7 +393,7 @@ export default function StockDashboard({
                         <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
                             Stocks Tracking
                         </h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-center items-stretch">
+                        <div className="flex justify-center items-stretch">
                             <div className="flex justify-center items-center w-full">
                                 <PieChart
                                     data={[
@@ -419,49 +419,7 @@ export default function StockDashboard({
                                     height={400}
                                 />
                             </div>
-                            <div className="flex justify-center items-center w-full">
-                                {/* AreaBumpChart added for Stocks Tracking */}
-                                <div
-                                    style={{
-                                        width: "100%",
-                                        maxWidth: 500,
-                                        height: 400,
-                                    }}
-                                    className="overflow-hidden"
-                                >
-                                    <AreaBumpChart
-                                        data={[
-                                            {
-                                                id: "Cotton",
-                                                data: [
-                                                    { x: "Jan", y: 10 },
-                                                    { x: "Feb", y: 20 },
-                                                    { x: "Mar", y: 15 },
-                                                    { x: "Apr", y: 25 },
-                                                ],
-                                            },
-                                            {
-                                                id: "Linen",
-                                                data: [
-                                                    { x: "Jan", y: 8 },
-                                                    { x: "Feb", y: 18 },
-                                                    { x: "Mar", y: 12 },
-                                                    { x: "Apr", y: 22 },
-                                                ],
-                                            },
-                                            {
-                                                id: "Wool",
-                                                data: [
-                                                    { x: "Jan", y: 5 },
-                                                    { x: "Feb", y: 10 },
-                                                    { x: "Mar", y: 8 },
-                                                    { x: "Apr", y: 12 },
-                                                ],
-                                            },
-                                        ]}
-                                    />
-                                </div>
-                            </div>
+                            {/* AreaBumpChart removed as requested */}
                         </div>
                     </div>
 
