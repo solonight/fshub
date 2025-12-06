@@ -168,6 +168,40 @@ export default function StockDashboard({
         );
     };
 
+    // State to toggle chart type
+    const [showPieChart, setShowPieChart] = useState(true);
+
+    // AreaBumpChart sample data
+    const areaBumpData = [
+        {
+            id: "Cotton",
+            data: [
+                { x: "Jan", y: 10 },
+                { x: "Feb", y: 20 },
+                { x: "Mar", y: 15 },
+                { x: "Apr", y: 25 },
+            ],
+        },
+        {
+            id: "Linen",
+            data: [
+                { x: "Jan", y: 8 },
+                { x: "Feb", y: 18 },
+                { x: "Mar", y: 12 },
+                { x: "Apr", y: 22 },
+            ],
+        },
+        {
+            id: "Wool",
+            data: [
+                { x: "Jan", y: 5 },
+                { x: "Feb", y: 10 },
+                { x: "Mar", y: 8 },
+                { x: "Apr", y: 12 },
+            ],
+        },
+    ];
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -385,6 +419,7 @@ export default function StockDashboard({
                         <button
                             type="button"
                             className="w-full sm:w-auto px-4 py-2 bg-[#2596be] text-white rounded hover:bg-[#1d7a9e] font-semibold shadow text-center"
+                            onClick={() => setShowPieChart((prev) => !prev)}
                         >
                             Switch Your Chart
                         </button>
@@ -395,31 +430,43 @@ export default function StockDashboard({
                         </h3>
                         <div className="flex justify-center items-stretch">
                             <div className="flex justify-center items-center w-full">
-                                <PieChart
-                                    data={[
-                                        {
-                                            id: "Instock",
-                                            label: "Instock",
-                                            value: 40, // Replace with actual sold value
-                                            color: "#2196F3", // green
-                                        },
-                                        {
-                                            id: "Unpayed",
-                                            label: "Unpayed",
-                                            value: 20, // Replace with actual unpayed value
-                                            color: "#FF2D2D", // red
-                                        },
-                                        {
-                                            id: "Sold",
-                                            label: "Sold",
-                                            value: 60, // Replace with actual instock value
-                                            color: "#4CAF50", // blue
-                                        },
-                                    ]}
-                                    height={400}
-                                />
+                                {showPieChart ? (
+                                    <PieChart
+                                        data={[
+                                            {
+                                                id: "Instock",
+                                                label: "Instock",
+                                                value: 40, // Replace with actual sold value
+                                                color: "#2196F3", // green
+                                            },
+                                            {
+                                                id: "Unpayed",
+                                                label: "Unpayed",
+                                                value: 20, // Replace with actual unpayed value
+                                                color: "#FF2D2D", // red
+                                            },
+                                            {
+                                                id: "Sold",
+                                                label: "Sold",
+                                                value: 60, // Replace with actual instock value
+                                                color: "#4CAF50", // blue
+                                            },
+                                        ]}
+                                        height={400}
+                                    />
+                                ) : (
+                                    <div
+                                        style={{
+                                            width: "100%",
+                                            maxWidth: 500,
+                                            height: 400,
+                                        }}
+                                        className="overflow-hidden"
+                                    >
+                                        <AreaBumpChart data={areaBumpData} />
+                                    </div>
+                                )}
                             </div>
-                            {/* AreaBumpChart removed as requested */}
                         </div>
                     </div>
 
