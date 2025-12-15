@@ -2,10 +2,10 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 
 export default function Marketplace({ auth, fabricStocks }: any) {
-
     const stocks = fabricStocks?.data || [];
-    return (
-        <AuthenticatedLayout user={auth.user}>
+
+    const content = (
+        <>
             <Head title="Marketplace" />
             <div className="flex flex-col items-center min-h-[60vh] w-full px-2 md:px-8">
                 <div className="flex flex-col items-center mt-8">
@@ -108,6 +108,16 @@ export default function Marketplace({ auth, fabricStocks }: any) {
                     )}
                 </div>
             </div>
-        </AuthenticatedLayout>
+        </>
     );
+
+    if (auth?.user) {
+        return (
+            <AuthenticatedLayout user={auth.user}>
+                {content}
+            </AuthenticatedLayout>
+        );
+    }
+
+    return content;
 }

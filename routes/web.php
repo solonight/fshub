@@ -71,7 +71,7 @@ Route::get('/marketplace', function () {
     return Inertia::render('Marketplace', [
         'fabricStocks' => $fabricStocks,
     ]);
-})->middleware(['auth', 'verified'])->name('marketplace');
+})->name('marketplace');
 
 // Services page route for sidebar nav items
 Route::get('/services', function () {
