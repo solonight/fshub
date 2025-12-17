@@ -573,6 +573,213 @@ export default function StockDashboard({
                             </div>
                         )}
                     </div>
+                    {/* Sales Records Section */}
+                    <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
+                        <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
+                            Unpaid Sales Records
+                        </h3>
+                        {unpaidSales && unpaidSales.length > 0 ? (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                                {unpaidSales.map((sale: any) => (
+                                    <div
+                                        key={sale.record_id}
+                                        className="bg-white dark:bg-[#232323] text-black dark:text-white rounded-lg p-4 border-2 border-red-400 shadow-lg hover:shadow-2xl hover:border-red-600 transition-all duration-200 flex flex-col"
+                                    >
+                                        <div className="mb-2">
+                                            <span className="font-semibold">
+                                                Customer:
+                                            </span>{" "}
+                                            {sale.customer_name}
+                                        </div>
+                                        <div className="mb-2">
+                                            <span className="font-semibold">
+                                                Phone:
+                                            </span>{" "}
+                                            {sale.customer_phone}
+                                        </div>
+                                        <div className="mb-2">
+                                            <span className="font-semibold">
+                                                Quantity Sold:
+                                            </span>{" "}
+                                            {sale.quantity_sold}
+                                        </div>
+                                        <div className="mb-2">
+                                            <span className="font-semibold">
+                                                Total Amount:
+                                            </span>
+                                            <span className="bg-red-500 text-white px-2 py-1 rounded ml-2">
+                                                {sale.total_amount} MAD
+                                            </span>
+                                        </div>
+                                        <div className="mb-2">
+                                            <span className="font-semibold">
+                                                Sale Date:
+                                            </span>{" "}
+                                            {sale.sale_date
+                                                ? sale.sale_date.split("T")[0]
+                                                : ""}
+                                        </div>
+                                        <div className="mb-2">
+                                            <span className="font-semibold">
+                                                Notes:
+                                            </span>{" "}
+                                            {sale.notes}
+                                        </div>
+                                        <button
+                                            className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors font-bold"
+                                            onClick={() =>
+                                                handleMarkAsPaid(sale.record_id)
+                                            }
+                                        >
+                                            Is Payed
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
+                                No unpaid sales records found.
+                            </div>
+                        )}
+                    </div>
+                    {/* Stock Histories Section */}
+                    <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
+                        <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
+                            Stock Histories
+                        </h3>
+                        {loadingHistories ? (
+                            <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
+                                Loading stock histories...
+                            </div>
+                        ) : stockHistories &&
+                          Object.keys(stockHistories).length > 0 ? (
+                            <div className="space-y-4">
+                                {Object.entries(stockHistories).map(
+                                    ([stockId, histories]) => (
+                                        <div key={stockId}>
+                                            <button
+                                                className={`w-full text-left px-4 py-2 rounded font-semibold border border-primary bg-muted dark:bg-dark hover:bg-primary hover:text-white transition-colors ${
+                                                    expandedStockIds.includes(
+                                                        Number(stockId)
+                                                    )
+                                                        ? "bg-primary text-white"
+                                                        : ""
+                                                }`}
+                                                onClick={() =>
+                                                    toggleExpand(
+                                                        Number(stockId)
+                                                    )
+                                                }
+                                            >
+                                                Stock #{stockId} (
+                                                {Array.isArray(histories)
+                                                    ? histories.length
+                                                    : 0}{" "}
+                                                history record
+                                                {Array.isArray(histories) &&
+                                                histories.length > 1
+                                                    ? "s"
+                                                    : ""}
+                                                )
+                                            </button>
+                                            {expandedStockIds.includes(
+                                                Number(stockId)
+                                            ) &&
+                                                Array.isArray(histories) && (
+                                                    <div className="pl-6 pt-2">
+                                                        {histories.map(
+                                                            (history: any) => (
+                                                                <div
+                                                                    key={
+                                                                        history.history_id
+                                                                    }
+                                                                    className="mb-4 p-4 rounded border border-gray-300 bg-gray-50 dark:bg-[#232323]"
+                                                                >
+                                                                    <div className="font-bold text-primary">
+                                                                        Change
+                                                                        Type:{" "}
+                                                                        {
+                                                                            history.change_type
+                                                                        }
+                                                                    </div>
+                                                                    <div>
+                                                                        Quantity:{" "}
+                                                                        {
+                                                                            history.quantity
+                                                                        }
+                                                                    </div>
+                                                                    <div>
+                                                                        Notes:{" "}
+                                                                        {history.notes ||
+                                                                            "-"}
+                                                                    </div>
+                                                                    <div>
+                                                                        Reference
+                                                                        ID:{" "}
+                                                                        {history.reference_id ||
+                                                                            "-"}
+                                                                    </div>
+                                                                    <div>
+                                                                        Is
+                                                                        Payed:{" "}
+                                                                        {history.is_payed
+                                                                            ? "Yes"
+                                                                            : "No"}
+                                                                    </div>
+                                                                    <div>
+                                                                        Customer
+                                                                        Name:{" "}
+                                                                        {history.customer_name ||
+                                                                            "-"}
+                                                                    </div>
+                                                                    <div>
+                                                                        Customer
+                                                                        Phone:{" "}
+                                                                        {history.customer_phone ||
+                                                                            "-"}
+                                                                    </div>
+                                                                    <div>
+                                                                        Fabric
+                                                                        Type:{" "}
+                                                                        {history.fabric_type_snapshot ||
+                                                                            "-"}
+                                                                    </div>
+                                                                    <div>
+                                                                        Color:{" "}
+                                                                        {history.color_snapshot ||
+                                                                            "-"}
+                                                                    </div>
+                                                                    <div>
+                                                                        Price
+                                                                        Per
+                                                                        Unit:{" "}
+                                                                        {history.price_per_unit_snapshot
+                                                                            ? `${history.price_per_unit_snapshot} MAD`
+                                                                            : "-"}
+                                                                    </div>
+                                                                    <div>
+                                                                        Date:{" "}
+                                                                        {history.created_at
+                                                                            ? new Date(
+                                                                                  history.created_at
+                                                                              ).toLocaleString()
+                                                                            : "-"}
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        )}
+                                                    </div>
+                                                )}
+                                        </div>
+                                    )
+                                )}
+                            </div>
+                        ) : (
+                            <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
+                                No stock histories found.
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 {/* Update Stock Form Section (appears below Manage Your Stocks) */}
@@ -924,209 +1131,6 @@ export default function StockDashboard({
                         </form>
                     </div>
                 )}
-
-                {/* Sales Records Section */}
-                <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
-                    <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
-                        Unpaid Sales Records
-                    </h3>
-                    {unpaidSales && unpaidSales.length > 0 ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                            {unpaidSales.map((sale: any) => (
-                                <div
-                                    key={sale.record_id}
-                                    className="bg-white dark:bg-[#232323] text-black dark:text-white rounded-lg p-4 border-2 border-red-400 shadow-lg hover:shadow-2xl hover:border-red-600 transition-all duration-200 flex flex-col"
-                                >
-                                    <div className="mb-2">
-                                        <span className="font-semibold">
-                                            Customer:
-                                        </span>{" "}
-                                        {sale.customer_name}
-                                    </div>
-                                    <div className="mb-2">
-                                        <span className="font-semibold">
-                                            Phone:
-                                        </span>{" "}
-                                        {sale.customer_phone}
-                                    </div>
-                                    <div className="mb-2">
-                                        <span className="font-semibold">
-                                            Quantity Sold:
-                                        </span>{" "}
-                                        {sale.quantity_sold}
-                                    </div>
-                                    <div className="mb-2">
-                                        <span className="font-semibold">
-                                            Total Amount:
-                                        </span>
-                                        <span className="bg-red-500 text-white px-2 py-1 rounded ml-2">
-                                            {sale.total_amount} MAD
-                                        </span>
-                                    </div>
-                                    <div className="mb-2">
-                                        <span className="font-semibold">
-                                            Sale Date:
-                                        </span>{" "}
-                                        {sale.sale_date
-                                            ? sale.sale_date.split("T")[0]
-                                            : ""}
-                                    </div>
-                                    <div className="mb-2">
-                                        <span className="font-semibold">
-                                            Notes:
-                                        </span>{" "}
-                                        {sale.notes}
-                                    </div>
-                                    <button
-                                        className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors font-bold"
-                                        onClick={() =>
-                                            handleMarkAsPaid(sale.record_id)
-                                        }
-                                    >
-                                        Is Payed
-                                    </button>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
-                            No unpaid sales records found.
-                        </div>
-                    )}
-                </div>
-
-                {/* Stock Histories Section */}
-                <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
-                    <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
-                        Stock Histories
-                    </h3>
-                    {loadingHistories ? (
-                        <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
-                            Loading stock histories...
-                        </div>
-                    ) : stockHistories &&
-                      Object.keys(stockHistories).length > 0 ? (
-                        <div className="space-y-4">
-                            {Object.entries(stockHistories).map(
-                                ([stockId, histories]) => (
-                                    <div key={stockId}>
-                                        <button
-                                            className={`w-full text-left px-4 py-2 rounded font-semibold border border-primary bg-muted dark:bg-dark hover:bg-primary hover:text-white transition-colors ${
-                                                expandedStockIds.includes(
-                                                    Number(stockId)
-                                                )
-                                                    ? "bg-primary text-white"
-                                                    : ""
-                                            }`}
-                                            onClick={() =>
-                                                toggleExpand(Number(stockId))
-                                            }
-                                        >
-                                            Stock #{stockId} (
-                                            {Array.isArray(histories)
-                                                ? histories.length
-                                                : 0}{" "}
-                                            history record
-                                            {Array.isArray(histories) &&
-                                            histories.length > 1
-                                                ? "s"
-                                                : ""}
-                                            )
-                                        </button>
-                                        {expandedStockIds.includes(
-                                            Number(stockId)
-                                        ) &&
-                                            Array.isArray(histories) && (
-                                                <div className="pl-6 pt-2">
-                                                    {histories.map(
-                                                        (history: any) => (
-                                                            <div
-                                                                key={
-                                                                    history.history_id
-                                                                }
-                                                                className="mb-4 p-4 rounded border border-gray-300 bg-gray-50 dark:bg-[#232323]"
-                                                            >
-                                                                <div className="font-bold text-primary">
-                                                                    Change Type:{" "}
-                                                                    {
-                                                                        history.change_type
-                                                                    }
-                                                                </div>
-                                                                <div>
-                                                                    Quantity:{" "}
-                                                                    {
-                                                                        history.quantity
-                                                                    }
-                                                                </div>
-                                                                <div>
-                                                                    Notes:{" "}
-                                                                    {history.notes ||
-                                                                        "-"}
-                                                                </div>
-                                                                <div>
-                                                                    Reference
-                                                                    ID:{" "}
-                                                                    {history.reference_id ||
-                                                                        "-"}
-                                                                </div>
-                                                                <div>
-                                                                    Is Payed:{" "}
-                                                                    {history.is_payed
-                                                                        ? "Yes"
-                                                                        : "No"}
-                                                                </div>
-                                                                <div>
-                                                                    Customer
-                                                                    Name:{" "}
-                                                                    {history.customer_name ||
-                                                                        "-"}
-                                                                </div>
-                                                                <div>
-                                                                    Customer
-                                                                    Phone:{" "}
-                                                                    {history.customer_phone ||
-                                                                        "-"}
-                                                                </div>
-                                                                <div>
-                                                                    Fabric Type:{" "}
-                                                                    {history.fabric_type_snapshot ||
-                                                                        "-"}
-                                                                </div>
-                                                                <div>
-                                                                    Color:{" "}
-                                                                    {history.color_snapshot ||
-                                                                        "-"}
-                                                                </div>
-                                                                <div>
-                                                                    Price Per
-                                                                    Unit:{" "}
-                                                                    {history.price_per_unit_snapshot
-                                                                        ? `${history.price_per_unit_snapshot} MAD`
-                                                                        : "-"}
-                                                                </div>
-                                                                <div>
-                                                                    Date:{" "}
-                                                                    {history.created_at
-                                                                        ? new Date(
-                                                                              history.created_at
-                                                                          ).toLocaleString()
-                                                                        : "-"}
-                                                                </div>
-                                                            </div>
-                                                        )
-                                                    )}
-                                                </div>
-                                            )}
-                                    </div>
-                                )
-                            )}
-                        </div>
-                    ) : (
-                        <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
-                            No stock histories found.
-                        </div>
-                    )}
-                </div>
             </div>
         </AuthenticatedLayout>
     );
