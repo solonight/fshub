@@ -8,16 +8,6 @@ import PieChart, { PieChartData } from "@/Components/PieChart";
 import AreaBumpChart from "@/Components/AreaBumpChart";
 import { PageProps } from "@/types";
 
-// Handler to mark sale record as paid
-const handleMarkAsPaid = (saleId: number) => {
-    router.patch(
-        `/sales-records/${saleId}/pay`,
-        { is_payed: true },
-        {
-            preserveScroll: true,
-        }
-    );
-};
 export default function StockDashboard({
     auth,
     fabricStocks,
@@ -67,6 +57,26 @@ export default function StockDashboard({
         auto_delete: false,
         samples_availability: false,
     });
+
+    const [showConfirmPaid, setShowConfirmPaid] = useState(false);
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [selectedSaleId, setSelectedSaleId] = useState<number | null>(null);
+
+    // Handler to mark sale record as paid
+    const handleMarkAsPaid = (saleId: number, password: string) => {
+        router.patch(
+            `/sales-records/${saleId}/pay`,
+            { is_payed: true, password },
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    setShowConfirmPaid(false);
+                    setConfirmPassword('');
+                    setSelectedSaleId(null);
+                },
+            }
+        );
+    };
 
     // When a stock is selected for update, pre-fill the form
     const handleUpdateClick = (stock: any) => {
@@ -830,9 +840,10 @@ export default function StockDashboard({
                                         </div>
                                         <button
                                             className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors font-bold"
-                                            onClick={() =>
-                                                handleMarkAsPaid(sale.record_id)
-                                            }
+                                            onClick={() => {
+                                                setSelectedSaleId(sale.record_id);
+                                                setShowConfirmPaid(true);
+                                            }}
                                         >
                                             Is Payed
                                         </button>
@@ -1166,6 +1177,44 @@ export default function StockDashboard({
                                 </button>
                             </div>
                         </form>
+                    </div>
+                )}
+
+                {/* Confirmation Modal for Marking as Paid */}
+                {showConfirmPaid && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="bg-white dark:bg-[#232323] p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
+                            <h3 className="text-lg font-bold mb-4 text-center">Mark this record as payed</h3>
+                            <input
+                                type="password"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                placeholder="Enter your password"
+                                className="w-full border rounded px-2 py-2 mb-4 text-[#1D1B1B]"
+                            />
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => {
+                                        if (selectedSaleId) {
+                                            handleMarkAsPaid(selectedSaleId, confirmPassword);
+                                        }
+                                    }}
+                                    className="w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                                >
+                                    Confirm
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setShowConfirmPaid(false);
+                                        setConfirmPassword('');
+                                        setSelectedSaleId(null);
+                                    }}
+                                    className="w-full px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>
