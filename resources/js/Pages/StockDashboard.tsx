@@ -195,26 +195,26 @@ export default function StockDashboard({
     // Chart data shows categories with values > 0
     const chartData = [
         {
-            id: "Instock",
-            label: `Instock Value/MAD: ${Math.round(
+            id: `Instock: ${Math.round(
                 instockValue
-            ).toLocaleString("fr")}`,
+            ).toLocaleString("fr")} /MAD`,
+            label: "Instock",
             value: instockValue,
             color: "#2196F3",
         },
         {
-            id: "Unpayed",
-            label: `Unpaid Value/MAD: ${Math.round(unpaidAmount).toLocaleString(
+            id: `Unpaid: ${Math.round(unpaidAmount).toLocaleString(
                 "fr"
-            )}`,
+            )} /MAD`,
+            label: "Unpayed",
             value: unpaidAmount,
             color: "#FF2D2D",
         },
         {
-            id: "Sold",
-            label: `Sold Value/MAD: ${Math.round(paidAmount).toLocaleString(
+            id: `Sold: ${Math.round(paidAmount).toLocaleString(
                 "fr"
-            )}`,
+            )} /MAD`,
+            label: "Sold",
             value: paidAmount,
             color: "#4CAF50",
         },
