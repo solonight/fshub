@@ -22,6 +22,7 @@ export default function StockDashboard({
     auth,
     fabricStocks,
     unpaidSales,
+    paidSales,
 }: any) {
     // Delete handler for a stock
     const handleDelete = (stockId: number) => {
@@ -137,6 +138,7 @@ export default function StockDashboard({
                         sale_date: "",
                     });
                     setSelectedStockForSale(null);
+                    router.reload();
                 },
                 onError: (errors) => {
                     if (errors.message) {
@@ -167,6 +169,56 @@ export default function StockDashboard({
                 : [...prev, stockId]
         );
     };
+
+    // Calculate dynamic data for pie chart (amounts)
+    const instockValue =
+        fabricStocks?.data?.reduce(
+            (sum: number, stock: any) =>
+                sum +
+                (stock.available_quantity || 0) *
+                    (parseFloat(stock.price_per_unit) || 0),
+            0
+        ) || 0;
+    const unpaidAmount =
+        unpaidSales?.reduce(
+            (sum: number, sale: any) =>
+                sum + (parseFloat(sale.total_amount) || 0),
+            0
+        ) || 0;
+    const paidAmount =
+        paidSales?.reduce(
+            (sum: number, sale: any) =>
+                sum + (parseFloat(sale.total_amount) || 0),
+            0
+        ) || 0;
+
+    // Chart data shows categories with values > 0
+    const chartData = [
+        {
+            id: "Instock",
+            label: `Instock Value/MAD: ${Math.round(
+                instockValue
+            ).toLocaleString("fr")}`,
+            value: instockValue,
+            color: "#2196F3",
+        },
+        {
+            id: "Unpayed",
+            label: `Unpaid Value/MAD: ${Math.round(unpaidAmount).toLocaleString(
+                "fr"
+            )}`,
+            value: unpaidAmount,
+            color: "#FF2D2D",
+        },
+        {
+            id: "Sold",
+            label: `Sold Value/MAD: ${Math.round(paidAmount).toLocaleString(
+                "fr"
+            )}`,
+            value: paidAmount,
+            color: "#4CAF50",
+        },
+    ].filter((item) => item.value > 0);
 
     // State to toggle chart type
     const [showPieChart, setShowPieChart] = useState(true);
@@ -431,29 +483,7 @@ export default function StockDashboard({
                         <div className="flex justify-center items-stretch">
                             <div className="flex justify-center items-center w-full">
                                 {showPieChart ? (
-                                    <PieChart
-                                        data={[
-                                            {
-                                                id: "Instock",
-                                                label: "Instock",
-                                                value: 40, // Replace with actual sold value
-                                                color: "#2196F3", // green
-                                            },
-                                            {
-                                                id: "Unpayed",
-                                                label: "Unpayed",
-                                                value: 20, // Replace with actual unpayed value
-                                                color: "#FF2D2D", // red
-                                            },
-                                            {
-                                                id: "Sold",
-                                                label: "Sold",
-                                                value: 60, // Replace with actual instock value
-                                                color: "#4CAF50", // blue
-                                            },
-                                        ]}
-                                        height={400}
-                                    />
+                                    <PieChart data={chartData} height={400} />
                                 ) : (
                                     <div
                                         style={{
@@ -573,6 +603,176 @@ export default function StockDashboard({
                             </div>
                         )}
                     </div>
+                    {/* Add Sale Form Section (appears below Manage Your Stocks) */}
+                    {selectedStockForSale && (
+                        <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow w-full max-w-md mx-auto">
+                            <h3 className="text-base sm:text-lg font-bold text-green-600 mb-2 sm:mb-4 text-center">
+                                Add Sale for Stock #
+                                {selectedStockForSale.stock_id}
+                            </h3>
+                            <form
+                                onSubmit={handleSaleSubmit}
+                                className="space-y-4"
+                            >
+                                {/* customer_name */}
+                                <div>
+                                    <label className="block text-xs sm:text-sm font-medium">
+                                        Customer Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={saleForm.customer_name}
+                                        onChange={(e) =>
+                                            setSaleForm({
+                                                ...saleForm,
+                                                customer_name: e.target.value,
+                                            })
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
+                                        required
+                                    />
+                                </div>
+                                {/* customer_phone */}
+                                <div>
+                                    <label className="block text-xs sm:text-sm font-medium">
+                                        Customer Phone
+                                    </label>
+                                    <InputMask
+                                        mask="+212 9 99 99 99 99"
+                                        maskChar={null}
+                                        id="customer_phone"
+                                        name="customer_phone"
+                                        type="tel"
+                                        value={saleForm.customer_phone}
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
+                                        autoComplete="tel"
+                                        onChange={(
+                                            e: React.ChangeEvent<HTMLInputElement>
+                                        ) =>
+                                            setSaleForm({
+                                                ...saleForm,
+                                                customer_phone: e.target.value,
+                                            })
+                                        }
+                                        placeholder="+212 * ** ** ** **"
+                                    />
+                                </div>
+                                {/* quantity_sold */}
+                                <div>
+                                    <label className="block text-xs sm:text-sm font-medium">
+                                        Quantity Sold
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="0.01"
+                                        step="0.01"
+                                        value={saleForm.quantity_sold}
+                                        onChange={(e) =>
+                                            setSaleForm({
+                                                ...saleForm,
+                                                quantity_sold: e.target.value,
+                                            })
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
+                                        required
+                                    />
+                                </div>
+                                {/* total_amount */}
+                                <div>
+                                    <label className="block text-xs sm:text-sm font-medium">
+                                        Total Amount (MAD)
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        step="0.01"
+                                        value={saleForm.total_amount}
+                                        onChange={(e) =>
+                                            setSaleForm({
+                                                ...saleForm,
+                                                total_amount: e.target.value,
+                                            })
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
+                                        required
+                                    />
+                                </div>
+                                {/* is_payed */}
+                                <div className="flex items-center">
+                                    <input
+                                        type="checkbox"
+                                        checked={saleForm.is_payed}
+                                        onChange={(e) =>
+                                            setSaleForm({
+                                                ...saleForm,
+                                                is_payed: e.target.checked,
+                                            })
+                                        }
+                                        className="mr-2"
+                                    />
+                                    <label className="text-xs sm:text-sm">
+                                        Is Payed
+                                    </label>
+                                </div>
+                                {/* notes */}
+                                <div>
+                                    <label className="block text-xs sm:text-sm font-medium">
+                                        Notes
+                                    </label>
+                                    <textarea
+                                        value={saleForm.notes}
+                                        onChange={(e) =>
+                                            setSaleForm({
+                                                ...saleForm,
+                                                notes: e.target.value,
+                                            })
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
+                                    ></textarea>
+                                </div>
+                                {/* sale_date */}
+                                <div>
+                                    <label className="block text-xs sm:text-sm font-medium">
+                                        Sale Date
+                                    </label>
+                                    <input
+                                        type="date"
+                                        value={saleForm.sale_date}
+                                        onChange={(e) =>
+                                            setSaleForm({
+                                                ...saleForm,
+                                                sale_date: e.target.value,
+                                            })
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
+                                    />
+                                </div>
+                                {/* Display sale error message */}
+                                {saleError && (
+                                    <div className="text-red-500 text-sm mt-2">
+                                        {saleError}
+                                    </div>
+                                )}
+                                <div className="flex gap-2">
+                                    <button
+                                        type="submit"
+                                        className="w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                                    >
+                                        Submit Sale
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="w-full px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+                                        onClick={() =>
+                                            setSelectedStockForSale(null)
+                                        }
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    )}
                     {/* Sales Records Section */}
                     <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
                         <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
@@ -957,172 +1157,6 @@ export default function StockDashboard({
                                     className="w-full px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
                                     onClick={() =>
                                         setSelectedStockForUpdate(null)
-                                    }
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                )}
-                {/* Add Sale Form Section (appears below Manage Your Stocks) */}
-                {selectedStockForSale && (
-                    <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow w-full max-w-md mx-auto">
-                        <h3 className="text-base sm:text-lg font-bold text-green-600 mb-2 sm:mb-4 text-center">
-                            Add Sale for Stock #{selectedStockForSale.stock_id}
-                        </h3>
-                        <form onSubmit={handleSaleSubmit} className="space-y-4">
-                            {/* customer_name */}
-                            <div>
-                                <label className="block text-xs sm:text-sm font-medium">
-                                    Customer Name
-                                </label>
-                                <input
-                                    type="text"
-                                    value={saleForm.customer_name}
-                                    onChange={(e) =>
-                                        setSaleForm({
-                                            ...saleForm,
-                                            customer_name: e.target.value,
-                                        })
-                                    }
-                                    className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                    required
-                                />
-                            </div>
-                            {/* customer_phone */}
-                            <div>
-                                <label className="block text-xs sm:text-sm font-medium">
-                                    Customer Phone
-                                </label>
-                                <InputMask
-                                    mask="+212 9 99 99 99 99"
-                                    maskChar={null}
-                                    id="customer_phone"
-                                    name="customer_phone"
-                                    type="tel"
-                                    value={saleForm.customer_phone}
-                                    className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                    autoComplete="tel"
-                                    onChange={(
-                                        e: React.ChangeEvent<HTMLInputElement>
-                                    ) =>
-                                        setSaleForm({
-                                            ...saleForm,
-                                            customer_phone: e.target.value,
-                                        })
-                                    }
-                                    placeholder="+212 * ** ** ** **"
-                                />
-                            </div>
-                            {/* quantity_sold */}
-                            <div>
-                                <label className="block text-xs sm:text-sm font-medium">
-                                    Quantity Sold
-                                </label>
-                                <input
-                                    type="number"
-                                    min="0.01"
-                                    step="0.01"
-                                    value={saleForm.quantity_sold}
-                                    onChange={(e) =>
-                                        setSaleForm({
-                                            ...saleForm,
-                                            quantity_sold: e.target.value,
-                                        })
-                                    }
-                                    className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                    required
-                                />
-                            </div>
-                            {/* total_amount */}
-                            <div>
-                                <label className="block text-xs sm:text-sm font-medium">
-                                    Total Amount (MAD)
-                                </label>
-                                <input
-                                    type="number"
-                                    min="0"
-                                    step="0.01"
-                                    value={saleForm.total_amount}
-                                    onChange={(e) =>
-                                        setSaleForm({
-                                            ...saleForm,
-                                            total_amount: e.target.value,
-                                        })
-                                    }
-                                    className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                    required
-                                />
-                            </div>
-                            {/* is_payed */}
-                            <div className="flex items-center">
-                                <input
-                                    type="checkbox"
-                                    checked={saleForm.is_payed}
-                                    onChange={(e) =>
-                                        setSaleForm({
-                                            ...saleForm,
-                                            is_payed: e.target.checked,
-                                        })
-                                    }
-                                    className="mr-2"
-                                />
-                                <label className="text-xs sm:text-sm">
-                                    Is Payed
-                                </label>
-                            </div>
-                            {/* notes */}
-                            <div>
-                                <label className="block text-xs sm:text-sm font-medium">
-                                    Notes
-                                </label>
-                                <textarea
-                                    value={saleForm.notes}
-                                    onChange={(e) =>
-                                        setSaleForm({
-                                            ...saleForm,
-                                            notes: e.target.value,
-                                        })
-                                    }
-                                    className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                ></textarea>
-                            </div>
-                            {/* sale_date */}
-                            <div>
-                                <label className="block text-xs sm:text-sm font-medium">
-                                    Sale Date
-                                </label>
-                                <input
-                                    type="date"
-                                    value={saleForm.sale_date}
-                                    onChange={(e) =>
-                                        setSaleForm({
-                                            ...saleForm,
-                                            sale_date: e.target.value,
-                                        })
-                                    }
-                                    className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                />
-                            </div>
-                            {/* Display sale error message */}
-                            {saleError && (
-                                <div className="text-red-500 text-sm mt-2">
-                                    {saleError}
-                                </div>
-                            )}
-                            <div className="flex gap-2">
-                                <button
-                                    type="submit"
-                                    className="w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                                >
-                                    Submit Sale
-                                </button>
-                                <button
-                                    type="button"
-                                    className="w-full px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
-                                    onClick={() =>
-                                        setSelectedStockForSale(null)
                                     }
                                 >
                                     Cancel
