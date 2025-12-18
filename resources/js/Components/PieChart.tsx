@@ -18,7 +18,6 @@ const PieChart: React.FC<PieChartProps> = ({ data, height = 400 }) => (
         style={{
             height,
             width: "100%",
-            maxWidth: 500,
             background: "transparent",
             borderRadius: 12,
             display: "flex",
