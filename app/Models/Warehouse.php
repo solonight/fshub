@@ -13,8 +13,9 @@ class Warehouse extends Model
         'location',
         'totalCapacity',
         'availableCapacity',
-        'pricePerUnit',
+        'rental_price_per_day',
         'user_id',
+        'is_available_for_rent',
     ];
 
     public function user()

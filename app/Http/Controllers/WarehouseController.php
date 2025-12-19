@@ -27,7 +27,8 @@ class WarehouseController extends Controller
             'location' => 'required|string',
             'totalCapacity' => 'required|integer',
             'availableCapacity' => 'required|integer',
-            'pricePerUnit' => 'required|numeric',
+            'rental_price_per_day' => 'required|numeric',
+            'is_available_for_rent' => 'boolean',
         ]);
         $validated['user_id'] = auth()->id();
         return Warehouse::create($validated);
@@ -42,7 +43,8 @@ class WarehouseController extends Controller
             'location' => 'sometimes|string',
             'totalCapacity' => 'sometimes|integer',
             'availableCapacity' => 'sometimes|integer',
-            'pricePerUnit' => 'sometimes|numeric',
+            'rental_price_per_day' => 'sometimes|numeric',
+            'is_available_for_rent' => 'sometimes|boolean',
         ]);
         $warehouse->update($validated);
         return $warehouse;

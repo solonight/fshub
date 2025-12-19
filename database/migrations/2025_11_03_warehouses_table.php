@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('location');
             $table->integer('totalCapacity');
             $table->integer('availableCapacity');
-            $table->decimal('pricePerUnit', 10, 2);
+            $table->decimal('rental_price_per_day', 10, 2);
+            $table->boolean('is_available_for_rent')->default(false);
             $table->timestamps();
         });
     }
