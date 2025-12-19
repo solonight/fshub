@@ -44,7 +44,7 @@ export default function Sidebar({ children, user }: SidebarProps) {
     return (
         <div className="flex h-screen">
             <aside
-                className="w-20 md:w-56 text-[#D9D9D9] flex flex-col justify-between items-center py-6 shadow-lg fixed left-0 top-0 h-screen"
+                className="w-16 md:w-48 text-[#D9D9D9] flex flex-col justify-between items-center py-6 shadow-lg fixed left-0 top-0 h-screen"
                 style={{
                     backgroundImage: `url(${sidebarBg})`,
                     backgroundSize: "cover",
@@ -117,7 +117,7 @@ export default function Sidebar({ children, user }: SidebarProps) {
                     </Link>
                 </div>
             </aside>
-            <main className="flex-1 overflow-y-auto bg-white dark:bg-[#232323] ml-20 md:ml-56">
+            <main className="flex-1 overflow-y-auto bg-white dark:bg-[#232323] ml-16 md:ml-48">
                 {children}
             </main>
         </div>
