@@ -609,7 +609,15 @@ export default function StockDashboard({
                                                     Price:{" "}
                                                 </span>
                                                 <span className="text-xs">
-                                                    {stock.price_per_unit} MAD/m
+                                                    {Number(
+                                                        stock.price_per_unit
+                                                    )
+                                                        .toLocaleString("en-US")
+                                                        .replace(
+                                                            /,/g,
+                                                            "."
+                                                        )}{" "}
+                                                    MAD/m
                                                 </span>
                                             </div>
                                             <div className="mb-1">
@@ -617,7 +625,11 @@ export default function StockDashboard({
                                                     Total Qty:{" "}
                                                 </span>
                                                 <span className="text-xs">
-                                                    {stock.total_quantity}
+                                                    {Number(
+                                                        stock.total_quantity
+                                                    )
+                                                        .toLocaleString("en-US")
+                                                        .replace(/,/g, ".")}
                                                 </span>
                                             </div>
                                             <div className="mb-2">
@@ -625,7 +637,11 @@ export default function StockDashboard({
                                                     Available Qty:{" "}
                                                 </span>
                                                 <span className="text-xs">
-                                                    {stock.available_quantity}
+                                                    {Number(
+                                                        stock.available_quantity
+                                                    )
+                                                        .toLocaleString("en-US")
+                                                        .replace(/,/g, ".")}
                                                 </span>
                                             </div>
                                             <div className="flex flex-col sm:flex-row gap-2 mt-auto w-full">
@@ -1051,14 +1067,19 @@ export default function StockDashboard({
                                             <span className="font-semibold">
                                                 Quantity Sold:
                                             </span>{" "}
-                                            {sale.quantity_sold}
+                                            {Number(sale.quantity_sold)
+                                                .toLocaleString("en-US")
+                                                .replace(/,/g, ".")}
                                         </div>
                                         <div className="mb-2">
                                             <span className="font-semibold">
                                                 Total Amount:
                                             </span>
                                             <span className="bg-red-500 text-white px-2 py-1 rounded ml-2">
-                                                {sale.total_amount} MAD
+                                                {Number(sale.total_amount)
+                                                    .toLocaleString("en-US")
+                                                    .replace(/,/g, ".")}{" "}
+                                                MAD
                                             </span>
                                         </div>
                                         <div className="mb-2">
@@ -1157,9 +1178,16 @@ export default function StockDashboard({
                                                                     </div>
                                                                     <div>
                                                                         Quantity:{" "}
-                                                                        {
+                                                                        {Number(
                                                                             history.quantity
-                                                                        }
+                                                                        )
+                                                                            .toLocaleString(
+                                                                                "en-US"
+                                                                            )
+                                                                            .replace(
+                                                                                /,/g,
+                                                                                "."
+                                                                            )}
                                                                     </div>
                                                                     <div>
                                                                         Notes:{" "}
@@ -1207,7 +1235,16 @@ export default function StockDashboard({
                                                                         Per
                                                                         Unit:{" "}
                                                                         {history.price_per_unit_snapshot
-                                                                            ? `${history.price_per_unit_snapshot} MAD`
+                                                                            ? `${Number(
+                                                                                  history.price_per_unit_snapshot
+                                                                              )
+                                                                                  .toLocaleString(
+                                                                                      "en-US"
+                                                                                  )
+                                                                                  .replace(
+                                                                                      /,/g,
+                                                                                      "."
+                                                                                  )} MAD`
                                                                             : "-"}
                                                                     </div>
                                                                     <div>
