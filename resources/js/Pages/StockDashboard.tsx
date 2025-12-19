@@ -268,6 +268,8 @@ export default function StockDashboard({
                 { x: "Feb", y: 20 },
                 { x: "Mar", y: 15 },
                 { x: "Apr", y: 25 },
+                { x: "May", y: 30 },
+                { x: "Jun", y: 35 },
             ],
         },
         {
@@ -277,6 +279,8 @@ export default function StockDashboard({
                 { x: "Feb", y: 20 },
                 { x: "Mar", y: 30 },
                 { x: "Apr", y: 25 },
+                { x: "May", y: 30 },
+                { x: "Jun", y: 35 },
             ],
         },
         {
@@ -286,6 +290,8 @@ export default function StockDashboard({
                 { x: "Feb", y: 18 },
                 { x: "Mar", y: 12 },
                 { x: "Apr", y: 22 },
+                { x: "May", y: 27 },
+                { x: "Jun", y: 32 },
             ],
         },
         {
@@ -295,6 +301,8 @@ export default function StockDashboard({
                 { x: "Feb", y: 10 },
                 { x: "Mar", y: 8 },
                 { x: "Apr", y: 12 },
+                { x: "May", y: 15 },
+                { x: "Jun", y: 18 },
             ],
         },
     ];
