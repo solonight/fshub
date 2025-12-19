@@ -235,21 +235,19 @@ export default function StockDashboard({
     // Chart data shows categories with values > 0
     const chartData = [
         {
-            id: `Instock: ${Math.round(instockValue).toLocaleString(
-                "fr"
-            )} /MAD`,
+            id: `Instock: ${Math.round(instockValue).toLocaleString("fr")}/MAD`,
             label: "Instock",
             value: instockValue,
             color: "#2196F3",
         },
         {
-            id: `Unpaid: ${Math.round(unpaidAmount).toLocaleString("fr")} /MAD`,
+            id: `Unpaid: ${Math.round(unpaidAmount).toLocaleString("fr")}/MAD`,
             label: "Unpayed",
             value: unpaidAmount,
             color: "#FF2D2D",
         },
         {
-            id: `Sold: ${Math.round(paidAmount).toLocaleString("fr")} /MAD`,
+            id: `Sold: ${Math.round(paidAmount).toLocaleString("fr")}/MAD`,
             label: "Sold",
             value: paidAmount,
             color: "#4CAF50",
@@ -629,7 +627,11 @@ export default function StockDashboard({
                                                         stock.total_quantity
                                                     )
                                                         .toLocaleString("en-US")
-                                                        .replace(/,/g, ".")}
+                                                        .replace(
+                                                            /,/g,
+                                                            "."
+                                                        )}{" "}
+                                                    /meter
                                                 </span>
                                             </div>
                                             <div className="mb-2">
@@ -641,7 +643,11 @@ export default function StockDashboard({
                                                         stock.available_quantity
                                                     )
                                                         .toLocaleString("en-US")
-                                                        .replace(/,/g, ".")}
+                                                        .replace(
+                                                            /,/g,
+                                                            "."
+                                                        )}{" "}
+                                                    /meter
                                                 </span>
                                             </div>
                                             <div className="flex flex-col sm:flex-row gap-2 mt-auto w-full">
