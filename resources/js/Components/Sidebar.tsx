@@ -44,7 +44,7 @@ export default function Sidebar({ children, user }: SidebarProps) {
     return (
         <div className="flex h-screen">
             <aside
-                className="w-16 md:w-48 text-[#D9D9D9] flex flex-col justify-between items-center py-6 shadow-lg fixed left-0 top-0 h-screen"
+                className="w-14 md:w-40 text-[#D9D9D9] flex flex-col justify-between items-center py-6 shadow-lg fixed left-0 top-0 h-screen"
                 style={{
                     backgroundImage: `url(${sidebarBg})`,
                     backgroundSize: "cover",
@@ -70,7 +70,7 @@ export default function Sidebar({ children, user }: SidebarProps) {
                                           as: "button",
                                       }
                                     : {})}
-                                className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/20 transition-colors w-16 md:w-full justify-center md:justify-start"
+                                className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/20 transition-colors w-12 md:w-full justify-center md:justify-start"
                             >
                                 <span className="w-6 h-6">{item.icon}</span>
                                 <span className="hidden md:inline text-sm font-medium">
@@ -88,7 +88,7 @@ export default function Sidebar({ children, user }: SidebarProps) {
                                     <Link
                                         key={item.label}
                                         href={item.href}
-                                        className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/20 transition-colors w-16 md:w-full justify-center md:justify-start"
+                                        className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/20 transition-colors w-12 md:w-full justify-center md:justify-start"
                                     >
                                         <span className="w-6 h-6">
                                             {item.icon}
@@ -108,7 +108,7 @@ export default function Sidebar({ children, user }: SidebarProps) {
                         href={logoutItem.href}
                         method={logoutItem.method as any}
                         as="button"
-                        className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/20 transition-colors w-16 md:w-full justify-center md:justify-start"
+                        className="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-primary/20 transition-colors w-12 md:w-full justify-center md:justify-start"
                     >
                         <span className="w-6 h-6">{logoutItem.icon}</span>
                         <span className="hidden md:inline text-sm font-medium">
@@ -117,7 +117,7 @@ export default function Sidebar({ children, user }: SidebarProps) {
                     </Link>
                 </div>
             </aside>
-            <main className="flex-1 overflow-y-auto bg-white dark:bg-[#232323] ml-16 md:ml-48">
+            <main className="flex-1 overflow-y-auto bg-white dark:bg-[#232323] ml-14 md:ml-40">
                 {children}
             </main>
         </div>
