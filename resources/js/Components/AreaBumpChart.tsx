@@ -10,6 +10,7 @@ const AreaBumpChart: React.FC<AreaBumpChartProps> = ({ data }) => (
         data={data}
         margin={{ top: 40, right: 100, bottom: 40, left: 100 }}
         blendMode="multiply"
+        colors={["#00FF00", "#0000FF", "#FFFF00", "#800080", "#FF0000"]}
     />
 );
 

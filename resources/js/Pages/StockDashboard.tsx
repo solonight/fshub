@@ -271,6 +271,15 @@ export default function StockDashboard({
             ],
         },
         {
+            id: "denim",
+            data: [
+                { x: "Jan", y: 10 },
+                { x: "Feb", y: 20 },
+                { x: "Mar", y: 30 },
+                { x: "Apr", y: 25 },
+            ],
+        },
+        {
             id: "Linen",
             data: [
                 { x: "Jan", y: 8 },
