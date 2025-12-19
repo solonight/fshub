@@ -16,7 +16,8 @@ export default function StockDashboard({
 }: any) {
     // Delete handler for a stock
     const handleDelete = (stockId: number) => {
-        router.delete(`/fabric-stocks/${stockId}`);
+        setSelectedStockIdForDelete(stockId);
+        setShowConfirmDelete(true);
     };
     const [showForm, setShowForm] = useState(false);
     const { data, setData, post, processing, reset } = useForm({
@@ -64,6 +65,16 @@ export default function StockDashboard({
     const [confirmPasswordError, setConfirmPasswordError] = useState("");
     const [selectedSaleId, setSelectedSaleId] = useState<number | null>(null);
 
+    // States for Delete Confirmation
+    const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+    const [confirmDeletePassword, setConfirmDeletePassword] = useState("");
+    const [confirmDeleteConfirmPassword, setConfirmDeleteConfirmPassword] =
+        useState("");
+    const [confirmDeleteError, setConfirmDeleteError] = useState("");
+    const [selectedStockIdForDelete, setSelectedStockIdForDelete] = useState<
+        number | null
+    >(null);
+
     // Handler to mark sale record as paid
     const handleMarkAsPaid = (saleId: number, password: string) => {
         router.patch(
@@ -80,6 +91,21 @@ export default function StockDashboard({
                 },
             }
         );
+    };
+
+    // Handler to confirm delete stock
+    const handleConfirmDelete = (stockId: number, password: string) => {
+        router.delete(`/fabric-stocks/${stockId}`, {
+            data: { password },
+            preserveScroll: true,
+            onSuccess: () => {
+                setShowConfirmDelete(false);
+                setConfirmDeletePassword("");
+                setConfirmDeleteConfirmPassword("");
+                setConfirmDeleteError("");
+                setSelectedStockIdForDelete(null);
+            },
+        });
     };
 
     // When a stock is selected for update, pre-fill the form
@@ -1271,6 +1297,95 @@ export default function StockDashboard({
                                         setConfirmConfirmPassword("");
                                         setConfirmPasswordError("");
                                         setSelectedSaleId(null);
+                                    }}
+                                    className="w-full px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Confirmation Modal for Deleting Stock */}
+                {showConfirmDelete && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="bg-white dark:bg-[#232323] p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
+                            <h3 className="text-lg font-bold mb-4 text-center">
+                                Delete the stock
+                            </h3>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium mb-1">
+                                    Password
+                                </label>
+                                <input
+                                    type="password"
+                                    value={confirmDeletePassword}
+                                    onChange={(e) =>
+                                        setConfirmDeletePassword(e.target.value)
+                                    }
+                                    placeholder="Enter your password"
+                                    className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium mb-1">
+                                    Confirm Password
+                                </label>
+                                <input
+                                    type="password"
+                                    value={confirmDeleteConfirmPassword}
+                                    onChange={(e) =>
+                                        setConfirmDeleteConfirmPassword(
+                                            e.target.value
+                                        )
+                                    }
+                                    placeholder="Confirm your password"
+                                    className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                />
+                            </div>
+                            {confirmDeleteError && (
+                                <div className="text-red-500 text-sm mb-4">
+                                    {confirmDeleteError}
+                                </div>
+                            )}
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => {
+                                        if (
+                                            confirmDeletePassword !==
+                                            confirmDeleteConfirmPassword
+                                        ) {
+                                            setConfirmDeleteError(
+                                                "Passwords do not match"
+                                            );
+                                            return;
+                                        }
+                                        if (!confirmDeletePassword.trim()) {
+                                            setConfirmDeleteError(
+                                                "Password is required"
+                                            );
+                                            return;
+                                        }
+                                        setConfirmDeleteError("");
+                                        if (selectedStockIdForDelete) {
+                                            handleConfirmDelete(
+                                                selectedStockIdForDelete,
+                                                confirmDeletePassword
+                                            );
+                                        }
+                                    }}
+                                    className="w-full px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                                >
+                                    Confirm
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setShowConfirmDelete(false);
+                                        setConfirmDeletePassword("");
+                                        setConfirmDeleteConfirmPassword("");
+                                        setConfirmDeleteError("");
+                                        setSelectedStockIdForDelete(null);
                                     }}
                                     className="w-full px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
                                 >
