@@ -583,7 +583,7 @@ export default function StockDashboard({
                                         setSelectedStockForChart(stock || null);
                                     }
                                 }}
-                                className="border rounded px-3 py-2 text-[#1D1B1B] bg-white dark:bg-[#232323] dark:text-white"
+                                className="w-full sm:w-60 border rounded px-3 py-2 text-[#1D1B1B] bg-white dark:bg-[#232323] dark:text-white"
                             >
                                 <option value="">All Stocks</option>
                                 {fabricStocks?.data?.map((stock: any) => (
