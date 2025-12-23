@@ -1141,7 +1141,8 @@ export default function StockDashboard({
                                             </span>{" "}
                                             {Number(sale.quantity_sold)
                                                 .toLocaleString("en-US")
-                                                .replace(/,/g, ".")}
+                                                .replace(/,/g, ".")}{" "}
+                                            /meter
                                         </div>
                                         <div className="mb-2">
                                             <span className="font-semibold">
