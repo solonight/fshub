@@ -30,8 +30,8 @@ const navItems: NavItem[] = [
 
 const servicesNav: NavItem[] = [
     { label: "Marketplace", icon: <DollarSign />, href: "/marketplace" },
-    { label: "Warehouses", icon: <Warehouse />, href: "/services" },
-    { label: "Transporters", icon: <Truck />, href: "/services" },
+    { label: "Warehouses", icon: <Warehouse />, href: "/services#warehouses" },
+    { label: "Transporters", icon: <Truck />, href: "/services#transporters" },
 ];
 const logoutItem: NavItem = {
     label: "Logout",
@@ -44,7 +44,7 @@ export default function Sidebar({ children, user }: SidebarProps) {
     return (
         <div className="flex h-screen">
             <aside
-                className="w-14 md:w-40 text-[#D9D9D9] flex flex-col justify-between items-center py-6 shadow-lg fixed left-0 top-0 h-screen"
+                className="w-14 md:w-40  text-[#D9D9D9] flex flex-col justify-between items-center py-6 shadow-lg fixed left-0 top-0 h-screen"
                 style={{
                     backgroundImage: `url(${sidebarBg})`,
                     backgroundSize: "cover",

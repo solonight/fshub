@@ -25,7 +25,7 @@ export default function ServicesPage({ auth, services }: any) {
                     </p>
                 </div>
                 <div className="w-full">
-                    <div className="mb-8">
+                    <div className="mb-8" id="warehouses">
                         <h2 className="text-2xl font-bold text-primary mb-4 text-center">
                             Warehouses
                         </h2>
@@ -65,7 +65,7 @@ export default function ServicesPage({ auth, services }: any) {
                             )}
                         </div>
                     </div>
-                    <div className="mb-8">
+                    <div className="mb-8" id="transporters">
                         <h2 className="text-2xl font-bold text-primary mb-4 text-center">
                             Transporters
                         </h2>
