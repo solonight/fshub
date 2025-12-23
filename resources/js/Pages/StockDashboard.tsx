@@ -193,6 +193,10 @@ export default function StockDashboard({
     const [stockHistories, setStockHistories] = useState<any>({});
     const [expandedStockIds, setExpandedStockIds] = useState<number[]>([]);
     const [loadingHistories, setLoadingHistories] = useState(false);
+
+    // State for selected stock in chart
+    const [selectedStockForChart, setSelectedStockForChart] =
+        useState<any>(null);
     useEffect(() => {
         setLoadingHistories(true);
         axios
@@ -211,26 +215,56 @@ export default function StockDashboard({
     };
 
     // Calculate dynamic data for pie chart (amounts)
-    const instockValue =
-        fabricStocks?.data?.reduce(
-            (sum: number, stock: any) =>
-                sum +
-                (stock.available_quantity || 0) *
-                    (parseFloat(stock.price_per_unit) || 0),
-            0
-        ) || 0;
-    const unpaidAmount =
-        unpaidSales?.reduce(
+    let instockValue: number;
+    let unpaidAmount: number;
+    let paidAmount: number;
+
+    if (selectedStockForChart) {
+        // For selected stock
+        instockValue =
+            (selectedStockForChart.available_quantity || 0) *
+            (parseFloat(selectedStockForChart.price_per_unit) || 0);
+        const filteredUnpaid =
+            unpaidSales?.filter(
+                (sale: any) => sale.stock_id == selectedStockForChart.stock_id
+            ) || [];
+        const filteredPaid =
+            paidSales?.filter(
+                (sale: any) => sale.stock_id == selectedStockForChart.stock_id
+            ) || [];
+        unpaidAmount = filteredUnpaid.reduce(
             (sum: number, sale: any) =>
                 sum + (parseFloat(sale.total_amount) || 0),
             0
-        ) || 0;
-    const paidAmount =
-        paidSales?.reduce(
+        );
+        paidAmount = filteredPaid.reduce(
             (sum: number, sale: any) =>
                 sum + (parseFloat(sale.total_amount) || 0),
             0
-        ) || 0;
+        );
+    } else {
+        // For all stocks
+        instockValue =
+            fabricStocks?.data?.reduce(
+                (sum: number, stock: any) =>
+                    sum +
+                    (stock.available_quantity || 0) *
+                        (parseFloat(stock.price_per_unit) || 0),
+                0
+            ) || 0;
+        unpaidAmount =
+            unpaidSales?.reduce(
+                (sum: number, sale: any) =>
+                    sum + (parseFloat(sale.total_amount) || 0),
+                0
+            ) || 0;
+        paidAmount =
+            paidSales?.reduce(
+                (sum: number, sale: any) =>
+                    sum + (parseFloat(sale.total_amount) || 0),
+                0
+            ) || 0;
+    }
 
     // Chart data shows categories with values > 0
     const chartData = [
@@ -531,6 +565,38 @@ export default function StockDashboard({
                         <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
                             Stocks Tracking
                         </h3>
+                        <div className="flex mb-4">
+                            <select
+                                value={
+                                    selectedStockForChart
+                                        ? selectedStockForChart.stock_id
+                                        : ""
+                                }
+                                onChange={(e) => {
+                                    const id = e.target.value;
+                                    if (id === "") {
+                                        setSelectedStockForChart(null);
+                                    } else {
+                                        const stock = fabricStocks?.data?.find(
+                                            (s: any) => s.stock_id == id
+                                        );
+                                        setSelectedStockForChart(stock || null);
+                                    }
+                                }}
+                                className="border rounded px-3 py-2 text-[#1D1B1B] bg-white dark:bg-[#232323] dark:text-white"
+                            >
+                                <option value="">All Stocks</option>
+                                {fabricStocks?.data?.map((stock: any) => (
+                                    <option
+                                        key={stock.stock_id}
+                                        value={stock.stock_id}
+                                    >
+                                        Stock #{stock.stock_id} -{" "}
+                                        {stock.fabric_type} {stock.color}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                         <div className="flex justify-center items-stretch">
                             <div
                                 className="flex justify-center items-center w-full overflow-hidden"
