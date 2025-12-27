@@ -107,6 +107,37 @@ class SaleRecordController extends Controller
         return $saleRecord;
     }
 
+    // Return a portion of a sale record
+    public function returnSale(Request $request, $id)
+    {
+        $saleRecord = SaleRecord::findOrFail($id);
+        $validated = $request->validate([
+            'return_quantity' => 'required|numeric|min:0.01',
+            'notes' => 'nullable|string',
+        ]);
+
+        $remainingQuantity = $saleRecord->quantity_sold - $saleRecord->returned_quantity;
+        if ($validated['return_quantity'] > $remainingQuantity) {
+            return response()->json(['message' => 'Return quantity exceeds remaining sold quantity'], 400);
+        }
+
+        $saleRecord->returned_quantity += $validated['return_quantity'];
+        $saleRecord->return_date = now();
+        if (isset($validated['notes'])) {
+            $saleRecord->notes = $validated['notes'];
+        }
+        $saleRecord->save();
+
+        // Check if fully returned
+        if ($saleRecord->net_quantity_sold <= 0) {
+            // Before deleting, ensure no histories depend on it, but for now, delete
+            $saleRecord->delete();
+            return response()->json(['message' => 'Sale fully returned and record deleted']);
+        }
+
+        return response()->json(['message' => 'Return processed successfully', 'sale_record' => $saleRecord]);
+    }
+
     // Delete a sale record
     public function destroy($id)
     {

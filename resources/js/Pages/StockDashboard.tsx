@@ -556,822 +556,940 @@ export default function StockDashboard({
                         </div>
                     </div>
 
-                    {/* Choose Your Chart Button above Stock Tracking */}
-                    <div className="flex justify-center mt-6 sm:mt-8 w-full">
-                        <button
-                            type="button"
-                            className="w-full sm:w-auto px-4 py-2 bg-[#2596be] text-white rounded hover:bg-[#1d7a9e] font-semibold shadow text-center"
-                            onClick={() => setShowPieChart((prev) => !prev)}
-                        >
-                            Switch Your Chart
-                        </button>
-                    </div>
-                    <div className="mt-4 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
-                        <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
-                            Stocks Tracking
-                        </h3>
-                        <div className="flex mb-4">
-                            {showPieChart && (
-                                <select
-                                    value={
-                                        selectedStockForChart
-                                            ? selectedStockForChart.stock_id
-                                            : ""
-                                    }
-                                    onChange={(e) => {
-                                        const id = e.target.value;
-                                        if (id === "") {
-                                            setSelectedStockForChart(null);
-                                        } else {
-                                            const stock =
-                                                fabricStocks?.data?.find(
-                                                    (s: any) => s.stock_id == id
-                                                );
-                                            setSelectedStockForChart(
-                                                stock || null
-                                            );
-                                        }
-                                    }}
-                                    className="w-full sm:w-60 border rounded px-3 py-2 text-[#1D1B1B] bg-white dark:bg-[#232323] dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 font-semibold shadow text-center"
-                                >
-                                    <option value="">All Stocks</option>
-                                    {fabricStocks?.data?.map((stock: any) => (
-                                        <option
-                                            key={stock.stock_id}
-                                            value={stock.stock_id}
-                                        >
-                                            Stock #{stock.stock_id} -{" "}
-                                            {stock.fabric_type} {stock.color}
-                                        </option>
-                                    ))}
-                                </select>
-                            )}
-                            {!showPieChart && (
+                    {fabricStocks?.data?.length > 0 && (
+                        <>
+                            {/* Choose Your Chart Button above Stock Tracking */}
+                            <div className="flex justify-center mt-6 sm:mt-8 w-full">
                                 <button
                                     type="button"
-                                    className="w-full sm:w-60 border rounded px-3 py-2 text-[#1D1B1B] bg-white dark:bg-[#232323] dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 font-semibold shadow text-center"
+                                    className="w-full sm:w-auto px-4 py-2 bg-[#2596be] text-white rounded hover:bg-[#1d7a9e] font-semibold shadow text-center"
                                     onClick={() =>
-                                        setShowFirstHalf((prev) => !prev)
+                                        setShowPieChart((prev) => !prev)
                                     }
                                 >
-                                    {showFirstHalf
-                                        ? "Show Jul-Dec"
-                                        : "Show Jan-Jun"}
+                                    Switch Your Chart
                                 </button>
-                            )}
-                        </div>
-                        <div className="flex justify-center items-stretch">
-                            <div
-                                className="flex justify-center items-center w-full overflow-hidden"
-                                style={{
-                                    width: "100%",
-                                    maxWidth: "100%",
-                                    height: 400,
-                                }}
-                            >
-                                {showPieChart ? (
-                                    <PieChart data={chartData} height={400} />
-                                ) : (
+                            </div>
+                            <div className="mt-4 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
+                                <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
+                                    Stocks Tracking
+                                </h3>
+                                <div className="flex mb-4">
+                                    {showPieChart && (
+                                        <select
+                                            value={
+                                                selectedStockForChart
+                                                    ? selectedStockForChart.stock_id
+                                                    : ""
+                                            }
+                                            onChange={(e) => {
+                                                const id = e.target.value;
+                                                if (id === "") {
+                                                    setSelectedStockForChart(
+                                                        null
+                                                    );
+                                                } else {
+                                                    const stock =
+                                                        fabricStocks?.data?.find(
+                                                            (s: any) =>
+                                                                s.stock_id == id
+                                                        );
+                                                    setSelectedStockForChart(
+                                                        stock || null
+                                                    );
+                                                }
+                                            }}
+                                            className="w-full sm:w-60 border rounded px-3 py-2 text-[#1D1B1B] bg-white dark:bg-[#232323] dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 font-semibold shadow text-center"
+                                        >
+                                            <option value="">All Stocks</option>
+                                            {fabricStocks?.data?.map(
+                                                (stock: any) => (
+                                                    <option
+                                                        key={stock.stock_id}
+                                                        value={stock.stock_id}
+                                                    >
+                                                        Stock #{stock.stock_id}{" "}
+                                                        - {stock.fabric_type}{" "}
+                                                        {stock.color}
+                                                    </option>
+                                                )
+                                            )}
+                                        </select>
+                                    )}
+                                    {!showPieChart && (
+                                        <button
+                                            type="button"
+                                            className="w-full sm:w-60 border rounded px-3 py-2 text-[#1D1B1B] bg-white dark:bg-[#232323] dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 font-semibold shadow text-center"
+                                            onClick={() =>
+                                                setShowFirstHalf(
+                                                    (prev) => !prev
+                                                )
+                                            }
+                                        >
+                                            {showFirstHalf
+                                                ? "Show Jul-Dec"
+                                                : "Show Jan-Jun"}
+                                        </button>
+                                    )}
+                                </div>
+                                <div className="flex justify-center items-stretch">
                                     <div
+                                        className="flex justify-center items-center w-full overflow-hidden"
                                         style={{
                                             width: "100%",
                                             maxWidth: "100%",
                                             height: 400,
                                         }}
-                                        className="overflow-hidden"
                                     >
-                                        <AreaBumpChart
-                                            data={
-                                                showFirstHalf
-                                                    ? firstHalfData
-                                                    : secondHalfData
-                                            }
-                                        />
+                                        {showPieChart ? (
+                                            <PieChart
+                                                data={chartData}
+                                                height={400}
+                                            />
+                                        ) : (
+                                            <div
+                                                style={{
+                                                    width: "100%",
+                                                    maxWidth: "100%",
+                                                    height: 400,
+                                                }}
+                                                className="overflow-hidden"
+                                            >
+                                                <AreaBumpChart
+                                                    data={
+                                                        showFirstHalf
+                                                            ? firstHalfData
+                                                            : secondHalfData
+                                                    }
+                                                />
+                                            </div>
+                                        )}
                                     </div>
-                                )}
+                                </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <div className="mt-6 sm:mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
-                        <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
-                            Manage Your Stocks
-                        </h3>
-                        {fabricStocks &&
-                        fabricStocks.data &&
-                        fabricStocks.data.length === 0 ? (
-                            <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
-                                No stocks found.
-                            </div>
-                        ) : (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div className="mt-6 sm:mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
+                                <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
+                                    Manage Your Stocks
+                                </h3>
                                 {fabricStocks &&
-                                    fabricStocks.data &&
-                                    fabricStocks.data.map((stock: any) => (
-                                        <div
-                                            key={stock.stock_id}
-                                            className="bg-[#F5F5F5] dark:bg-[#1D1B1B] border border-[#2596be] rounded-lg p-4 shadow hover:shadow-lg transition-shadow flex flex-col"
-                                        >
-                                            <div className="flex items-center justify-between mb-2">
-                                                <span className="text-xs font-bold text-primary">
-                                                    ID: {stock.stock_id}
-                                                </span>
-                                                <span className="text-xs bg-[#2596be] text-white rounded px-2 py-0.5">
-                                                    {stock.fabric_type}
-                                                </span>
-                                            </div>
-                                            <div className="mb-1">
-                                                <span className="font-semibold text-xs text-gray-700 dark:text-gray-200">
-                                                    Color:{" "}
-                                                </span>
-                                                <span className="text-xs">
-                                                    {stock.color}
-                                                </span>
-                                            </div>
-                                            <div className="mb-1">
-                                                <span className="font-semibold text-xs text-gray-700 dark:text-gray-200">
-                                                    Location:{" "}
-                                                </span>
-                                                <span className="text-xs">
-                                                    {stock.stock_location ||
-                                                        "-"}
-                                                </span>
-                                            </div>
-                                            <div className="mb-1">
-                                                <span className="font-semibold text-xs text-gray-700 dark:text-gray-200">
-                                                    Price:{" "}
-                                                </span>
-                                                <span className="text-xs">
-                                                    {Number(
-                                                        stock.price_per_unit
-                                                    )
-                                                        .toLocaleString("en-US")
-                                                        .replace(
-                                                            /,/g,
-                                                            "."
-                                                        )}{" "}
-                                                    MAD/m
-                                                </span>
-                                            </div>
-                                            <div className="mb-1">
-                                                <span className="font-semibold text-xs text-gray-700 dark:text-gray-200">
-                                                    Total Qty:{" "}
-                                                </span>
-                                                <span className="text-xs">
-                                                    {Number(
-                                                        stock.total_quantity
-                                                    )
-                                                        .toLocaleString("en-US")
-                                                        .replace(
-                                                            /,/g,
-                                                            "."
-                                                        )}{" "}
-                                                    /meter
-                                                </span>
-                                            </div>
-                                            <div className="mb-2">
-                                                <span className="font-semibold text-xs text-gray-700 dark:text-gray-200">
-                                                    Available Qty:{" "}
-                                                </span>
-                                                <span className="text-xs">
-                                                    {Number(
-                                                        stock.available_quantity
-                                                    )
-                                                        .toLocaleString("en-US")
-                                                        .replace(
-                                                            /,/g,
-                                                            "."
-                                                        )}{" "}
-                                                    /meter
-                                                </span>
-                                            </div>
-                                            <div className="flex flex-col sm:flex-row gap-2 mt-auto w-full">
-                                                <button
-                                                    onClick={() =>
-                                                        setSelectedStockForSale(
-                                                            stock
-                                                        )
-                                                    }
-                                                    className="w-full sm:w-auto px-2 sm:px-3 py-1 bg-green-500 text-white text-xs sm:text-sm rounded hover:bg-green-600 transition-colors"
-                                                >
-                                                    Add Sale
-                                                </button>
-                                                <button
-                                                    onClick={() =>
-                                                        handleUpdateClick(stock)
-                                                    }
-                                                    className="w-full sm:w-auto px-2 sm:px-3 py-1 bg-yellow-400 text-black text-xs sm:text-sm rounded hover:bg-yellow-500 transition-colors"
-                                                >
-                                                    Update
-                                                </button>
-                                                <button
-                                                    onClick={() =>
-                                                        handleDelete(
-                                                            stock.stock_id
-                                                        )
-                                                    }
-                                                    className="w-full sm:w-auto px-2 sm:px-3 py-1 bg-red-500 text-white text-xs sm:text-sm rounded hover:bg-red-600 transition-colors"
-                                                >
-                                                    Delete
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                            </div>
-                        )}
-                    </div>
-                    {/* Update Stock Form Section (appears below Manage Your Stocks) */}
-                    {selectedStockForUpdate && (
-                        <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-yellow-100 rounded-lg shadow w-full max-w-md mx-auto">
-                            <h3 className="text-base sm:text-lg font-bold text-yellow-600 mb-2 sm:mb-4 text-center">
-                                Update Stock #{selectedStockForUpdate.stock_id}
-                            </h3>
-                            <form
-                                onSubmit={handleUpdateSubmit}
-                                className="space-y-4"
-                            >
-                                <div>
-                                    <label className="block text-xs sm:text-sm font-medium">
-                                        Fabric Type
-                                    </label>
-                                    <select
-                                        value={updateForm.fabric_type}
-                                        onChange={(e) =>
-                                            setUpdateForm({
-                                                ...updateForm,
-                                                fabric_type: e.target.value,
-                                            })
-                                        }
-                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                        required
-                                    >
-                                        <option value="">
-                                            Select Fabric Type
-                                        </option>
-                                        <option value="Cotton">Cotton</option>
-                                        <option value="Linen">Linen</option>
-                                        <option value="Wool">Wool</option>
-                                        <option value="Silk">Silk</option>
-                                        <option value="Hemp">Hemp</option>
-                                        <option value="Polyester">
-                                            Polyester
-                                        </option>
-                                        <option value="Nylon">Nylon</option>
-                                        <option value="Acrylic">Acrylic</option>
-                                        <option value="Spandex">Spandex</option>
-                                        <option value="Viscose/Rayon">
-                                            Viscose/Rayon
-                                        </option>
-                                        <option value="Lyocell (Tencel)">
-                                            Lyocell (Tencel)
-                                        </option>
-                                        <option value="Denim">Denim</option>
-                                        <option value="Jersey">Jersey</option>
-                                        <option value="Flannel">Flannel</option>
-                                        <option value="Satin">Satin</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label className="block text-xs sm:text-sm font-medium">
-                                        Stock Location
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={updateForm.stock_location}
-                                        onChange={(e) =>
-                                            setUpdateForm({
-                                                ...updateForm,
-                                                stock_location: e.target.value,
-                                            })
-                                        }
-                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-xs sm:text-sm font-medium">
-                                        Color
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={updateForm.color}
-                                        onChange={(e) =>
-                                            setUpdateForm({
-                                                ...updateForm,
-                                                color: e.target.value,
-                                            })
-                                        }
-                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-xs sm:text-sm font-medium">
-                                        Price Per Unit (MAD/meter)
-                                    </label>
-                                    <input
-                                        type="number"
-                                        value={updateForm.price_per_unit}
-                                        onChange={(e) =>
-                                            setUpdateForm({
-                                                ...updateForm,
-                                                price_per_unit: e.target.value,
-                                            })
-                                        }
-                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-xs sm:text-sm font-medium">
-                                        Total Quantity
-                                    </label>
-                                    <input
-                                        type="number"
-                                        value={updateForm.total_quantity}
-                                        onChange={(e) =>
-                                            setUpdateForm({
-                                                ...updateForm,
-                                                total_quantity: e.target.value,
-                                            })
-                                        }
-                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                        required
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-xs sm:text-sm font-medium">
-                                        Available Quantity
-                                    </label>
-                                    <input
-                                        type="number"
-                                        value={updateForm.available_quantity}
-                                        onChange={(e) =>
-                                            setUpdateForm({
-                                                ...updateForm,
-                                                available_quantity:
-                                                    e.target.value,
-                                            })
-                                        }
-                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-xs sm:text-sm font-medium">
-                                        Description
-                                    </label>
-                                    <textarea
-                                        value={updateForm.description}
-                                        onChange={(e) =>
-                                            setUpdateForm({
-                                                ...updateForm,
-                                                description: e.target.value,
-                                            })
-                                        }
-                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                    ></textarea>
-                                </div>
-                                <div className="flex items-center">
-                                    <input
-                                        type="checkbox"
-                                        checked={
-                                            updateForm.samples_availability
-                                        }
-                                        onChange={(e) =>
-                                            setUpdateForm({
-                                                ...updateForm,
-                                                samples_availability:
-                                                    e.target.checked,
-                                            })
-                                        }
-                                        className="mr-2"
-                                    />
-                                    <label className="text-xs sm:text-sm">
-                                        Samples Availability
-                                    </label>
-                                </div>
-                                {/* Removed Auto Delete When Empty checkbox as requested */}
-                                <div className="flex gap-2">
-                                    <button
-                                        type="submit"
-                                        className="w-full px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-                                    >
-                                        Update Stock
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="w-full px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
-                                        onClick={() =>
-                                            setSelectedStockForUpdate(null)
-                                        }
-                                    >
-                                        Cancel
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    )}
-                    {/* Add Sale Form Section (appears below Manage Your Stocks) */}
-                    {selectedStockForSale && (
-                        <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow w-full max-w-md mx-auto">
-                            <h3 className="text-base sm:text-lg font-bold text-green-600 mb-2 sm:mb-4 text-center">
-                                Add Sale for Stock #
-                                {selectedStockForSale.stock_id}
-                            </h3>
-                            <form
-                                onSubmit={handleSaleSubmit}
-                                className="space-y-4"
-                            >
-                                {/* customer_name */}
-                                <div>
-                                    <label className="block text-xs sm:text-sm font-medium">
-                                        Customer Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={saleForm.customer_name}
-                                        onChange={(e) =>
-                                            setSaleForm({
-                                                ...saleForm,
-                                                customer_name: e.target.value,
-                                            })
-                                        }
-                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                        required
-                                    />
-                                </div>
-                                {/* customer_phone */}
-                                <div>
-                                    <label className="block text-xs sm:text-sm font-medium">
-                                        Customer Phone
-                                    </label>
-                                    <InputMask
-                                        mask="+212 9 99 99 99 99"
-                                        maskChar={null}
-                                        id="customer_phone"
-                                        name="customer_phone"
-                                        type="tel"
-                                        value={saleForm.customer_phone}
-                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                        autoComplete="tel"
-                                        onChange={(
-                                            e: React.ChangeEvent<HTMLInputElement>
-                                        ) =>
-                                            setSaleForm({
-                                                ...saleForm,
-                                                customer_phone: e.target.value,
-                                            })
-                                        }
-                                        placeholder="+212 * ** ** ** **"
-                                    />
-                                </div>
-                                {/* quantity_sold */}
-                                <div>
-                                    <label className="block text-xs sm:text-sm font-medium">
-                                        Quantity Sold
-                                    </label>
-                                    <input
-                                        type="number"
-                                        min="0.01"
-                                        step="0.01"
-                                        value={saleForm.quantity_sold}
-                                        onChange={(e) =>
-                                            setSaleForm({
-                                                ...saleForm,
-                                                quantity_sold: e.target.value,
-                                            })
-                                        }
-                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                        required
-                                    />
-                                </div>
-                                {/* total_amount */}
-                                <div>
-                                    <label className="block text-xs sm:text-sm font-medium">
-                                        Total Amount (MAD)
-                                    </label>
-                                    <input
-                                        type="number"
-                                        min="0"
-                                        step="0.01"
-                                        value={saleForm.total_amount}
-                                        onChange={(e) =>
-                                            setSaleForm({
-                                                ...saleForm,
-                                                total_amount: e.target.value,
-                                            })
-                                        }
-                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                        required
-                                    />
-                                </div>
-                                {/* is_payed */}
-                                <div className="flex items-center">
-                                    <input
-                                        type="checkbox"
-                                        checked={saleForm.is_payed}
-                                        onChange={(e) =>
-                                            setSaleForm({
-                                                ...saleForm,
-                                                is_payed: e.target.checked,
-                                            })
-                                        }
-                                        className="mr-2"
-                                    />
-                                    <label className="text-xs sm:text-sm">
-                                        Is Payed
-                                    </label>
-                                </div>
-                                {/* notes */}
-                                <div>
-                                    <label className="block text-xs sm:text-sm font-medium">
-                                        Notes
-                                    </label>
-                                    <textarea
-                                        value={saleForm.notes}
-                                        onChange={(e) =>
-                                            setSaleForm({
-                                                ...saleForm,
-                                                notes: e.target.value,
-                                            })
-                                        }
-                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                    ></textarea>
-                                </div>
-                                {/* sale_date */}
-                                <div>
-                                    <label className="block text-xs sm:text-sm font-medium">
-                                        Sale Date
-                                    </label>
-                                    <input
-                                        type="date"
-                                        value={saleForm.sale_date}
-                                        onChange={(e) =>
-                                            setSaleForm({
-                                                ...saleForm,
-                                                sale_date: e.target.value,
-                                            })
-                                        }
-                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                    />
-                                </div>
-                                {/* Display sale error message */}
-                                {saleError && (
-                                    <div className="text-red-500 text-sm mt-2">
-                                        {saleError}
+                                fabricStocks.data &&
+                                fabricStocks.data.length === 0 ? (
+                                    <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
+                                        No stocks found.
+                                    </div>
+                                ) : (
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                        {fabricStocks &&
+                                            fabricStocks.data &&
+                                            fabricStocks.data.map(
+                                                (stock: any) => (
+                                                    <div
+                                                        key={stock.stock_id}
+                                                        className="bg-[#F5F5F5] dark:bg-[#1D1B1B] border border-[#2596be] rounded-lg p-4 shadow hover:shadow-lg transition-shadow flex flex-col"
+                                                    >
+                                                        <div className="flex items-center justify-between mb-2">
+                                                            <span className="text-xs font-bold text-primary">
+                                                                ID:{" "}
+                                                                {stock.stock_id}
+                                                            </span>
+                                                            <span className="text-xs bg-[#2596be] text-white rounded px-2 py-0.5">
+                                                                {
+                                                                    stock.fabric_type
+                                                                }
+                                                            </span>
+                                                        </div>
+                                                        <div className="mb-1">
+                                                            <span className="font-semibold text-xs text-gray-700 dark:text-gray-200">
+                                                                Color:{" "}
+                                                            </span>
+                                                            <span className="text-xs">
+                                                                {stock.color}
+                                                            </span>
+                                                        </div>
+                                                        <div className="mb-1">
+                                                            <span className="font-semibold text-xs text-gray-700 dark:text-gray-200">
+                                                                Location:{" "}
+                                                            </span>
+                                                            <span className="text-xs">
+                                                                {stock.stock_location ||
+                                                                    "-"}
+                                                            </span>
+                                                        </div>
+                                                        <div className="mb-1">
+                                                            <span className="font-semibold text-xs text-gray-700 dark:text-gray-200">
+                                                                Price:{" "}
+                                                            </span>
+                                                            <span className="text-xs">
+                                                                {Number(
+                                                                    stock.price_per_unit
+                                                                )
+                                                                    .toLocaleString(
+                                                                        "en-US"
+                                                                    )
+                                                                    .replace(
+                                                                        /,/g,
+                                                                        "."
+                                                                    )}{" "}
+                                                                MAD/m
+                                                            </span>
+                                                        </div>
+                                                        <div className="mb-1">
+                                                            <span className="font-semibold text-xs text-gray-700 dark:text-gray-200">
+                                                                Total Qty:{" "}
+                                                            </span>
+                                                            <span className="text-xs">
+                                                                {Number(
+                                                                    stock.total_quantity
+                                                                )
+                                                                    .toLocaleString(
+                                                                        "en-US"
+                                                                    )
+                                                                    .replace(
+                                                                        /,/g,
+                                                                        "."
+                                                                    )}{" "}
+                                                                /meter
+                                                            </span>
+                                                        </div>
+                                                        <div className="mb-2">
+                                                            <span className="font-semibold text-xs text-gray-700 dark:text-gray-200">
+                                                                Available Qty:{" "}
+                                                            </span>
+                                                            <span className="text-xs">
+                                                                {Number(
+                                                                    stock.available_quantity
+                                                                )
+                                                                    .toLocaleString(
+                                                                        "en-US"
+                                                                    )
+                                                                    .replace(
+                                                                        /,/g,
+                                                                        "."
+                                                                    )}{" "}
+                                                                /meter
+                                                            </span>
+                                                        </div>
+                                                        <div className="flex flex-col sm:flex-row gap-2 mt-auto w-full">
+                                                            <button
+                                                                onClick={() =>
+                                                                    setSelectedStockForSale(
+                                                                        stock
+                                                                    )
+                                                                }
+                                                                className="w-full sm:w-auto px-2 sm:px-3 py-1 bg-green-500 text-white text-xs sm:text-sm rounded hover:bg-green-600 transition-colors"
+                                                            >
+                                                                Add Sale
+                                                            </button>
+                                                            <button
+                                                                onClick={() =>
+                                                                    handleUpdateClick(
+                                                                        stock
+                                                                    )
+                                                                }
+                                                                className="w-full sm:w-auto px-2 sm:px-3 py-1 bg-yellow-400 text-black text-xs sm:text-sm rounded hover:bg-yellow-500 transition-colors"
+                                                            >
+                                                                Update
+                                                            </button>
+                                                            <button
+                                                                onClick={() =>
+                                                                    handleDelete(
+                                                                        stock.stock_id
+                                                                    )
+                                                                }
+                                                                className="w-full sm:w-auto px-2 sm:px-3 py-1 bg-red-500 text-white text-xs sm:text-sm rounded hover:bg-red-600 transition-colors"
+                                                            >
+                                                                Delete
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            )}
                                     </div>
                                 )}
-                                <div className="flex gap-2">
-                                    <button
-                                        type="submit"
-                                        className="w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                                    >
-                                        Submit Sale
-                                    </button>
-                                    <button
-                                        type="button"
-                                        className="w-full px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
-                                        onClick={() =>
-                                            setSelectedStockForSale(null)
-                                        }
-                                    >
-                                        Cancel
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    )}
-                    {/* Sales Records Section */}
-                    <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
-                        <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
-                            Unpaid Sales Records
-                        </h3>
-                        {unpaidSales && unpaidSales.length > 0 ? (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {unpaidSales.map((sale: any) => (
-                                    <div
-                                        key={sale.record_id}
-                                        className="bg-white dark:bg-[#232323] text-black dark:text-white rounded-lg p-4 border-2 border-red-400 shadow-lg hover:shadow-2xl hover:border-red-600 transition-all duration-200 flex flex-col"
-                                    >
-                                        <div className="mb-2">
-                                            <span className="font-semibold">
-                                                Customer:
-                                            </span>{" "}
-                                            {sale.customer_name}
-                                        </div>
-                                        <div className="mb-2">
-                                            <span className="font-semibold">
-                                                Phone:
-                                            </span>{" "}
-                                            {sale.customer_phone}
-                                        </div>
-                                        <div className="mb-2">
-                                            <span className="font-semibold">
-                                                Quantity Sold:
-                                            </span>{" "}
-                                            {Number(sale.quantity_sold)
-                                                .toLocaleString("en-US")
-                                                .replace(/,/g, ".")}{" "}
-                                            /meter
-                                        </div>
-                                        <div className="mb-2">
-                                            <span className="font-semibold">
-                                                Total Amount:
-                                            </span>
-                                            <span className="bg-red-500 text-white px-2 py-1 rounded ml-2">
-                                                {Number(sale.total_amount)
-                                                    .toLocaleString("en-US")
-                                                    .replace(/,/g, ".")}{" "}
-                                                MAD
-                                            </span>
-                                        </div>
-                                        <div className="mb-2">
-                                            <span className="font-semibold">
-                                                Sale Date:
-                                            </span>{" "}
-                                            {sale.sale_date
-                                                ? sale.sale_date.split("T")[0]
-                                                : ""}
-                                        </div>
-                                        <div className="mb-2">
-                                            <span className="font-semibold">
-                                                Notes:
-                                            </span>{" "}
-                                            {sale.notes}
-                                        </div>
-                                        <button
-                                            className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors font-bold"
-                                            onClick={() => {
-                                                setSelectedSaleId(
-                                                    sale.record_id
-                                                );
-                                                setShowConfirmPaid(true);
-                                            }}
-                                        >
-                                            Is Payed
-                                        </button>
-                                    </div>
-                                ))}
                             </div>
-                        ) : (
-                            <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
-                                No unpaid sales records found.
-                            </div>
-                        )}
-                    </div>
-                    {/* Stock Histories Section */}
-                    <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
-                        <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
-                            Stock Histories
-                        </h3>
-                        {loadingHistories ? (
-                            <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
-                                Loading stock histories...
-                            </div>
-                        ) : stockHistories &&
-                          Object.keys(stockHistories).length > 0 ? (
-                            <div className="space-y-4">
-                                {Object.entries(stockHistories).map(
-                                    ([stockId, histories]) => (
-                                        <div key={stockId}>
+                            {/* Update Stock Form Section (appears below Manage Your Stocks) */}
+                            {selectedStockForUpdate && (
+                                <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-yellow-100 rounded-lg shadow w-full max-w-md mx-auto">
+                                    <h3 className="text-base sm:text-lg font-bold text-yellow-600 mb-2 sm:mb-4 text-center">
+                                        Update Stock #
+                                        {selectedStockForUpdate.stock_id}
+                                    </h3>
+                                    <form
+                                        onSubmit={handleUpdateSubmit}
+                                        className="space-y-4"
+                                    >
+                                        <div>
+                                            <label className="block text-xs sm:text-sm font-medium">
+                                                Fabric Type
+                                            </label>
+                                            <select
+                                                value={updateForm.fabric_type}
+                                                onChange={(e) =>
+                                                    setUpdateForm({
+                                                        ...updateForm,
+                                                        fabric_type:
+                                                            e.target.value,
+                                                    })
+                                                }
+                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
+                                                required
+                                            >
+                                                <option value="">
+                                                    Select Fabric Type
+                                                </option>
+                                                <option value="Cotton">
+                                                    Cotton
+                                                </option>
+                                                <option value="Linen">
+                                                    Linen
+                                                </option>
+                                                <option value="Wool">
+                                                    Wool
+                                                </option>
+                                                <option value="Silk">
+                                                    Silk
+                                                </option>
+                                                <option value="Hemp">
+                                                    Hemp
+                                                </option>
+                                                <option value="Polyester">
+                                                    Polyester
+                                                </option>
+                                                <option value="Nylon">
+                                                    Nylon
+                                                </option>
+                                                <option value="Acrylic">
+                                                    Acrylic
+                                                </option>
+                                                <option value="Spandex">
+                                                    Spandex
+                                                </option>
+                                                <option value="Viscose/Rayon">
+                                                    Viscose/Rayon
+                                                </option>
+                                                <option value="Lyocell (Tencel)">
+                                                    Lyocell (Tencel)
+                                                </option>
+                                                <option value="Denim">
+                                                    Denim
+                                                </option>
+                                                <option value="Jersey">
+                                                    Jersey
+                                                </option>
+                                                <option value="Flannel">
+                                                    Flannel
+                                                </option>
+                                                <option value="Satin">
+                                                    Satin
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs sm:text-sm font-medium">
+                                                Stock Location
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={
+                                                    updateForm.stock_location
+                                                }
+                                                onChange={(e) =>
+                                                    setUpdateForm({
+                                                        ...updateForm,
+                                                        stock_location:
+                                                            e.target.value,
+                                                    })
+                                                }
+                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs sm:text-sm font-medium">
+                                                Color
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={updateForm.color}
+                                                onChange={(e) =>
+                                                    setUpdateForm({
+                                                        ...updateForm,
+                                                        color: e.target.value,
+                                                    })
+                                                }
+                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
+                                                required
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs sm:text-sm font-medium">
+                                                Price Per Unit (MAD/meter)
+                                            </label>
+                                            <input
+                                                type="number"
+                                                value={
+                                                    updateForm.price_per_unit
+                                                }
+                                                onChange={(e) =>
+                                                    setUpdateForm({
+                                                        ...updateForm,
+                                                        price_per_unit:
+                                                            e.target.value,
+                                                    })
+                                                }
+                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
+                                                required
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs sm:text-sm font-medium">
+                                                Total Quantity
+                                            </label>
+                                            <input
+                                                type="number"
+                                                value={
+                                                    updateForm.total_quantity
+                                                }
+                                                onChange={(e) =>
+                                                    setUpdateForm({
+                                                        ...updateForm,
+                                                        total_quantity:
+                                                            e.target.value,
+                                                    })
+                                                }
+                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
+                                                required
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs sm:text-sm font-medium">
+                                                Available Quantity
+                                            </label>
+                                            <input
+                                                type="number"
+                                                value={
+                                                    updateForm.available_quantity
+                                                }
+                                                onChange={(e) =>
+                                                    setUpdateForm({
+                                                        ...updateForm,
+                                                        available_quantity:
+                                                            e.target.value,
+                                                    })
+                                                }
+                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs sm:text-sm font-medium">
+                                                Description
+                                            </label>
+                                            <textarea
+                                                value={updateForm.description}
+                                                onChange={(e) =>
+                                                    setUpdateForm({
+                                                        ...updateForm,
+                                                        description:
+                                                            e.target.value,
+                                                    })
+                                                }
+                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
+                                            ></textarea>
+                                        </div>
+                                        <div className="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                checked={
+                                                    updateForm.samples_availability
+                                                }
+                                                onChange={(e) =>
+                                                    setUpdateForm({
+                                                        ...updateForm,
+                                                        samples_availability:
+                                                            e.target.checked,
+                                                    })
+                                                }
+                                                className="mr-2"
+                                            />
+                                            <label className="text-xs sm:text-sm">
+                                                Samples Availability
+                                            </label>
+                                        </div>
+                                        {/* Removed Auto Delete When Empty checkbox as requested */}
+                                        <div className="flex gap-2">
                                             <button
-                                                className={`w-full text-left px-4 py-2 rounded font-semibold border border-primary bg-muted dark:bg-dark hover:bg-primary hover:text-white transition-colors ${
-                                                    expandedStockIds.includes(
-                                                        Number(stockId)
-                                                    )
-                                                        ? "bg-primary text-white"
-                                                        : ""
-                                                }`}
+                                                type="submit"
+                                                className="w-full px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                                            >
+                                                Update Stock
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="w-full px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
                                                 onClick={() =>
-                                                    toggleExpand(
-                                                        Number(stockId)
+                                                    setSelectedStockForUpdate(
+                                                        null
                                                     )
                                                 }
                                             >
-                                                Stock #{stockId} (
-                                                {Array.isArray(histories)
-                                                    ? histories.length
-                                                    : 0}{" "}
-                                                history record
-                                                {Array.isArray(histories) &&
-                                                histories.length > 1
-                                                    ? "s"
-                                                    : ""}
-                                                )
+                                                Cancel
                                             </button>
-                                            {expandedStockIds.includes(
-                                                Number(stockId)
-                                            ) &&
-                                                Array.isArray(histories) && (
-                                                    <div className="pl-6 pt-2">
-                                                        {histories.map(
-                                                            (history: any) => (
-                                                                <div
-                                                                    key={
-                                                                        history.history_id
-                                                                    }
-                                                                    className="mb-4 p-4 rounded border border-gray-300 bg-gray-50 dark:bg-[#232323]"
-                                                                >
-                                                                    <div className="font-bold text-primary">
-                                                                        Change
-                                                                        Type:{" "}
-                                                                        {
-                                                                            history.change_type
-                                                                        }
-                                                                    </div>
-                                                                    <div>
-                                                                        Quantity:{" "}
-                                                                        {Number(
-                                                                            history.quantity
-                                                                        )
-                                                                            .toLocaleString(
-                                                                                "en-US"
-                                                                            )
-                                                                            .replace(
-                                                                                /,/g,
-                                                                                "."
-                                                                            )}
-                                                                    </div>
-                                                                    <div>
-                                                                        Notes:{" "}
-                                                                        {history.notes ||
-                                                                            "-"}
-                                                                    </div>
-                                                                    <div>
-                                                                        Reference
-                                                                        ID:{" "}
-                                                                        {history.reference_id ||
-                                                                            "-"}
-                                                                    </div>
-                                                                    <div>
-                                                                        Is
-                                                                        Payed:{" "}
-                                                                        {history.is_payed
-                                                                            ? "Yes"
-                                                                            : "No"}
-                                                                    </div>
-                                                                    <div>
-                                                                        Customer
-                                                                        Name:{" "}
-                                                                        {history.customer_name ||
-                                                                            "-"}
-                                                                    </div>
-                                                                    <div>
-                                                                        Customer
-                                                                        Phone:{" "}
-                                                                        {history.customer_phone ||
-                                                                            "-"}
-                                                                    </div>
-                                                                    <div>
-                                                                        Fabric
-                                                                        Type:{" "}
-                                                                        {history.fabric_type_snapshot ||
-                                                                            "-"}
-                                                                    </div>
-                                                                    <div>
-                                                                        Color:{" "}
-                                                                        {history.color_snapshot ||
-                                                                            "-"}
-                                                                    </div>
-                                                                    <div>
-                                                                        Price
-                                                                        Per
-                                                                        Unit:{" "}
-                                                                        {history.price_per_unit_snapshot
-                                                                            ? `${Number(
-                                                                                  history.price_per_unit_snapshot
-                                                                              )
-                                                                                  .toLocaleString(
-                                                                                      "en-US"
-                                                                                  )
-                                                                                  .replace(
-                                                                                      /,/g,
-                                                                                      "."
-                                                                                  )} MAD`
-                                                                            : "-"}
-                                                                    </div>
-                                                                    <div>
-                                                                        Date:{" "}
-                                                                        {history.created_at
-                                                                            ? new Date(
-                                                                                  history.created_at
-                                                                              ).toLocaleString()
-                                                                            : "-"}
-                                                                    </div>
-                                                                </div>
-                                                            )
-                                                        )}
-                                                    </div>
-                                                )}
                                         </div>
-                                    )
+                                    </form>
+                                </div>
+                            )}
+                            {/* Add Sale Form Section (appears below Manage Your Stocks) */}
+                            {selectedStockForSale && (
+                                <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow w-full max-w-md mx-auto">
+                                    <h3 className="text-base sm:text-lg font-bold text-green-600 mb-2 sm:mb-4 text-center">
+                                        Add Sale for Stock #
+                                        {selectedStockForSale.stock_id}
+                                    </h3>
+                                    <form
+                                        onSubmit={handleSaleSubmit}
+                                        className="space-y-4"
+                                    >
+                                        {/* customer_name */}
+                                        <div>
+                                            <label className="block text-xs sm:text-sm font-medium">
+                                                Customer Name
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={saleForm.customer_name}
+                                                onChange={(e) =>
+                                                    setSaleForm({
+                                                        ...saleForm,
+                                                        customer_name:
+                                                            e.target.value,
+                                                    })
+                                                }
+                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
+                                                required
+                                            />
+                                        </div>
+                                        {/* customer_phone */}
+                                        <div>
+                                            <label className="block text-xs sm:text-sm font-medium">
+                                                Customer Phone
+                                            </label>
+                                            <InputMask
+                                                mask="+212 9 99 99 99 99"
+                                                maskChar={null}
+                                                id="customer_phone"
+                                                name="customer_phone"
+                                                type="tel"
+                                                value={saleForm.customer_phone}
+                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
+                                                autoComplete="tel"
+                                                onChange={(
+                                                    e: React.ChangeEvent<HTMLInputElement>
+                                                ) =>
+                                                    setSaleForm({
+                                                        ...saleForm,
+                                                        customer_phone:
+                                                            e.target.value,
+                                                    })
+                                                }
+                                                placeholder="+212 * ** ** ** **"
+                                            />
+                                        </div>
+                                        {/* quantity_sold */}
+                                        <div>
+                                            <label className="block text-xs sm:text-sm font-medium">
+                                                Quantity Sold
+                                            </label>
+                                            <input
+                                                type="number"
+                                                min="0.01"
+                                                step="0.01"
+                                                value={saleForm.quantity_sold}
+                                                onChange={(e) =>
+                                                    setSaleForm({
+                                                        ...saleForm,
+                                                        quantity_sold:
+                                                            e.target.value,
+                                                    })
+                                                }
+                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
+                                                required
+                                            />
+                                        </div>
+                                        {/* total_amount */}
+                                        <div>
+                                            <label className="block text-xs sm:text-sm font-medium">
+                                                Total Amount (MAD)
+                                            </label>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                step="0.01"
+                                                value={saleForm.total_amount}
+                                                onChange={(e) =>
+                                                    setSaleForm({
+                                                        ...saleForm,
+                                                        total_amount:
+                                                            e.target.value,
+                                                    })
+                                                }
+                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
+                                                required
+                                            />
+                                        </div>
+                                        {/* is_payed */}
+                                        <div className="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                checked={saleForm.is_payed}
+                                                onChange={(e) =>
+                                                    setSaleForm({
+                                                        ...saleForm,
+                                                        is_payed:
+                                                            e.target.checked,
+                                                    })
+                                                }
+                                                className="mr-2"
+                                            />
+                                            <label className="text-xs sm:text-sm">
+                                                Is Payed
+                                            </label>
+                                        </div>
+                                        {/* notes */}
+                                        <div>
+                                            <label className="block text-xs sm:text-sm font-medium">
+                                                Notes
+                                            </label>
+                                            <textarea
+                                                value={saleForm.notes}
+                                                onChange={(e) =>
+                                                    setSaleForm({
+                                                        ...saleForm,
+                                                        notes: e.target.value,
+                                                    })
+                                                }
+                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
+                                            ></textarea>
+                                        </div>
+                                        {/* sale_date */}
+                                        <div>
+                                            <label className="block text-xs sm:text-sm font-medium">
+                                                Sale Date
+                                            </label>
+                                            <input
+                                                type="date"
+                                                value={saleForm.sale_date}
+                                                onChange={(e) =>
+                                                    setSaleForm({
+                                                        ...saleForm,
+                                                        sale_date:
+                                                            e.target.value,
+                                                    })
+                                                }
+                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
+                                            />
+                                        </div>
+                                        {/* Display sale error message */}
+                                        {saleError && (
+                                            <div className="text-red-500 text-sm mt-2">
+                                                {saleError}
+                                            </div>
+                                        )}
+                                        <div className="flex gap-2">
+                                            <button
+                                                type="submit"
+                                                className="w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                                            >
+                                                Submit Sale
+                                            </button>
+                                            <button
+                                                type="button"
+                                                className="w-full px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+                                                onClick={() =>
+                                                    setSelectedStockForSale(
+                                                        null
+                                                    )
+                                                }
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            )}
+                            {/* Sales Records Section */}
+                            {unpaidSales && unpaidSales.length > 0 && (
+                                <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
+                                    <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
+                                        Unpaid Sales Records
+                                    </h3>
+                                    {unpaidSales && unpaidSales.length > 0 ? (
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                            {unpaidSales.map((sale: any) => (
+                                                <div
+                                                    key={sale.record_id}
+                                                    className="bg-white dark:bg-[#232323] text-black dark:text-white rounded-lg p-4 border-2 border-red-400 shadow-lg hover:shadow-2xl hover:border-red-600 transition-all duration-200 flex flex-col"
+                                                >
+                                                    <div className="mb-2">
+                                                        <span className="font-semibold">
+                                                            Customer:
+                                                        </span>{" "}
+                                                        {sale.customer_name}
+                                                    </div>
+                                                    <div className="mb-2">
+                                                        <span className="font-semibold">
+                                                            Phone:
+                                                        </span>{" "}
+                                                        {sale.customer_phone}
+                                                    </div>
+                                                    <div className="mb-2">
+                                                        <span className="font-semibold">
+                                                            Quantity Sold:
+                                                        </span>{" "}
+                                                        {Number(
+                                                            sale.quantity_sold
+                                                        )
+                                                            .toLocaleString(
+                                                                "en-US"
+                                                            )
+                                                            .replace(
+                                                                /,/g,
+                                                                "."
+                                                            )}{" "}
+                                                        /meter
+                                                    </div>
+                                                    <div className="mb-2">
+                                                        <span className="font-semibold">
+                                                            Total Amount:
+                                                        </span>
+                                                        <span className="bg-red-500 text-white px-2 py-1 rounded ml-2">
+                                                            {Number(
+                                                                sale.total_amount
+                                                            )
+                                                                .toLocaleString(
+                                                                    "en-US"
+                                                                )
+                                                                .replace(
+                                                                    /,/g,
+                                                                    "."
+                                                                )}{" "}
+                                                            MAD
+                                                        </span>
+                                                    </div>
+                                                    <div className="mb-2">
+                                                        <span className="font-semibold">
+                                                            Sale Date:
+                                                        </span>{" "}
+                                                        {sale.sale_date
+                                                            ? sale.sale_date.split(
+                                                                  "T"
+                                                              )[0]
+                                                            : ""}
+                                                    </div>
+                                                    <div className="mb-2">
+                                                        <span className="font-semibold">
+                                                            Notes:
+                                                        </span>{" "}
+                                                        {sale.notes}
+                                                    </div>
+                                                    <button
+                                                        className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors font-bold"
+                                                        onClick={() => {
+                                                            setSelectedSaleId(
+                                                                sale.record_id
+                                                            );
+                                                            setShowConfirmPaid(
+                                                                true
+                                                            );
+                                                        }}
+                                                    >
+                                                        Is Payed
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
+                                            No unpaid sales records found.
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                            {/* Stock Histories Section */}
+                            {stockHistories &&
+                                Object.keys(stockHistories).length > 0 && (
+                                    <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
+                                        <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
+                                            Stock Histories
+                                        </h3>
+                                        {loadingHistories ? (
+                                            <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
+                                                Loading stock histories...
+                                            </div>
+                                        ) : stockHistories &&
+                                          Object.keys(stockHistories).length >
+                                              0 ? (
+                                            <div className="space-y-4">
+                                                {Object.entries(
+                                                    stockHistories
+                                                ).map(
+                                                    ([stockId, histories]) => (
+                                                        <div key={stockId}>
+                                                            <button
+                                                                className={`w-full text-left px-4 py-2 rounded font-semibold border border-primary bg-muted dark:bg-dark hover:bg-primary hover:text-white transition-colors ${
+                                                                    expandedStockIds.includes(
+                                                                        Number(
+                                                                            stockId
+                                                                        )
+                                                                    )
+                                                                        ? "bg-primary text-white"
+                                                                        : ""
+                                                                }`}
+                                                                onClick={() =>
+                                                                    toggleExpand(
+                                                                        Number(
+                                                                            stockId
+                                                                        )
+                                                                    )
+                                                                }
+                                                            >
+                                                                Stock #{stockId}{" "}
+                                                                (
+                                                                {Array.isArray(
+                                                                    histories
+                                                                )
+                                                                    ? histories.length
+                                                                    : 0}{" "}
+                                                                history record
+                                                                {Array.isArray(
+                                                                    histories
+                                                                ) &&
+                                                                histories.length >
+                                                                    1
+                                                                    ? "s"
+                                                                    : ""}
+                                                                )
+                                                            </button>
+                                                            {expandedStockIds.includes(
+                                                                Number(stockId)
+                                                            ) &&
+                                                                Array.isArray(
+                                                                    histories
+                                                                ) && (
+                                                                    <div className="pl-6 pt-2">
+                                                                        {histories.map(
+                                                                            (
+                                                                                history: any
+                                                                            ) => (
+                                                                                <div
+                                                                                    key={
+                                                                                        history.history_id
+                                                                                    }
+                                                                                    className="mb-4 p-4 rounded border border-gray-300 bg-gray-50 dark:bg-[#232323]"
+                                                                                >
+                                                                                    <div className="font-bold text-primary">
+                                                                                        Change
+                                                                                        Type:{" "}
+                                                                                        {
+                                                                                            history.change_type
+                                                                                        }
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        Quantity:{" "}
+                                                                                        {Number(
+                                                                                            history.quantity
+                                                                                        )
+                                                                                            .toLocaleString(
+                                                                                                "en-US"
+                                                                                            )
+                                                                                            .replace(
+                                                                                                /,/g,
+                                                                                                "."
+                                                                                            )}
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        Notes:{" "}
+                                                                                        {history.notes ||
+                                                                                            "-"}
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        Reference
+                                                                                        ID:{" "}
+                                                                                        {history.reference_id ||
+                                                                                            "-"}
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        Is
+                                                                                        Payed:{" "}
+                                                                                        {history.is_payed
+                                                                                            ? "Yes"
+                                                                                            : "No"}
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        Customer
+                                                                                        Name:{" "}
+                                                                                        {history.customer_name ||
+                                                                                            "-"}
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        Customer
+                                                                                        Phone:{" "}
+                                                                                        {history.customer_phone ||
+                                                                                            "-"}
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        Fabric
+                                                                                        Type:{" "}
+                                                                                        {history.fabric_type_snapshot ||
+                                                                                            "-"}
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        Color:{" "}
+                                                                                        {history.color_snapshot ||
+                                                                                            "-"}
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        Price
+                                                                                        Per
+                                                                                        Unit:{" "}
+                                                                                        {history.price_per_unit_snapshot
+                                                                                            ? `${Number(
+                                                                                                  history.price_per_unit_snapshot
+                                                                                              )
+                                                                                                  .toLocaleString(
+                                                                                                      "en-US"
+                                                                                                  )
+                                                                                                  .replace(
+                                                                                                      /,/g,
+                                                                                                      "."
+                                                                                                  )} MAD`
+                                                                                            : "-"}
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        Date:{" "}
+                                                                                        {history.created_at
+                                                                                            ? new Date(
+                                                                                                  history.created_at
+                                                                                              ).toLocaleString()
+                                                                                            : "-"}
+                                                                                    </div>
+                                                                                </div>
+                                                                            )
+                                                                        )}
+                                                                    </div>
+                                                                )}
+                                                        </div>
+                                                    )
+                                                )}
+                                            </div>
+                                        ) : (
+                                            <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
+                                                No stock histories found.
+                                            </div>
+                                        )}
+                                    </div>
                                 )}
-                            </div>
-                        ) : (
-                            <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
-                                No stock histories found.
-                            </div>
-                        )}
-                    </div>
+                        </>
+                    )}
                 </div>
 
                 {/* Confirmation Modal for Marking as Paid */}
