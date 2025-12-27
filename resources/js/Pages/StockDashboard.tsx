@@ -291,7 +291,10 @@ export default function StockDashboard({
     // State to toggle chart type
     const [showPieChart, setShowPieChart] = useState(true);
 
-    // AreaBumpChart sample data
+    // New state to toggle between first and second half of the year for AreaBumpChart
+    const [showFirstHalf, setShowFirstHalf] = useState(true);
+
+    // AreaBumpChart sample data (extended to 12 months)
     const areaBumpData = [
         {
             id: "Cotton",
@@ -302,6 +305,12 @@ export default function StockDashboard({
                 { x: "Apr", y: 25 },
                 { x: "May", y: 30 },
                 { x: "Jun", y: 35 },
+                { x: "Jul", y: 40 },
+                { x: "Aug", y: 45 },
+                { x: "Sep", y: 50 },
+                { x: "Oct", y: 55 },
+                { x: "Nov", y: 60 },
+                { x: "Dec", y: 65 },
             ],
         },
         {
@@ -313,6 +322,12 @@ export default function StockDashboard({
                 { x: "Apr", y: 25 },
                 { x: "May", y: 30 },
                 { x: "Jun", y: 35 },
+                { x: "Jul", y: 40 },
+                { x: "Aug", y: 45 },
+                { x: "Sep", y: 50 },
+                { x: "Oct", y: 55 },
+                { x: "Nov", y: 60 },
+                { x: "Dec", y: 65 },
             ],
         },
         {
@@ -324,6 +339,12 @@ export default function StockDashboard({
                 { x: "Apr", y: 22 },
                 { x: "May", y: 27 },
                 { x: "Jun", y: 32 },
+                { x: "Jul", y: 37 },
+                { x: "Aug", y: 42 },
+                { x: "Sep", y: 47 },
+                { x: "Oct", y: 52 },
+                { x: "Nov", y: 57 },
+                { x: "Dec", y: 62 },
             ],
         },
         {
@@ -335,9 +356,25 @@ export default function StockDashboard({
                 { x: "Apr", y: 12 },
                 { x: "May", y: 15 },
                 { x: "Jun", y: 18 },
+                { x: "Jul", y: 20 },
+                { x: "Aug", y: 25 },
+                { x: "Sep", y: 30 },
+                { x: "Oct", y: 35 },
+                { x: "Nov", y: 40 },
+                { x: "Dec", y: 45 },
             ],
         },
     ];
+
+    // Split data into first and second halves
+    const firstHalfData = areaBumpData.map((series) => ({
+        ...series,
+        data: series.data.slice(0, 6), // Jan-Jun
+    }));
+    const secondHalfData = areaBumpData.map((series) => ({
+        ...series,
+        data: series.data.slice(6, 12), // Jul-Dec
+    }));
 
     return (
         <AuthenticatedLayout
@@ -560,6 +597,19 @@ export default function StockDashboard({
                         >
                             Switch Your Chart
                         </button>
+                        {!showPieChart && (
+                            <button
+                                type="button"
+                                className="ml-4 w-full sm:w-auto px-4 py-2 bg-[#2596be] text-white rounded hover:bg-[#1d7a9e] font-semibold shadow text-center"
+                                onClick={() =>
+                                    setShowFirstHalf((prev) => !prev)
+                                }
+                            >
+                                {showFirstHalf
+                                    ? "Show Jul-Dec"
+                                    : "Show Jan-Jun"}
+                            </button>
+                        )}
                     </div>
                     <div className="mt-4 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
                         <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
@@ -617,7 +667,13 @@ export default function StockDashboard({
                                         }}
                                         className="overflow-hidden"
                                     >
-                                        <AreaBumpChart data={areaBumpData} />
+                                        <AreaBumpChart
+                                            data={
+                                                showFirstHalf
+                                                    ? firstHalfData
+                                                    : secondHalfData
+                                            }
+                                        />
                                     </div>
                                 )}
                             </div>
