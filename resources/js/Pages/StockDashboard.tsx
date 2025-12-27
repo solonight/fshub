@@ -616,36 +616,41 @@ export default function StockDashboard({
                             Stocks Tracking
                         </h3>
                         <div className="flex mb-4">
-                            <select
-                                value={
-                                    selectedStockForChart
-                                        ? selectedStockForChart.stock_id
-                                        : ""
-                                }
-                                onChange={(e) => {
-                                    const id = e.target.value;
-                                    if (id === "") {
-                                        setSelectedStockForChart(null);
-                                    } else {
-                                        const stock = fabricStocks?.data?.find(
-                                            (s: any) => s.stock_id == id
-                                        );
-                                        setSelectedStockForChart(stock || null);
+                            {showPieChart && (
+                                <select
+                                    value={
+                                        selectedStockForChart
+                                            ? selectedStockForChart.stock_id
+                                            : ""
                                     }
-                                }}
-                                className="w-full sm:w-60 border rounded px-3 py-2 text-[#1D1B1B] bg-white dark:bg-[#232323] dark:text-white"
-                            >
-                                <option value="">All Stocks</option>
-                                {fabricStocks?.data?.map((stock: any) => (
-                                    <option
-                                        key={stock.stock_id}
-                                        value={stock.stock_id}
-                                    >
-                                        Stock #{stock.stock_id} -{" "}
-                                        {stock.fabric_type} {stock.color}
-                                    </option>
-                                ))}
-                            </select>
+                                    onChange={(e) => {
+                                        const id = e.target.value;
+                                        if (id === "") {
+                                            setSelectedStockForChart(null);
+                                        } else {
+                                            const stock =
+                                                fabricStocks?.data?.find(
+                                                    (s: any) => s.stock_id == id
+                                                );
+                                            setSelectedStockForChart(
+                                                stock || null
+                                            );
+                                        }
+                                    }}
+                                    className="w-full sm:w-60 border rounded px-3 py-2 text-[#1D1B1B] bg-white dark:bg-[#232323] dark:text-white"
+                                >
+                                    <option value="">All Stocks</option>
+                                    {fabricStocks?.data?.map((stock: any) => (
+                                        <option
+                                            key={stock.stock_id}
+                                            value={stock.stock_id}
+                                        >
+                                            Stock #{stock.stock_id} -{" "}
+                                            {stock.fabric_type} {stock.color}
+                                        </option>
+                                    ))}
+                                </select>
+                            )}
                         </div>
                         <div className="flex justify-center items-stretch">
                             <div
