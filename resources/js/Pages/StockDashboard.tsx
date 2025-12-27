@@ -597,19 +597,6 @@ export default function StockDashboard({
                         >
                             Switch Your Chart
                         </button>
-                        {!showPieChart && (
-                            <button
-                                type="button"
-                                className="ml-4 w-full sm:w-auto px-4 py-2 bg-[#2596be] text-white rounded hover:bg-[#1d7a9e] font-semibold shadow text-center"
-                                onClick={() =>
-                                    setShowFirstHalf((prev) => !prev)
-                                }
-                            >
-                                {showFirstHalf
-                                    ? "Show Jul-Dec"
-                                    : "Show Jan-Jun"}
-                            </button>
-                        )}
                     </div>
                     <div className="mt-4 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
                         <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
@@ -637,7 +624,7 @@ export default function StockDashboard({
                                             );
                                         }
                                     }}
-                                    className="w-full sm:w-60 border rounded px-3 py-2 text-[#1D1B1B] bg-white dark:bg-[#232323] dark:text-white"
+                                    className="w-full sm:w-60 border rounded px-3 py-2 text-[#1D1B1B] bg-white dark:bg-[#232323] dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 font-semibold shadow text-center"
                                 >
                                     <option value="">All Stocks</option>
                                     {fabricStocks?.data?.map((stock: any) => (
@@ -650,6 +637,19 @@ export default function StockDashboard({
                                         </option>
                                     ))}
                                 </select>
+                            )}
+                            {!showPieChart && (
+                                <button
+                                    type="button"
+                                    className="w-full sm:w-60 border rounded px-3 py-2 text-[#1D1B1B] bg-white dark:bg-[#232323] dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 font-semibold shadow text-center"
+                                    onClick={() =>
+                                        setShowFirstHalf((prev) => !prev)
+                                    }
+                                >
+                                    {showFirstHalf
+                                        ? "Show Jul-Dec"
+                                        : "Show Jan-Jun"}
+                                </button>
                             )}
                         </div>
                         <div className="flex justify-center items-stretch">
