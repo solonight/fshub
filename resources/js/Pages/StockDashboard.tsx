@@ -294,77 +294,45 @@ export default function StockDashboard({
     // New state to toggle between first and second half of the year for AreaBumpChart
     const [showFirstHalf, setShowFirstHalf] = useState(true);
 
-    // AreaBumpChart sample data (extended to 12 months)
-    const areaBumpData = [
-        {
-            id: "Cotton",
-            data: [
-                { x: "Jan", y: 10 },
-                { x: "Feb", y: 20 },
-                { x: "Mar", y: 15 },
-                { x: "Apr", y: 25 },
-                { x: "May", y: 30 },
-                { x: "Jun", y: 35 },
-                { x: "Jul", y: 40 },
-                { x: "Aug", y: 45 },
-                { x: "Sep", y: 50 },
-                { x: "Oct", y: 55 },
-                { x: "Nov", y: 60 },
-                { x: "Dec", y: 65 },
-            ],
-        },
-        {
-            id: "denim",
-            data: [
-                { x: "Jan", y: 10 },
-                { x: "Feb", y: 20 },
-                { x: "Mar", y: 30 },
-                { x: "Apr", y: 25 },
-                { x: "May", y: 30 },
-                { x: "Jun", y: 35 },
-                { x: "Jul", y: 40 },
-                { x: "Aug", y: 45 },
-                { x: "Sep", y: 50 },
-                { x: "Oct", y: 55 },
-                { x: "Nov", y: 60 },
-                { x: "Dec", y: 65 },
-            ],
-        },
-        {
-            id: "Linen",
-            data: [
-                { x: "Jan", y: 8 },
-                { x: "Feb", y: 18 },
-                { x: "Mar", y: 12 },
-                { x: "Apr", y: 22 },
-                { x: "May", y: 27 },
-                { x: "Jun", y: 32 },
-                { x: "Jul", y: 37 },
-                { x: "Aug", y: 42 },
-                { x: "Sep", y: 47 },
-                { x: "Oct", y: 52 },
-                { x: "Nov", y: 57 },
-                { x: "Dec", y: 62 },
-            ],
-        },
-        {
-            id: "Wool",
-            data: [
-                { x: "Jan", y: 5 },
-                { x: "Feb", y: 10 },
-                { x: "Mar", y: 8 },
-                { x: "Apr", y: 12 },
-                { x: "May", y: 15 },
-                { x: "Jun", y: 18 },
-                { x: "Jul", y: 20 },
-                { x: "Aug", y: 25 },
-                { x: "Sep", y: 30 },
-                { x: "Oct", y: 35 },
-                { x: "Nov", y: 40 },
-                { x: "Dec", y: 45 },
-            ],
-        },
+    // AreaBumpChart data from real sales
+    const stockMap = new Map();
+    fabricStocks?.data?.forEach((stock: any) => {
+        stockMap.set(stock.stock_id, stock.fabric_type);
+    });
+
+    const salesData: { [key: string]: { [key: string]: number } } = {};
+    const allSales = [...(paidSales || []), ...(unpaidSales || [])];
+    allSales.forEach((sale: any) => {
+        const fabric = stockMap.get(sale.stock_id);
+        if (!fabric) return;
+        const date = new Date(sale.sale_date);
+        const month = date.toLocaleString("default", { month: "short" });
+        if (!salesData[fabric]) salesData[fabric] = {};
+        if (!salesData[fabric][month]) salesData[fabric][month] = 0;
+        salesData[fabric][month] += parseFloat(sale.quantity_sold) || 0;
+    });
+
+    const months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
     ];
+    const areaBumpData = Object.keys(salesData).map((fabric) => ({
+        id: fabric,
+        data: months.map((month) => ({
+            x: month,
+            y: salesData[fabric][month] || 0,
+        })),
+    }));
 
     // Split data into first and second halves
     const firstHalfData = areaBumpData.map((series) => ({
