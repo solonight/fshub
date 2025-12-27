@@ -363,12 +363,14 @@ export default function StockDashboard({
                         }`}
                     >
                         <div className="p-4 sm:p-6 font-semibold dark:text-[#D9D9D9] text-[#1D1B1B]">
-                            <button
-                                onClick={() => setShowForm(!showForm)}
-                                className="w-full sm:w-auto mb-4 px-4 py-2 bg-[#2596be] text-white rounded hover:bg-[#1d7a9e]"
-                            >
-                                {showForm ? "Cancel" : "Add New Stock"}
-                            </button>
+                            <div className="flex justify-center align-items-center mb-4">
+                                <button
+                                    onClick={() => setShowForm(!showForm)}
+                                    className="px-4 py-2 bg-[#2596be] text-white rounded hover:bg-[#1d7a9e]"
+                                >
+                                    {showForm ? "Cancel" : "Add New Stock"}
+                                </button>
+                            </div>
 
                             {showForm && (
                                 <div className="w-full flex justify-center">
