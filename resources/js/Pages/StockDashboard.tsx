@@ -65,6 +65,9 @@ export default function StockDashboard({
     const [confirmPasswordError, setConfirmPasswordError] = useState("");
     const [selectedSaleId, setSelectedSaleId] = useState<number | null>(null);
 
+    // State for Sales to Return section visibility
+    const [showSalesToReturn, setShowSalesToReturn] = useState(false);
+
     // States for Delete Confirmation
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
     const [confirmDeletePassword, setConfirmDeletePassword] = useState("");
@@ -790,6 +793,16 @@ export default function StockDashboard({
                                                             </button>
                                                             <button
                                                                 onClick={() =>
+                                                                    setShowSalesToReturn(
+                                                                        !showSalesToReturn
+                                                                    )
+                                                                }
+                                                                className="w-full sm:w-auto px-2 sm:px-3 py-1 bg-blue-500 text-white text-xs sm:text-sm rounded hover:bg-blue-600 transition-colors"
+                                                            >
+                                                                Return Sale
+                                                            </button>
+                                                            <button
+                                                                onClick={() =>
                                                                     handleUpdateClick(
                                                                         stock
                                                                     )
@@ -815,6 +828,16 @@ export default function StockDashboard({
                                     </div>
                                 )}
                             </div>
+
+                            {showSalesToReturn && (
+                                <div className="mt-6 sm:mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
+                                    <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
+                                        Sales to Return
+                                    </h3>
+                                    {/* Content for Sales to Return section */}
+                                </div>
+                            )}
+
                             {/* Update Stock Form Section (appears below Manage Your Stocks) */}
                             {selectedStockForUpdate && (
                                 <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-yellow-100 rounded-lg shadow w-full max-w-md mx-auto">
