@@ -44,6 +44,10 @@ export default function StockDashboard({
     });
     const [saleError, setSaleError] = useState<string | null>(null);
 
+    // State for Return Sale
+    const [selectedStockForReturn, setSelectedStockForReturn] =
+        useState<any>(null);
+
     // State for Update Stock form
     const [selectedStockForUpdate, setSelectedStockForUpdate] =
         useState<any>(null);
@@ -792,11 +796,14 @@ export default function StockDashboard({
                                                                 Add Sale
                                                             </button>
                                                             <button
-                                                                onClick={() =>
+                                                                onClick={() => {
+                                                                    setSelectedStockForReturn(
+                                                                        stock
+                                                                    );
                                                                     setShowSalesToReturn(
-                                                                        !showSalesToReturn
-                                                                    )
-                                                                }
+                                                                        true
+                                                                    );
+                                                                }}
                                                                 className="w-full sm:w-auto px-2 sm:px-3 py-1 bg-blue-500 text-white text-xs sm:text-sm rounded hover:bg-blue-600 transition-colors"
                                                             >
                                                                 Return Sale
@@ -829,12 +836,124 @@ export default function StockDashboard({
                                 )}
                             </div>
 
-                            {showSalesToReturn && (
+                            {showSalesToReturn && selectedStockForReturn && (
                                 <div className="mt-6 sm:mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
                                     <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
-                                        Sales to Return
+                                        Sales Records for Stock #
+                                        {selectedStockForReturn.stock_id}
                                     </h3>
-                                    {/* Content for Sales to Return section */}
+                                    {(() => {
+                                        const stockSales = [
+                                            ...(paidSales || []).filter(
+                                                (sale: any) =>
+                                                    sale.stock_id ===
+                                                    selectedStockForReturn.stock_id
+                                            ),
+                                            ...(unpaidSales || []).filter(
+                                                (sale: any) =>
+                                                    sale.stock_id ===
+                                                    selectedStockForReturn.stock_id
+                                            ),
+                                        ];
+                                        return stockSales.length > 0 ? (
+                                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                                {stockSales.map((sale: any) => (
+                                                    <div
+                                                        key={sale.record_id}
+                                                        className={`bg-white dark:bg-[#232323] text-black dark:text-white rounded-lg p-4 border-2 shadow-lg hover:shadow-2xl transition-all duration-200 flex flex-col ${
+                                                            sale.is_payed
+                                                                ? "border-green-400 hover:border-green-600"
+                                                                : "border-red-400 hover:border-red-600"
+                                                        }`}
+                                                    >
+                                                        <div className="mb-2">
+                                                            <span className="font-semibold">
+                                                                Customer:
+                                                            </span>{" "}
+                                                            {sale.customer_name}
+                                                        </div>
+                                                        <div className="mb-2">
+                                                            <span className="font-semibold">
+                                                                Phone:
+                                                            </span>{" "}
+                                                            {
+                                                                sale.customer_phone
+                                                            }
+                                                        </div>
+                                                        <div className="mb-2">
+                                                            <span className="font-semibold">
+                                                                Quantity Sold:
+                                                            </span>{" "}
+                                                            {Number(
+                                                                sale.quantity_sold
+                                                            )
+                                                                .toLocaleString(
+                                                                    "en-US"
+                                                                )
+                                                                .replace(
+                                                                    /,/g,
+                                                                    "."
+                                                                )}{" "}
+                                                            /meter
+                                                        </div>
+                                                        <div className="mb-2">
+                                                            <span className="font-semibold">
+                                                                Total Amount:
+                                                            </span>{" "}
+                                                            {Number(
+                                                                sale.total_amount
+                                                            )
+                                                                .toLocaleString(
+                                                                    "en-US"
+                                                                )
+                                                                .replace(
+                                                                    /,/g,
+                                                                    "."
+                                                                )}{" "}
+                                                            MAD
+                                                        </div>
+                                                        <div className="mb-2">
+                                                            <span className="font-semibold">
+                                                                Status:
+                                                            </span>{" "}
+                                                            <span
+                                                                className={`px-2 py-1 rounded text-xs ${
+                                                                    sale.is_payed
+                                                                        ? "bg-green-500 text-white"
+                                                                        : "bg-red-500 text-white"
+                                                                }`}
+                                                            >
+                                                                {sale.is_payed
+                                                                    ? "Paid"
+                                                                    : "Unpaid"}
+                                                            </span>
+                                                        </div>
+                                                        <div className="mb-2">
+                                                            <span className="font-semibold">
+                                                                Sale Date:
+                                                            </span>{" "}
+                                                            {new Date(
+                                                                sale.sale_date
+                                                            ).toLocaleDateString()}
+                                                        </div>
+                                                        {sale.notes && (
+                                                            <div className="mb-2">
+                                                                <span className="font-semibold">
+                                                                    Notes:
+                                                                </span>{" "}
+                                                                {sale.notes}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ) : (
+                                            <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
+                                                No sales records found for this
+                                                stock.
+                                            </div>
+                                        );
+                                    })()}
                                 </div>
                             )}
 
