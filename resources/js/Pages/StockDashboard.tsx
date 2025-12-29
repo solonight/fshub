@@ -797,12 +797,25 @@ export default function StockDashboard({
                                                             </button>
                                                             <button
                                                                 onClick={() => {
-                                                                    setSelectedStockForReturn(
-                                                                        stock
-                                                                    );
-                                                                    setShowSalesToReturn(
-                                                                        true
-                                                                    );
+                                                                    if (
+                                                                        showSalesToReturn &&
+                                                                        selectedStockForReturn?.stock_id ===
+                                                                            stock.stock_id
+                                                                    ) {
+                                                                        setShowSalesToReturn(
+                                                                            false
+                                                                        );
+                                                                        setSelectedStockForReturn(
+                                                                            null
+                                                                        );
+                                                                    } else {
+                                                                        setSelectedStockForReturn(
+                                                                            stock
+                                                                        );
+                                                                        setShowSalesToReturn(
+                                                                            true
+                                                                        );
+                                                                    }
                                                                 }}
                                                                 className="w-full sm:w-auto px-2 sm:px-3 py-1 bg-blue-500 text-white text-xs sm:text-sm rounded hover:bg-blue-600 transition-colors"
                                                             >
@@ -835,7 +848,7 @@ export default function StockDashboard({
                                     </div>
                                 )}
                             </div>
-{/* Add Sale Form Section (appears below Manage Your Stocks) */}
+                            {/* Add Sale Form Section (appears below Manage Your Stocks) */}
                             {selectedStockForSale && (
                                 <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow w-full max-w-md mx-auto">
                                     <h3 className="text-base sm:text-lg font-bold text-green-600 mb-2 sm:mb-4 text-center">
@@ -1364,7 +1377,7 @@ export default function StockDashboard({
                                     </form>
                                 </div>
                             )}
-                            
+
                             {/* Sales Records Section */}
                             {unpaidSales && unpaidSales.length > 0 && (
                                 <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
