@@ -786,11 +786,25 @@ export default function StockDashboard({
                                                         </div>
                                                         <div className="flex flex-col gap-2 mt-auto w-full">
                                                             <button
-                                                                onClick={() =>
+                                                                onClick={() => {
                                                                     setSelectedStockForSale(
                                                                         stock
-                                                                    )
-                                                                }
+                                                                    );
+                                                                    setTimeout(
+                                                                        () =>
+                                                                            document
+                                                                                .getElementById(
+                                                                                    "add-sale-form"
+                                                                                )
+                                                                                ?.scrollIntoView(
+                                                                                    {
+                                                                                        behavior:
+                                                                                            "smooth",
+                                                                                    }
+                                                                                ),
+                                                                        100
+                                                                    );
+                                                                }}
                                                                 className="w-full sm:w-auto px-2 sm:px-3 py-1 bg-green-500 text-white text-xs sm:text-sm rounded hover:bg-green-600 transition-colors"
                                                             >
                                                                 Add Sale
@@ -822,11 +836,25 @@ export default function StockDashboard({
                                                                 Return Sale
                                                             </button>
                                                             <button
-                                                                onClick={() =>
+                                                                onClick={() => {
                                                                     handleUpdateClick(
                                                                         stock
-                                                                    )
-                                                                }
+                                                                    );
+                                                                    setTimeout(
+                                                                        () =>
+                                                                            document
+                                                                                .getElementById(
+                                                                                    "update-stock-form"
+                                                                                )
+                                                                                ?.scrollIntoView(
+                                                                                    {
+                                                                                        behavior:
+                                                                                            "smooth",
+                                                                                    }
+                                                                                ),
+                                                                        100
+                                                                    );
+                                                                }}
                                                                 className="w-full sm:w-auto px-2 sm:px-3 py-1 bg-yellow-400 text-black text-xs sm:text-sm rounded hover:bg-yellow-500 transition-colors"
                                                             >
                                                                 Update Stock
@@ -850,7 +878,10 @@ export default function StockDashboard({
                             </div>
                             {/* Update Stock Form Section (appears below Manage Your Stocks) */}
                             {selectedStockForUpdate && (
-                                <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-yellow-100 rounded-lg shadow w-full max-w-md mx-auto">
+                                <div
+                                    id="update-stock-form"
+                                    className="mt-8 p-2 sm:p-6 bg-white dark:bg-yellow-100 rounded-lg shadow w-full max-w-md mx-auto"
+                                >
                                     <h3 className="text-base sm:text-lg font-bold text-yellow-600 mb-2 sm:mb-4 text-center">
                                         Update Stock #
                                         {selectedStockForUpdate.stock_id}
@@ -1080,7 +1111,10 @@ export default function StockDashboard({
                             )}
                             {/* Add Sale Form Section (appears below Manage Your Stocks) */}
                             {selectedStockForSale && (
-                                <div className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow w-full max-w-md mx-auto">
+                                <div
+                                    id="add-sale-form"
+                                    className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow w-full max-w-md mx-auto"
+                                >
                                     <h3 className="text-base sm:text-lg font-bold text-green-600 mb-2 sm:mb-4 text-center">
                                         Add Sale for Stock #
                                         {selectedStockForSale.stock_id}
