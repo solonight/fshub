@@ -20,18 +20,14 @@ class SaleRecord extends Model
         'total_amount',
         'is_payed',
         'notes',
-        'sale_date',
-        'returned_quantity',
-        'return_date'
+        'sale_date'
     ];
 
     protected $casts = [
         'quantity_sold' => 'decimal:2',
         'total_amount' => 'decimal:2',
         'is_payed' => 'boolean',
-        'sale_date' => 'datetime',
-        'returned_quantity' => 'decimal:2',
-        'return_date' => 'datetime'
+        'sale_date' => 'datetime'
     ];
 
     public function stock()
@@ -49,9 +45,29 @@ class SaleRecord extends Model
         return $this->hasMany(StockHistory::class, 'reference_id');
     }
 
+    public function returns()
+    {
+        return $this->hasMany(SaleReturn::class, 'sale_record_id', 'record_id');
+    }
+
+    public function getTotalReturnedQuantityAttribute()
+    {
+        return $this->returns->sum('returned_quantity');
+    }
+
+    public function getTotalReturnedAmountAttribute()
+    {
+        return $this->returns->sum('returned_amount');
+    }
+
     public function getNetQuantitySoldAttribute()
     {
-        return $this->quantity_sold - $this->returned_quantity;
+        return $this->quantity_sold - $this->total_returned_quantity;
+    }
+
+    public function getNetAmountAttribute()
+    {
+        return $this->total_amount;
     }
 
     public function getIsFullyReturnedAttribute()
@@ -107,29 +123,6 @@ class SaleRecord extends Model
                         'customer_name' => $saleRecord->customer_name,
                         'customer_phone' => $saleRecord->customer_phone,
                     ]);
-                }
-            }
-
-            // Handle returned_quantity changes
-            if ($saleRecord->isDirty('returned_quantity')) {
-                $diff = $saleRecord->returned_quantity - $saleRecord->getOriginal('returned_quantity');
-                if ($diff > 0) {
-                    $stock = $saleRecord->stock;
-                    if ($stock) {
-                        $stock->available_quantity += $diff;
-                        $stock->save();
-                        $saleRecord->return_date = now();
-                        \App\Models\StockHistory::create([
-                            'stock_id' => $stock->stock_id,
-                            'user_id' => $saleRecord->user_id,
-                            'change_type' => 'RETURN',
-                            'quantity' => $diff,
-                            'notes' => $saleRecord->notes,
-                            'reference_id' => $saleRecord->record_id,
-                            'customer_name' => $saleRecord->customer_name,
-                            'customer_phone' => $saleRecord->customer_phone,
-                        ]);
-                    }
                 }
             }
         });

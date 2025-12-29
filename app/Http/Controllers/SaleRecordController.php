@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SaleRecord;
+use App\Models\SaleReturn;
 use Illuminate\Http\Request;
 
 class SaleRecordController extends Controller
@@ -107,35 +108,36 @@ class SaleRecordController extends Controller
         return $saleRecord;
     }
 
-    // Return a portion of a sale record
-    public function returnSale(Request $request, $id)
+    // Create a return for a sale record
+    public function createReturn(Request $request, $id)
     {
-        $saleRecord = SaleRecord::findOrFail($id);
-        $validated = $request->validate([
-            'return_quantity' => 'required|numeric|min:0.01',
-            'notes' => 'nullable|string',
+        $request->validate([
+            'returned_quantity' => 'required|numeric|min:0.01',
+            'returned_amount' => 'required|numeric|min:0.01',
+            'notes' => 'nullable|string'
         ]);
 
-        $remainingQuantity = $saleRecord->quantity_sold - $saleRecord->returned_quantity;
-        if ($validated['return_quantity'] > $remainingQuantity) {
-            return response()->json(['message' => 'Return quantity exceeds remaining sold quantity'], 400);
+        $saleRecord = SaleRecord::findOrFail($id);
+
+        // Check if return exceeds available net quantity
+        if ($request->returned_quantity > $saleRecord->net_quantity_sold) {
+            return response()->json(['error' => 'Returned quantity exceeds available net quantity.'], 400);
         }
 
-        $saleRecord->returned_quantity += $validated['return_quantity'];
-        $saleRecord->return_date = now();
-        if (isset($validated['notes'])) {
-            $saleRecord->notes = $validated['notes'];
-        }
-        $saleRecord->save();
-
-        // Check if fully returned
-        if ($saleRecord->net_quantity_sold <= 0) {
-            // Before deleting, ensure no histories depend on it, but for now, delete
-            $saleRecord->delete();
-            return response()->json(['message' => 'Sale fully returned and record deleted']);
+        // Check if return exceeds current total_amount
+        if ($request->returned_amount > $saleRecord->total_amount) {
+            return response()->json(['error' => 'Returned amount exceeds total amount.'], 400);
         }
 
-        return response()->json(['message' => 'Return processed successfully', 'sale_record' => $saleRecord]);
+        // Create the return record (this triggers stock/total_amount adjustments via boot)
+        SaleReturn::create([
+            'sale_record_id' => $saleRecord->record_id,
+            'returned_quantity' => $request->returned_quantity,
+            'returned_amount' => $request->returned_amount,
+            'notes' => $request->notes
+        ]);
+
+        return response()->json(['message' => 'Return processed successfully.']);
     }
 
     // Delete a sale record

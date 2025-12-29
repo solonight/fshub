@@ -159,6 +159,6 @@ Route::delete('/admin-dashboard/users/{id}', function ($id) {
 
 Route::post('/fabric-stocks/{stock_id}/sales', [SaleRecordController::class, 'store']);
 Route::patch('/sales-records/{id}/pay', [SaleRecordController::class, 'update'])->middleware(['auth', 'role:StockOwner']);
-Route::post('/sales-records/{id}/return', [SaleRecordController::class, 'returnSale'])->middleware(['auth', 'role:StockOwner']);
+Route::post('/sales-records/{id}/return', [SaleRecordController::class, 'createReturn'])->middleware(['auth', 'role:StockOwner']);
 
 require __DIR__.'/auth.php';
