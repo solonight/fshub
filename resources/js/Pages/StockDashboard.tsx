@@ -300,6 +300,11 @@ export default function StockDashboard({
         stockMap.set(stock.stock_id, stock.fabric_type);
     });
 
+    const colorMap = new Map();
+    fabricStocks?.data?.forEach((stock: any) => {
+        colorMap.set(stock.stock_id, stock.color);
+    });
+
     const salesData: { [key: string]: { [key: string]: number } } = {};
     const allSales = [...(paidSales || []), ...(unpaidSales || [])];
     allSales.forEach((sale: any) => {
@@ -1258,6 +1263,22 @@ export default function StockDashboard({
                                                                 "."
                                                             )}{" "}
                                                         /meter
+                                                    </div>
+                                                    <div className="mb-2">
+                                                        <span className="font-semibold">
+                                                            Fabric Type:
+                                                        </span>{" "}
+                                                        {stockMap.get(
+                                                            sale.stock_id
+                                                        )}
+                                                    </div>
+                                                    <div className="mb-2">
+                                                        <span className="font-semibold">
+                                                            Color:
+                                                        </span>{" "}
+                                                        {colorMap.get(
+                                                            sale.stock_id
+                                                        )}
                                                     </div>
                                                     <div className="mb-2">
                                                         <span className="font-semibold">
