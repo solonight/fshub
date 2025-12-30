@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Http\Controllers\StockHistoryController;
 use App\Http\Controllers\TransporterCardController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
