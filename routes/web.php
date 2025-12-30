@@ -107,6 +107,8 @@ Route::middleware(['auth', 'role:StockOwner'])->group(function () {
         ]);
     })->name('stock.dashboard');
     Route::get('/user-stock-histories', [StockHistoryController::class, 'userGroupedHistories'])->name('user.stock.histories');
+    Route::post('/sale-records/{saleRecord}/payments', [PaymentController::class, 'store']);
+    Route::get('/sale-records/{saleRecord}/payments', [PaymentController::class, 'index']);
 });
 
 Route::middleware(['auth', 'role:WarehouseProvider'])->group(function () {

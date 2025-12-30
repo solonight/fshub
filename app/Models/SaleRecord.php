@@ -50,6 +50,11 @@ class SaleRecord extends Model
         return $this->hasMany(SaleReturn::class, 'sale_record_id', 'record_id');
     }
 
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'sale_record_id', 'record_id');
+    }
+
     public function getTotalReturnedQuantityAttribute()
     {
         return $this->returns->sum('returned_quantity');
@@ -73,6 +78,33 @@ class SaleRecord extends Model
     public function getIsFullyReturnedAttribute()
     {
         return $this->net_quantity_sold <= 0;
+    }
+
+    // Total paid amount via payments
+    public function getTotalPaidAttribute()
+    {
+        return $this->payments->sum('amount');
+    }
+
+    // Unpaid amount
+    public function getUnpaidAmountAttribute()
+    {
+        return $this->total_amount - $this->total_paid;
+    }
+
+    // Check if fully paid
+    public function isFullyPaid(): bool
+    {
+        return $this->total_paid >= $this->total_amount;
+    }
+
+    // Add a payment and update is_payed if fully paid
+    public function addPayment(float $amount, array $data = [])
+    {
+        $this->payments()->create(array_merge(['amount' => $amount], $data));
+        if ($this->isFullyPaid()) {
+            $this->update(['is_payed' => true]);
+        }
     }
     protected static function boot()
     {
