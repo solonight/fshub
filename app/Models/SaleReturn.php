@@ -41,9 +41,18 @@ class SaleReturn extends Model
                 $stock->available_quantity += $return->returned_quantity;
                 $stock->save();
 
-                // Adjust sale record total_amount
+            // Adjust sale record total_amount based on payment status
+            if ($saleRecord->is_payed) {
+                // Fully paid: full refund
                 $saleRecord->total_amount -= $return->returned_amount;
-                $saleRecord->save();
+            } elseif ($saleRecord->isPartiallyPaid()) {
+                // Partially paid: proportional refund
+                $paidRatio = $saleRecord->total_paid / $saleRecord->total_amount;
+                $refundAmount = $return->returned_amount * $paidRatio;
+                $saleRecord->total_amount -= $refundAmount;
+            }
+            // For unpaid: no total_amount adjustment
+            $saleRecord->save();
 
                 // Log in StockHistory
                 \App\Models\StockHistory::create([
@@ -55,6 +64,7 @@ class SaleReturn extends Model
                     'reference_id' => $saleRecord->record_id,
                     'customer_name' => $saleRecord->customer_name,
                     'customer_phone' => $saleRecord->customer_phone,
+                    'is_payed' => $saleRecord->is_payed,
                 ]);
             }
         });

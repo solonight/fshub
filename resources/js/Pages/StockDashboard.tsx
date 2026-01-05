@@ -67,7 +67,10 @@ export default function StockDashboard({
     const [confirmPassword, setConfirmPassword] = useState("");
     const [confirmConfirmPassword, setConfirmConfirmPassword] = useState("");
     const [confirmPasswordError, setConfirmPasswordError] = useState("");
-    const [selectedSaleId, setSelectedSaleId] = useState<number | null>(null);
+
+    // State for selected sale in payment modal
+    const [selectedSale, setSelectedSale] = useState<any>(null);
+    const [paymentAmount, setPaymentAmount] = useState("");
 
     // State for Sales to Return section visibility
     const [showSalesToReturn, setShowSalesToReturn] = useState(false);
@@ -94,7 +97,9 @@ export default function StockDashboard({
                     setConfirmPassword("");
                     setConfirmConfirmPassword("");
                     setConfirmPasswordError("");
-                    setSelectedSaleId(null);
+                    setSelectedSale(null);
+                    setPaymentAmount("");
+                    router.reload();
                 },
             }
         );
@@ -191,6 +196,43 @@ export default function StockDashboard({
                     if (errors.message) {
                         setSaleError(errors.message);
                     }
+                },
+            }
+        );
+    };
+
+    // Handler to add payment
+    const handleAddPayment = () => {
+        if (confirmPassword !== confirmConfirmPassword) {
+            setConfirmPasswordError("Passwords do not match.");
+            return;
+        }
+        if (!confirmPassword.trim()) {
+            setConfirmPasswordError("Password is required.");
+            return;
+        }
+        if (!paymentAmount || parseFloat(paymentAmount) <= 0) {
+            setConfirmPasswordError("Valid payment amount is required.");
+            return;
+        }
+        router.post(
+            `/sales-records/${selectedSale.record_id}/payments`,
+            { amount: paymentAmount, password: confirmPassword },
+            {
+                preserveScroll: true,
+                onSuccess: (page) => {
+                    setShowConfirmPaid(false);
+                    setConfirmPassword("");
+                    setConfirmConfirmPassword("");
+                    setConfirmPasswordError("");
+                    setSelectedSale(null);
+                    setPaymentAmount("");
+                    router.reload();
+                },
+                onError: (errors) => {
+                    setConfirmPasswordError(
+                        (errors as any).error || "An error occurred."
+                    );
                 },
             }
         );
@@ -876,7 +918,7 @@ export default function StockDashboard({
                                     </div>
                                 )}
                             </div>
-                             {/* Add Sale Form Section (appears below Manage Your Stocks) */}
+                            {/* Add Sale Form Section (appears below Manage Your Stocks) */}
                             {selectedStockForSale && (
                                 <div
                                     id="add-sale-form"
@@ -1290,7 +1332,7 @@ export default function StockDashboard({
                                     </form>
                                 </div>
                             )}
-                           
+
                             {showSalesToReturn && selectedStockForReturn && (
                                 <div className="mt-6 sm:mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
                                     <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
@@ -1506,15 +1548,21 @@ export default function StockDashboard({
                                                     <button
                                                         className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors font-bold"
                                                         onClick={() => {
-                                                            setSelectedSaleId(
-                                                                sale.record_id
+                                                            setSelectedSale(
+                                                                sale
+                                                            );
+                                                            setPaymentAmount(
+                                                                (
+                                                                    sale.unpaid_amount ||
+                                                                    0
+                                                                ).toString()
                                                             );
                                                             setShowConfirmPaid(
                                                                 true
                                                             );
                                                         }}
                                                     >
-                                                        Is Payed
+                                                        Pay
                                                     </button>
                                                 </div>
                                             ))}
@@ -1709,8 +1757,24 @@ export default function StockDashboard({
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                         <div className="bg-white dark:bg-[#232323] p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
                             <h3 className="text-lg font-bold mb-4 text-center">
-                                Mark this record as payed
+                                Add Payment
                             </h3>
+                            <div className="mb-4">
+                                <label className="block text-sm font-medium mb-1">
+                                    Payment Amount
+                                </label>
+                                <input
+                                    type="number"
+                                    min="0.01"
+                                    step="0.01"
+                                    value={paymentAmount}
+                                    onChange={(e) =>
+                                        setPaymentAmount(e.target.value)
+                                    }
+                                    className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                    required
+                                />
+                            </div>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium mb-1">
                                     Password
@@ -1748,30 +1812,7 @@ export default function StockDashboard({
                             )}
                             <div className="flex gap-2">
                                 <button
-                                    onClick={() => {
-                                        if (
-                                            confirmPassword !==
-                                            confirmConfirmPassword
-                                        ) {
-                                            setConfirmPasswordError(
-                                                "Passwords do not match"
-                                            );
-                                            return;
-                                        }
-                                        if (!confirmPassword.trim()) {
-                                            setConfirmPasswordError(
-                                                "Password is required"
-                                            );
-                                            return;
-                                        }
-                                        setConfirmPasswordError("");
-                                        if (selectedSaleId) {
-                                            handleMarkAsPaid(
-                                                selectedSaleId,
-                                                confirmPassword
-                                            );
-                                        }
-                                    }}
+                                    onClick={handleAddPayment}
                                     className="w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                                 >
                                     Confirm
@@ -1782,7 +1823,8 @@ export default function StockDashboard({
                                         setConfirmPassword("");
                                         setConfirmConfirmPassword("");
                                         setConfirmPasswordError("");
-                                        setSelectedSaleId(null);
+                                        setSelectedSale(null);
+                                        setPaymentAmount("");
                                     }}
                                     className="w-full px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
                                 >

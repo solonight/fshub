@@ -92,10 +92,16 @@ class SaleRecord extends Model
         return $this->total_amount - $this->total_paid;
     }
 
-    // Check if fully paid
+    // Check if fully paid (exactly equal, no overpayments allowed)
     public function isFullyPaid(): bool
     {
-        return $this->total_paid >= $this->total_amount;
+        return $this->total_paid == $this->total_amount;
+    }
+
+    // Check if partially paid
+    public function isPartiallyPaid(): bool
+    {
+        return $this->total_paid > 0 && $this->total_paid < $this->total_amount;
     }
 
     // Add a payment and update is_payed if fully paid

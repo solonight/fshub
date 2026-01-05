@@ -12,16 +12,20 @@ class PaymentController extends Controller
     {
         $request->validate([
             'amount' => 'required|numeric|min:0.01',
-            'notes' => 'nullable|string',
+            'password' => 'required',
         ]);
+
+        if (!\Hash::check($request->password, auth()->user()->password)) {
+            return response()->json(['error' => 'Invalid password.'], 422);
+        }
 
         if ($request->amount > $saleRecord->unpaid_amount) {
             return response()->json(['error' => 'Payment exceeds unpaid amount.'], 422);
         }
 
-        $saleRecord->addPayment($request->amount, ['notes' => $request->notes]);
+        $saleRecord->addPayment($request->amount, ['notes' => $request->notes ?? '']);
 
-        return response()->json(['message' => 'Payment recorded.']);
+        return redirect()->back()->with('success', 'Payment recorded.');
     }
 
     public function index(SaleRecord $saleRecord)
