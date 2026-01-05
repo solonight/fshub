@@ -105,9 +105,10 @@ class SaleRecord extends Model
     }
 
     // Add a payment and update is_payed if fully paid
-    public function addPayment(float $amount, array $data = [])
+    public function addPayment(float $amount)
     {
-        $this->payments()->create(array_merge(['amount' => $amount], $data));
+        $this->payments()->create(['amount' => $amount]);
+        $this->load('payments'); // Ensure payments are loaded for accurate sum
         if ($this->isFullyPaid()) {
             $this->update(['is_payed' => true]);
         }

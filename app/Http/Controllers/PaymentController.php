@@ -23,7 +23,7 @@ class PaymentController extends Controller
             return redirect()->back()->withErrors(['amount' => '']);
         }
 
-        $saleRecord->addPayment($request->amount, ['notes' => $request->notes ?? '']);
+        $saleRecord->addPayment($request->amount);
 
         return redirect()->back();
     }

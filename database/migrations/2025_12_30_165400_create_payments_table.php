@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('sale_record_id')->constrained('sale_records', 'record_id')->onDelete('cascade');
             $table->decimal('amount', 10, 2);
             $table->date('payment_date')->default(now());
-            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }
