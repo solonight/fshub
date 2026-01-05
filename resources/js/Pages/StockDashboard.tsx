@@ -71,6 +71,7 @@ export default function StockDashboard({
     // State for selected sale in payment modal
     const [selectedSale, setSelectedSale] = useState<any>(null);
     const [paymentAmount, setPaymentAmount] = useState("");
+    const [paymentError, setPaymentError] = useState("");
 
     // State for Sales to Return section visibility
     const [showSalesToReturn, setShowSalesToReturn] = useState(false);
@@ -203,6 +204,8 @@ export default function StockDashboard({
 
     // Handler to add payment
     const handleAddPayment = () => {
+        setPaymentError("");
+        setConfirmPasswordError("");
         if (confirmPassword !== confirmConfirmPassword) {
             setConfirmPasswordError("Passwords do not match.");
             return;
@@ -212,7 +215,7 @@ export default function StockDashboard({
             return;
         }
         if (!paymentAmount || parseFloat(paymentAmount) <= 0) {
-            setConfirmPasswordError("Valid payment amount is required.");
+            setPaymentError("Valid payment amount is required.");
             return;
         }
         router.post(
@@ -225,16 +228,14 @@ export default function StockDashboard({
                     setConfirmPassword("");
                     setConfirmConfirmPassword("");
                     setConfirmPasswordError("");
+                    setPaymentError("");
                     setSelectedSale(null);
                     setPaymentAmount("");
                     router.reload();
                 },
                 onError: (errors) => {
-                    setConfirmPasswordError(
-                        errors.amount?.[0] ||
-                            errors.password?.[0] ||
-                            "An error occurred."
-                    );
+                    setPaymentError(errors.amount?.[0] || "");
+                    setConfirmPasswordError(errors.password?.[0] || "Payment amount exceeds unpaid amount.");
                 },
             }
         );
@@ -1776,9 +1777,9 @@ export default function StockDashboard({
                                     className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
                                     required
                                 />
-                                {confirmPasswordError && (
+                                {paymentError && (
                                     <div className="text-red-500 text-sm mt-1">
-                                        {confirmPasswordError}
+                                        {paymentError}
                                     </div>
                                 )}
                             </div>
@@ -1811,6 +1812,11 @@ export default function StockDashboard({
                                     placeholder="Confirm your password"
                                     className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
                                 />
+                                {confirmPasswordError && (
+                                    <div className="text-red-500 text-sm mt-1">
+                                        {confirmPasswordError}
+                                    </div>
+                                )}
                             </div>
                             <div className="flex gap-2">
                                 <button
@@ -1825,6 +1831,7 @@ export default function StockDashboard({
                                         setConfirmPassword("");
                                         setConfirmConfirmPassword("");
                                         setConfirmPasswordError("");
+                                        setPaymentError("");
                                         setSelectedSale(null);
                                         setPaymentAmount("");
                                     }}

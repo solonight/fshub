@@ -20,12 +20,12 @@ class PaymentController extends Controller
         }
 
         if ($request->amount > $saleRecord->unpaid_amount) {
-            return redirect()->back()->withErrors(['amount' => 'Payment exceeds unpaid amount.']);
+            return redirect()->back()->withErrors(['amount' => '']);
         }
 
         $saleRecord->addPayment($request->amount, ['notes' => $request->notes ?? '']);
 
-        return redirect()->back()->with('success', 'Payment recorded.');
+        return redirect()->back();
     }
 
     public function index(SaleRecord $saleRecord)
