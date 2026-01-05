@@ -231,7 +231,9 @@ export default function StockDashboard({
                 },
                 onError: (errors) => {
                     setConfirmPasswordError(
-                        (errors as any).error || "An error occurred."
+                        errors.amount?.[0] ||
+                            errors.password?.[0] ||
+                            "An error occurred."
                     );
                 },
             }
@@ -1774,6 +1776,11 @@ export default function StockDashboard({
                                     className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
                                     required
                                 />
+                                {confirmPasswordError && (
+                                    <div className="text-red-500 text-sm mt-1">
+                                        {confirmPasswordError}
+                                    </div>
+                                )}
                             </div>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium mb-1">
@@ -1805,11 +1812,6 @@ export default function StockDashboard({
                                     className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
                                 />
                             </div>
-                            {confirmPasswordError && (
-                                <div className="text-red-500 text-sm mb-4">
-                                    {confirmPasswordError}
-                                </div>
-                            )}
                             <div className="flex gap-2">
                                 <button
                                     onClick={handleAddPayment}

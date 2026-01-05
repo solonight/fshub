@@ -16,11 +16,11 @@ class PaymentController extends Controller
         ]);
 
         if (!\Hash::check($request->password, auth()->user()->password)) {
-            return response()->json(['error' => 'Invalid password.'], 422);
+            return redirect()->back()->withErrors(['password' => 'Invalid password.']);
         }
 
         if ($request->amount > $saleRecord->unpaid_amount) {
-            return response()->json(['error' => 'Payment exceeds unpaid amount.'], 422);
+            return redirect()->back()->withErrors(['amount' => 'Payment exceeds unpaid amount.']);
         }
 
         $saleRecord->addPayment($request->amount, ['notes' => $request->notes ?? '']);
