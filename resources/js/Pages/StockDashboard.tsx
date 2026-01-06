@@ -24,6 +24,15 @@ export default function StockDashboard({
         return parseFloat(sale.total_amount) - paidAmount;
     };
 
+    const getBackgroundColor = (sale: any) => {
+        const total = parseFloat(sale.total_amount) || 0;
+        const toPay = calculateToPay(sale);
+        const paid = total - toPay;
+        const percentage = total > 0 ? (paid / total) * 100 : 0;
+        const hue = (percentage / 100) * 120; // 0 to 120
+        return `hsla(${hue}, 100%, 50%, 0.7)`;
+    };
+
     // Delete handler for a stock
     const handleDelete = (stockId: number) => {
         setSelectedStockIdForDelete(stockId);
@@ -1529,7 +1538,15 @@ export default function StockDashboard({
                                                         <span className="font-semibold">
                                                             To Pay:
                                                         </span>
-                                                        <span className="bg-red-500 text-white px-2 py-1 rounded ml-2">
+                                                        <span
+                                                            className="text-white px-2 py-1 rounded ml-2"
+                                                            style={{
+                                                                backgroundColor:
+                                                                    getBackgroundColor(
+                                                                        sale
+                                                                    ),
+                                                            }}
+                                                        >
                                                             {calculateToPay(
                                                                 sale
                                                             ).toLocaleString(
