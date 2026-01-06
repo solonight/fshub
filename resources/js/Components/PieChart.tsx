@@ -40,7 +40,7 @@ const PieChart: React.FC<PieChartProps> = ({ data, height = 400 }) => (
                 arcLinkLabelsTextColor="#D9D9D9" // light text for dark bg
                 arcLinkLabelsThickness={2}
                 arcLinkLabelsColor={{ from: "color" }}
-                arcLabelsSkipAngle={10}
+                arcLabelsSkipAngle={25}
                 arcLabelsTextColor={{
                     from: "color",
                     modifiers: [["brighter", 2]], // make text lighter
