@@ -14,6 +14,16 @@ export default function StockDashboard({
     unpaidSales,
     paidSales,
 }: any) {
+    const calculateToPay = (sale: any) => {
+        const paidAmount =
+            sale.payments?.reduce(
+                (sum: number, payment: any) =>
+                    sum + (parseFloat(payment.amount) || 0),
+                0
+            ) || 0;
+        return parseFloat(sale.total_amount) - paidAmount;
+    };
+
     // Delete handler for a stock
     const handleDelete = (stockId: number) => {
         setSelectedStockIdForDelete(stockId);
@@ -235,7 +245,10 @@ export default function StockDashboard({
                 },
                 onError: (errors) => {
                     setPaymentError(errors.amount?.[0] || "");
-                    setConfirmPasswordError(errors.password?.[0] || "Payment amount exceeds unpaid amount.");
+                    setConfirmPasswordError(
+                        errors.password?.[0] ||
+                            "Payment amount exceeds unpaid amount."
+                    );
                 },
             }
         );
@@ -1516,19 +1529,18 @@ export default function StockDashboard({
                                                     </div>
                                                     <div className="mb-2">
                                                         <span className="font-semibold">
-                                                            Total Amount:
+                                                            To Pay:
                                                         </span>
                                                         <span className="bg-red-500 text-white px-2 py-1 rounded ml-2">
-                                                            {Number(
-                                                                sale.total_amount
-                                                            )
-                                                                .toLocaleString(
-                                                                    "en-US"
-                                                                )
-                                                                .replace(
-                                                                    /,/g,
-                                                                    "."
-                                                                )}{" "}
+                                                            {calculateToPay(
+                                                                sale
+                                                            ).toLocaleString(
+                                                                "de-DE",
+                                                                {
+                                                                    minimumFractionDigits: 0,
+                                                                    maximumFractionDigits: 0,
+                                                                }
+                                                            )}{" "}
                                                             MAD
                                                         </span>
                                                     </div>
