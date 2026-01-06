@@ -298,8 +298,7 @@ export default function StockDashboard({
                 (sale: any) => sale.stock_id == selectedStockForChart.stock_id
             ) || [];
         unpaidAmount = filteredUnpaid.reduce(
-            (sum: number, sale: any) =>
-                sum + (parseFloat(sale.total_amount) || 0),
+            (sum: number, sale: any) => sum + calculateToPay(sale),
             0
         );
         paidAmount = filteredPaid.reduce(
@@ -319,8 +318,7 @@ export default function StockDashboard({
             ) || 0;
         unpaidAmount =
             unpaidSales?.reduce(
-                (sum: number, sale: any) =>
-                    sum + (parseFloat(sale.total_amount) || 0),
+                (sum: number, sale: any) => sum + calculateToPay(sale),
                 0
             ) || 0;
         paidAmount =
