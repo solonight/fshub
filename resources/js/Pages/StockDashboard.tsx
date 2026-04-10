@@ -74,6 +74,8 @@ export default function StockDashboard({
         notes: "",
     });
     const [returnError, setReturnError] = useState<string | null>(null);
+    const [returnPassword, setReturnPassword] = useState("");
+    const [returnConfirmPassword, setReturnConfirmPassword] = useState("");
 
     // State for Update Stock form
     const [selectedStockForUpdate, setSelectedStockForUpdate] =
@@ -236,6 +238,8 @@ export default function StockDashboard({
             returned_amount: "",
             notes: "",
         });
+        setReturnPassword("");
+        setReturnConfirmPassword("");
         setReturnError(null);
         setShowReturnModal(true);
     };
@@ -248,6 +252,8 @@ export default function StockDashboard({
             returned_amount: "",
             notes: "",
         });
+        setReturnPassword("");
+        setReturnConfirmPassword("");
         setReturnError(null);
     };
 
@@ -273,12 +279,23 @@ export default function StockDashboard({
             return;
         }
 
+        if (!returnPassword.trim()) {
+            setReturnError("Password is required to confirm the return.");
+            return;
+        }
+
+        if (returnPassword !== returnConfirmPassword) {
+            setReturnError("Passwords do not match.");
+            return;
+        }
+
         router.post(
             `/sales-records/${selectedReturnSale.record_id}/return`,
             {
                 returned_quantity: returnForm.returned_quantity,
                 returned_amount: returnForm.returned_amount,
                 notes: returnForm.notes,
+                password: returnPassword,
             },
             {
                 preserveScroll: true,
@@ -1946,6 +1963,36 @@ export default function StockDashboard({
                                         }
                                         className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
                                         rows={3}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">
+                                        Password
+                                    </label>
+                                    <input
+                                        type="password"
+                                        value={returnPassword}
+                                        onChange={(e) =>
+                                            setReturnPassword(e.target.value)
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">
+                                        Confirm Password
+                                    </label>
+                                    <input
+                                        type="password"
+                                        value={returnConfirmPassword}
+                                        onChange={(e) =>
+                                            setReturnConfirmPassword(
+                                                e.target.value,
+                                            )
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                        required
                                     />
                                 </div>
                                 {returnError && (
