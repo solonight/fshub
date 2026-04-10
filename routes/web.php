@@ -96,8 +96,18 @@ Route::middleware(['auth', 'role:StockOwner'])->group(function () {
     Route::get('/stock-dashboard', function () {
         $user = Auth::user();
         $fabricStocks = \App\Models\FabricStock::where('user_id', $user->id)->orderByDesc('created_at')->paginate(20);
-        $unpaidSales = \App\Models\SaleRecord::where('user_id', $user->id)->where('is_payed', false)->with('payments')->get();
-        $paidSales = \App\Models\SaleRecord::where('user_id', $user->id)->where('is_payed', true)->get();
+        $unpaidSales = \App\Models\SaleRecord::where('user_id', $user->id)
+            ->where('is_payed', false)
+            ->with(['payments', 'returns'])
+            ->get()
+            ->filter(fn ($sale) => $sale->net_quantity_sold > 0)
+            ->values();
+        $paidSales = \App\Models\SaleRecord::where('user_id', $user->id)
+            ->where('is_payed', true)
+            ->with(['payments', 'returns'])
+            ->get()
+            ->filter(fn ($sale) => $sale->net_quantity_sold > 0)
+            ->values();
         return Inertia::render('StockDashboard', [
             'auth' => [
                 'user' => $user,

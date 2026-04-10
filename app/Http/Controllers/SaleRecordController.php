@@ -121,11 +121,23 @@ class SaleRecordController extends Controller
 
         // Check if return exceeds available net quantity
         if ($request->returned_quantity > $saleRecord->net_quantity_sold) {
+            if ($request->header('X-Inertia')) {
+                return back()->withErrors([
+                    'returned_quantity' => 'Returned quantity exceeds available net quantity.',
+                ])->withInput();
+            }
+
             return response()->json(['error' => 'Returned quantity exceeds available net quantity.'], 400);
         }
 
         // Check if return exceeds current total_amount
         if ($request->returned_amount > $saleRecord->total_amount) {
+            if ($request->header('X-Inertia')) {
+                return back()->withErrors([
+                    'returned_amount' => 'Returned amount exceeds total amount.',
+                ])->withInput();
+            }
+
             return response()->json(['error' => 'Returned amount exceeds total amount.'], 400);
         }
 
@@ -136,6 +148,10 @@ class SaleRecordController extends Controller
             'returned_amount' => $request->returned_amount,
             'notes' => $request->notes
         ]);
+
+        if ($request->header('X-Inertia')) {
+            return redirect()->back()->with('success', 'Return processed successfully.');
+        }
 
         return response()->json(['message' => 'Return processed successfully.']);
     }

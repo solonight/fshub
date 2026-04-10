@@ -19,7 +19,7 @@ export default function StockDashboard({
             sale.payments?.reduce(
                 (sum: number, payment: any) =>
                     sum + (parseFloat(payment.amount) || 0),
-                0
+                0,
             ) || 0;
         return parseFloat(sale.total_amount) - paidAmount;
     };
@@ -66,6 +66,14 @@ export default function StockDashboard({
     // State for Return Sale
     const [selectedStockForReturn, setSelectedStockForReturn] =
         useState<any>(null);
+    const [selectedReturnSale, setSelectedReturnSale] = useState<any>(null);
+    const [showReturnModal, setShowReturnModal] = useState(false);
+    const [returnForm, setReturnForm] = useState({
+        returned_quantity: "",
+        returned_amount: "",
+        notes: "",
+    });
+    const [returnError, setReturnError] = useState<string | null>(null);
 
     // State for Update Stock form
     const [selectedStockForUpdate, setSelectedStockForUpdate] =
@@ -121,7 +129,7 @@ export default function StockDashboard({
                     setPaymentAmount("");
                     router.reload();
                 },
-            }
+            },
         );
     };
 
@@ -165,7 +173,7 @@ export default function StockDashboard({
                 onSuccess: () => {
                     setSelectedStockForUpdate(null);
                 },
-            }
+            },
         );
     };
 
@@ -217,7 +225,77 @@ export default function StockDashboard({
                         setSaleError(errors.message);
                     }
                 },
-            }
+            },
+        );
+    };
+
+    const openReturnModal = (sale: any) => {
+        setSelectedReturnSale(sale);
+        setReturnForm({
+            returned_quantity: "",
+            returned_amount: "",
+            notes: "",
+        });
+        setReturnError(null);
+        setShowReturnModal(true);
+    };
+
+    const closeReturnModal = () => {
+        setShowReturnModal(false);
+        setSelectedReturnSale(null);
+        setReturnForm({
+            returned_quantity: "",
+            returned_amount: "",
+            notes: "",
+        });
+        setReturnError(null);
+    };
+
+    const handleReturnSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!selectedReturnSale) {
+            return;
+        }
+
+        if (
+            !returnForm.returned_quantity ||
+            parseFloat(returnForm.returned_quantity) <= 0
+        ) {
+            setReturnError("Returned quantity must be greater than 0.");
+            return;
+        }
+
+        if (
+            !returnForm.returned_amount ||
+            parseFloat(returnForm.returned_amount) <= 0
+        ) {
+            setReturnError("Returned amount must be greater than 0.");
+            return;
+        }
+
+        router.post(
+            `/sales-records/${selectedReturnSale.record_id}/return`,
+            {
+                returned_quantity: returnForm.returned_quantity,
+                returned_amount: returnForm.returned_amount,
+                notes: returnForm.notes,
+            },
+            {
+                preserveScroll: true,
+                onSuccess: () => {
+                    closeReturnModal();
+                    router.reload();
+                },
+                onError: (errors) => {
+                    setReturnError(
+                        errors.returned_quantity?.[0] ||
+                            errors.returned_amount?.[0] ||
+                            errors.notes?.[0] ||
+                            errors.message ||
+                            "Unable to process return.",
+                    );
+                },
+            },
         );
     };
 
@@ -256,10 +334,10 @@ export default function StockDashboard({
                     setPaymentError(errors.amount?.[0] || "");
                     setConfirmPasswordError(
                         errors.password?.[0] ||
-                            "Payment amount exceeds unpaid amount."
+                            "Payment amount exceeds unpaid amount.",
                     );
                 },
-            }
+            },
         );
     };
 
@@ -284,7 +362,7 @@ export default function StockDashboard({
         setExpandedStockIds((prev) =>
             prev.includes(stockId)
                 ? prev.filter((id) => id !== stockId)
-                : [...prev, stockId]
+                : [...prev, stockId],
         );
     };
 
@@ -300,20 +378,20 @@ export default function StockDashboard({
             (parseFloat(selectedStockForChart.price_per_unit) || 0);
         const filteredUnpaid =
             unpaidSales?.filter(
-                (sale: any) => sale.stock_id == selectedStockForChart.stock_id
+                (sale: any) => sale.stock_id == selectedStockForChart.stock_id,
             ) || [];
         const filteredPaid =
             paidSales?.filter(
-                (sale: any) => sale.stock_id == selectedStockForChart.stock_id
+                (sale: any) => sale.stock_id == selectedStockForChart.stock_id,
             ) || [];
         unpaidAmount = filteredUnpaid.reduce(
             (sum: number, sale: any) => sum + calculateToPay(sale),
-            0
+            0,
         );
         paidAmount = filteredPaid.reduce(
             (sum: number, sale: any) =>
                 sum + (parseFloat(sale.total_amount) || 0),
-            0
+            0,
         );
     } else {
         // For all stocks
@@ -323,18 +401,18 @@ export default function StockDashboard({
                     sum +
                     (stock.available_quantity || 0) *
                         (parseFloat(stock.price_per_unit) || 0),
-                0
+                0,
             ) || 0;
         unpaidAmount =
             unpaidSales?.reduce(
                 (sum: number, sale: any) => sum + calculateToPay(sale),
-                0
+                0,
             ) || 0;
         paidAmount =
             paidSales?.reduce(
                 (sum: number, sale: any) =>
                     sum + (parseFloat(sale.total_amount) || 0),
-                0
+                0,
             ) || 0;
     }
 
@@ -464,7 +542,7 @@ export default function StockDashboard({
                                                 onChange={(e) =>
                                                     setData(
                                                         "fabric_type",
-                                                        e.target.value
+                                                        e.target.value,
                                                     )
                                                 }
                                                 className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
@@ -530,7 +608,7 @@ export default function StockDashboard({
                                                 onChange={(e) =>
                                                     setData(
                                                         "stock_location",
-                                                        e.target.value
+                                                        e.target.value,
                                                     )
                                                 }
                                                 className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
@@ -546,7 +624,7 @@ export default function StockDashboard({
                                                 onChange={(e) =>
                                                     setData(
                                                         "color",
-                                                        e.target.value
+                                                        e.target.value,
                                                     )
                                                 }
                                                 className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
@@ -563,7 +641,7 @@ export default function StockDashboard({
                                                 onChange={(e) =>
                                                     setData(
                                                         "price_per_unit",
-                                                        e.target.value
+                                                        e.target.value,
                                                     )
                                                 }
                                                 className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
@@ -580,7 +658,7 @@ export default function StockDashboard({
                                                 onChange={(e) =>
                                                     setData(
                                                         "total_quantity",
-                                                        e.target.value
+                                                        e.target.value,
                                                     )
                                                 }
                                                 className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
@@ -596,7 +674,7 @@ export default function StockDashboard({
                                                 onChange={(e) =>
                                                     setData(
                                                         "description",
-                                                        e.target.value
+                                                        e.target.value,
                                                     )
                                                 }
                                                 className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
@@ -611,7 +689,7 @@ export default function StockDashboard({
                                                 onChange={(e) =>
                                                     setData(
                                                         "samples_availability",
-                                                        e.target.checked
+                                                        e.target.checked,
                                                     )
                                                 }
                                                 className="mr-2"
@@ -665,16 +743,17 @@ export default function StockDashboard({
                                                 const id = e.target.value;
                                                 if (id === "") {
                                                     setSelectedStockForChart(
-                                                        null
+                                                        null,
                                                     );
                                                 } else {
                                                     const stock =
                                                         fabricStocks?.data?.find(
                                                             (s: any) =>
-                                                                s.stock_id == id
+                                                                s.stock_id ==
+                                                                id,
                                                         );
                                                     setSelectedStockForChart(
-                                                        stock || null
+                                                        stock || null,
                                                     );
                                                 }
                                             }}
@@ -691,7 +770,7 @@ export default function StockDashboard({
                                                         - {stock.fabric_type}{" "}
                                                         {stock.color}
                                                     </option>
-                                                )
+                                                ),
                                             )}
                                         </select>
                                     )}
@@ -701,7 +780,7 @@ export default function StockDashboard({
                                             className="w-full sm:w-60 border rounded px-3 py-2 text-[#1D1B1B] bg-white dark:bg-[#232323] dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 font-semibold shadow text-center"
                                             onClick={() =>
                                                 setShowFirstHalf(
-                                                    (prev) => !prev
+                                                    (prev) => !prev,
                                                 )
                                             }
                                         >
@@ -801,14 +880,14 @@ export default function StockDashboard({
                                                             </span>
                                                             <span className="text-xs">
                                                                 {Number(
-                                                                    stock.price_per_unit
+                                                                    stock.price_per_unit,
                                                                 )
                                                                     .toLocaleString(
-                                                                        "en-US"
+                                                                        "en-US",
                                                                     )
                                                                     .replace(
                                                                         /,/g,
-                                                                        "."
+                                                                        ".",
                                                                     )}{" "}
                                                                 MAD/m
                                                             </span>
@@ -819,32 +898,33 @@ export default function StockDashboard({
                                                             </span>
                                                             <span className="text-xs">
                                                                 {Number(
-                                                                    stock.total_quantity
+                                                                    stock.total_quantity,
                                                                 )
                                                                     .toLocaleString(
-                                                                        "en-US"
+                                                                        "en-US",
                                                                     )
                                                                     .replace(
                                                                         /,/g,
-                                                                        "."
+                                                                        ".",
                                                                     )}{" "}
                                                                 /meter
                                                             </span>
                                                         </div>
                                                         <div className="mb-2">
                                                             <span className="font-semibold text-xs text-gray-700 dark:text-gray-200">
-                                                                Available Qty:{" "}
+                                                                Available
+                                                                Qty:{" "}
                                                             </span>
                                                             <span className="text-xs">
                                                                 {Number(
-                                                                    stock.available_quantity
+                                                                    stock.available_quantity,
                                                                 )
                                                                     .toLocaleString(
-                                                                        "en-US"
+                                                                        "en-US",
                                                                     )
                                                                     .replace(
                                                                         /,/g,
-                                                                        "."
+                                                                        ".",
                                                                     )}{" "}
                                                                 /meter
                                                             </span>
@@ -853,21 +933,21 @@ export default function StockDashboard({
                                                             <button
                                                                 onClick={() => {
                                                                     setSelectedStockForSale(
-                                                                        stock
+                                                                        stock,
                                                                     );
                                                                     setTimeout(
                                                                         () =>
                                                                             document
                                                                                 .getElementById(
-                                                                                    "add-sale-form"
+                                                                                    "add-sale-form",
                                                                                 )
                                                                                 ?.scrollIntoView(
                                                                                     {
                                                                                         behavior:
                                                                                             "smooth",
-                                                                                    }
+                                                                                    },
                                                                                 ),
-                                                                        100
+                                                                        100,
                                                                     );
                                                                 }}
                                                                 className="w-full sm:w-auto px-2 sm:px-3 py-1 bg-green-500 text-white text-xs sm:text-sm rounded hover:bg-green-600 transition-colors"
@@ -882,17 +962,17 @@ export default function StockDashboard({
                                                                             stock.stock_id
                                                                     ) {
                                                                         setShowSalesToReturn(
-                                                                            false
+                                                                            false,
                                                                         );
                                                                         setSelectedStockForReturn(
-                                                                            null
+                                                                            null,
                                                                         );
                                                                     } else {
                                                                         setSelectedStockForReturn(
-                                                                            stock
+                                                                            stock,
                                                                         );
                                                                         setShowSalesToReturn(
-                                                                            true
+                                                                            true,
                                                                         );
                                                                     }
                                                                 }}
@@ -903,21 +983,21 @@ export default function StockDashboard({
                                                             <button
                                                                 onClick={() => {
                                                                     handleUpdateClick(
-                                                                        stock
+                                                                        stock,
                                                                     );
                                                                     setTimeout(
                                                                         () =>
                                                                             document
                                                                                 .getElementById(
-                                                                                    "update-stock-form"
+                                                                                    "update-stock-form",
                                                                                 )
                                                                                 ?.scrollIntoView(
                                                                                     {
                                                                                         behavior:
                                                                                             "smooth",
-                                                                                    }
+                                                                                    },
                                                                                 ),
-                                                                        100
+                                                                        100,
                                                                     );
                                                                 }}
                                                                 className="w-full sm:w-auto px-2 sm:px-3 py-1 bg-yellow-400 text-black text-xs sm:text-sm rounded hover:bg-yellow-500 transition-colors"
@@ -927,7 +1007,7 @@ export default function StockDashboard({
                                                             <button
                                                                 onClick={() =>
                                                                     handleDelete(
-                                                                        stock.stock_id
+                                                                        stock.stock_id,
                                                                     )
                                                                 }
                                                                 className="w-full sm:w-auto px-2 sm:px-3 py-1 bg-red-500 text-white text-xs sm:text-sm rounded hover:bg-red-600 transition-colors"
@@ -936,7 +1016,7 @@ export default function StockDashboard({
                                                             </button>
                                                         </div>
                                                     </div>
-                                                )
+                                                ),
                                             )}
                                     </div>
                                 )}
@@ -989,7 +1069,7 @@ export default function StockDashboard({
                                                 className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
                                                 autoComplete="tel"
                                                 onChange={(
-                                                    e: React.ChangeEvent<HTMLInputElement>
+                                                    e: React.ChangeEvent<HTMLInputElement>,
                                                 ) =>
                                                     setSaleForm({
                                                         ...saleForm,
@@ -1112,7 +1192,7 @@ export default function StockDashboard({
                                                 className="w-full px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
                                                 onClick={() =>
                                                     setSelectedStockForSale(
-                                                        null
+                                                        null,
                                                     )
                                                 }
                                             >
@@ -1345,7 +1425,7 @@ export default function StockDashboard({
                                                 className="w-full px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
                                                 onClick={() =>
                                                     setSelectedStockForUpdate(
-                                                        null
+                                                        null,
                                                     )
                                                 }
                                             >
@@ -1367,12 +1447,12 @@ export default function StockDashboard({
                                             ...(paidSales || []).filter(
                                                 (sale: any) =>
                                                     sale.stock_id ===
-                                                    selectedStockForReturn.stock_id
+                                                    selectedStockForReturn.stock_id,
                                             ),
                                             ...(unpaidSales || []).filter(
                                                 (sale: any) =>
                                                     sale.stock_id ===
-                                                    selectedStockForReturn.stock_id
+                                                    selectedStockForReturn.stock_id,
                                             ),
                                         ];
                                         return stockSales.length > 0 ? (
@@ -1405,14 +1485,14 @@ export default function StockDashboard({
                                                                 Quantity Sold:
                                                             </span>{" "}
                                                             {Number(
-                                                                sale.quantity_sold
+                                                                sale.quantity_sold,
                                                             )
                                                                 .toLocaleString(
-                                                                    "en-US"
+                                                                    "en-US",
                                                                 )
                                                                 .replace(
                                                                     /,/g,
-                                                                    "."
+                                                                    ".",
                                                                 )}{" "}
                                                             /meter
                                                         </div>
@@ -1421,14 +1501,14 @@ export default function StockDashboard({
                                                                 Total Amount:
                                                             </span>{" "}
                                                             {Number(
-                                                                sale.total_amount
+                                                                sale.total_amount,
                                                             )
                                                                 .toLocaleString(
-                                                                    "en-US"
+                                                                    "en-US",
                                                                 )
                                                                 .replace(
                                                                     /,/g,
-                                                                    "."
+                                                                    ".",
                                                                 )}{" "}
                                                             MAD
                                                         </div>
@@ -1453,7 +1533,7 @@ export default function StockDashboard({
                                                                 Sale Date:
                                                             </span>{" "}
                                                             {new Date(
-                                                                sale.sale_date
+                                                                sale.sale_date,
                                                             ).toLocaleDateString()}
                                                         </div>
                                                         {sale.notes && (
@@ -1464,6 +1544,16 @@ export default function StockDashboard({
                                                                 {sale.notes}
                                                             </div>
                                                         )}
+                                                        <button
+                                                            onClick={() =>
+                                                                openReturnModal(
+                                                                    sale,
+                                                                )
+                                                            }
+                                                            className="mt-auto px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition-colors"
+                                                        >
+                                                            Return
+                                                        </button>
                                                     </div>
                                                 ))}
                                             </div>
@@ -1507,14 +1597,14 @@ export default function StockDashboard({
                                                             Quantity Sold:
                                                         </span>{" "}
                                                         {Number(
-                                                            sale.quantity_sold
+                                                            sale.quantity_sold,
                                                         )
                                                             .toLocaleString(
-                                                                "en-US"
+                                                                "en-US",
                                                             )
                                                             .replace(
                                                                 /,/g,
-                                                                "."
+                                                                ".",
                                                             )}{" "}
                                                         /meter
                                                     </div>
@@ -1523,7 +1613,7 @@ export default function StockDashboard({
                                                             Fabric Type:
                                                         </span>{" "}
                                                         {stockMap.get(
-                                                            sale.stock_id
+                                                            sale.stock_id,
                                                         )}
                                                     </div>
                                                     <div className="mb-2">
@@ -1531,7 +1621,7 @@ export default function StockDashboard({
                                                             Color:
                                                         </span>{" "}
                                                         {colorMap.get(
-                                                            sale.stock_id
+                                                            sale.stock_id,
                                                         )}
                                                     </div>
                                                     <div className="mb-2">
@@ -1543,18 +1633,18 @@ export default function StockDashboard({
                                                             style={{
                                                                 backgroundColor:
                                                                     getBackgroundColor(
-                                                                        sale
+                                                                        sale,
                                                                     ),
                                                             }}
                                                         >
                                                             {calculateToPay(
-                                                                sale
+                                                                sale,
                                                             ).toLocaleString(
                                                                 "de-DE",
                                                                 {
                                                                     minimumFractionDigits: 0,
                                                                     maximumFractionDigits: 0,
-                                                                }
+                                                                },
                                                             )}{" "}
                                                             MAD
                                                         </span>
@@ -1565,7 +1655,7 @@ export default function StockDashboard({
                                                         </span>{" "}
                                                         {sale.sale_date
                                                             ? sale.sale_date.split(
-                                                                  "T"
+                                                                  "T",
                                                               )[0]
                                                             : ""}
                                                     </div>
@@ -1579,20 +1669,30 @@ export default function StockDashboard({
                                                         className="mt-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors font-bold"
                                                         onClick={() => {
                                                             setSelectedSale(
-                                                                sale
+                                                                sale,
                                                             );
                                                             setPaymentAmount(
                                                                 (
                                                                     sale.unpaid_amount ||
                                                                     0
-                                                                ).toString()
+                                                                ).toString(),
                                                             );
                                                             setShowConfirmPaid(
-                                                                true
+                                                                true,
                                                             );
                                                         }}
                                                     >
                                                         Pay
+                                                    </button>
+                                                    <button
+                                                        className="mt-2 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition-colors font-bold"
+                                                        onClick={() =>
+                                                            openReturnModal(
+                                                                sale,
+                                                            )
+                                                        }
+                                                    >
+                                                        Return
                                                     </button>
                                                 </div>
                                             ))}
@@ -1620,7 +1720,7 @@ export default function StockDashboard({
                                               0 ? (
                                             <div className="space-y-4">
                                                 {Object.entries(
-                                                    stockHistories
+                                                    stockHistories,
                                                 ).map(
                                                     ([stockId, histories]) => (
                                                         <div key={stockId}>
@@ -1628,8 +1728,8 @@ export default function StockDashboard({
                                                                 className={`w-full text-left px-4 py-2 rounded font-semibold border border-primary bg-muted dark:bg-dark hover:bg-primary hover:text-white transition-colors ${
                                                                     expandedStockIds.includes(
                                                                         Number(
-                                                                            stockId
-                                                                        )
+                                                                            stockId,
+                                                                        ),
                                                                     )
                                                                         ? "bg-primary text-white"
                                                                         : ""
@@ -1637,21 +1737,21 @@ export default function StockDashboard({
                                                                 onClick={() =>
                                                                     toggleExpand(
                                                                         Number(
-                                                                            stockId
-                                                                        )
+                                                                            stockId,
+                                                                        ),
                                                                     )
                                                                 }
                                                             >
                                                                 Stock #{stockId}{" "}
                                                                 (
                                                                 {Array.isArray(
-                                                                    histories
+                                                                    histories,
                                                                 )
                                                                     ? histories.length
                                                                     : 0}{" "}
                                                                 history record
                                                                 {Array.isArray(
-                                                                    histories
+                                                                    histories,
                                                                 ) &&
                                                                 histories.length >
                                                                     1
@@ -1660,15 +1760,15 @@ export default function StockDashboard({
                                                                 )
                                                             </button>
                                                             {expandedStockIds.includes(
-                                                                Number(stockId)
+                                                                Number(stockId),
                                                             ) &&
                                                                 Array.isArray(
-                                                                    histories
+                                                                    histories,
                                                                 ) && (
                                                                     <div className="pl-6 pt-2">
                                                                         {histories.map(
                                                                             (
-                                                                                history: any
+                                                                                history: any,
                                                                             ) => (
                                                                                 <div
                                                                                     key={
@@ -1686,14 +1786,14 @@ export default function StockDashboard({
                                                                                     <div>
                                                                                         Quantity:{" "}
                                                                                         {Number(
-                                                                                            history.quantity
+                                                                                            history.quantity,
                                                                                         )
                                                                                             .toLocaleString(
-                                                                                                "en-US"
+                                                                                                "en-US",
                                                                                             )
                                                                                             .replace(
                                                                                                 /,/g,
-                                                                                                "."
+                                                                                                ".",
                                                                                             )}
                                                                                     </div>
                                                                                     <div>
@@ -1743,14 +1843,14 @@ export default function StockDashboard({
                                                                                         Unit:{" "}
                                                                                         {history.price_per_unit_snapshot
                                                                                             ? `${Number(
-                                                                                                  history.price_per_unit_snapshot
+                                                                                                  history.price_per_unit_snapshot,
                                                                                               )
                                                                                                   .toLocaleString(
-                                                                                                      "en-US"
+                                                                                                      "en-US",
                                                                                                   )
                                                                                                   .replace(
                                                                                                       /,/g,
-                                                                                                      "."
+                                                                                                      ".",
                                                                                                   )} MAD`
                                                                                             : "-"}
                                                                                     </div>
@@ -1758,17 +1858,17 @@ export default function StockDashboard({
                                                                                         Date:{" "}
                                                                                         {history.created_at
                                                                                             ? new Date(
-                                                                                                  history.created_at
+                                                                                                  history.created_at,
                                                                                               ).toLocaleString()
                                                                                             : "-"}
                                                                                     </div>
                                                                                 </div>
-                                                                            )
+                                                                            ),
                                                                         )}
                                                                     </div>
                                                                 )}
                                                         </div>
-                                                    )
+                                                    ),
                                                 )}
                                             </div>
                                         ) : (
@@ -1781,6 +1881,97 @@ export default function StockDashboard({
                         </>
                     )}
                 </div>
+
+                {/* Return Sale Modal */}
+                {showReturnModal && selectedReturnSale && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="bg-white dark:bg-[#232323] p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
+                            <h3 className="text-lg font-bold mb-4 text-center">
+                                Return Sale #{selectedReturnSale.record_id}
+                            </h3>
+                            <form
+                                onSubmit={handleReturnSubmit}
+                                className="space-y-4"
+                            >
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">
+                                        Returned Quantity
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="0.01"
+                                        step="0.01"
+                                        value={returnForm.returned_quantity}
+                                        onChange={(e) =>
+                                            setReturnForm({
+                                                ...returnForm,
+                                                returned_quantity:
+                                                    e.target.value,
+                                            })
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">
+                                        Returned Amount (MAD)
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="0.01"
+                                        step="0.01"
+                                        value={returnForm.returned_amount}
+                                        onChange={(e) =>
+                                            setReturnForm({
+                                                ...returnForm,
+                                                returned_amount: e.target.value,
+                                            })
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">
+                                        Notes
+                                    </label>
+                                    <textarea
+                                        value={returnForm.notes}
+                                        onChange={(e) =>
+                                            setReturnForm({
+                                                ...returnForm,
+                                                notes: e.target.value,
+                                            })
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                        rows={3}
+                                    />
+                                </div>
+                                {returnError && (
+                                    <div className="text-red-500 text-sm">
+                                        {returnError}
+                                    </div>
+                                )}
+                                <div className="flex gap-2">
+                                    <button
+                                        type="submit"
+                                        className="w-full px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600"
+                                    >
+                                        Confirm Return
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="w-full px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+                                        onClick={closeReturnModal}
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
 
                 {/* Confirmation Modal for Marking as Paid */}
                 {showConfirmPaid && (
@@ -1833,7 +2024,7 @@ export default function StockDashboard({
                                     value={confirmConfirmPassword}
                                     onChange={(e) =>
                                         setConfirmConfirmPassword(
-                                            e.target.value
+                                            e.target.value,
                                         )
                                     }
                                     placeholder="Confirm your password"
@@ -1901,7 +2092,7 @@ export default function StockDashboard({
                                     value={confirmDeleteConfirmPassword}
                                     onChange={(e) =>
                                         setConfirmDeleteConfirmPassword(
-                                            e.target.value
+                                            e.target.value,
                                         )
                                     }
                                     placeholder="Confirm your password"
@@ -1921,13 +2112,13 @@ export default function StockDashboard({
                                             confirmDeleteConfirmPassword
                                         ) {
                                             setConfirmDeleteError(
-                                                "Passwords do not match"
+                                                "Passwords do not match",
                                             );
                                             return;
                                         }
                                         if (!confirmDeletePassword.trim()) {
                                             setConfirmDeleteError(
-                                                "Password is required"
+                                                "Password is required",
                                             );
                                             return;
                                         }
@@ -1935,7 +2126,7 @@ export default function StockDashboard({
                                         if (selectedStockIdForDelete) {
                                             handleConfirmDelete(
                                                 selectedStockIdForDelete,
-                                                confirmDeletePassword
+                                                confirmDeletePassword,
                                             );
                                         }
                                     }}
