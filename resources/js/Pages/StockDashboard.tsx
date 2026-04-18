@@ -1584,16 +1584,18 @@ export default function StockDashboard({
                                                                 {sale.notes}
                                                             </div>
                                                         )}
-                                                        <button
-                                                            onClick={() =>
-                                                                openReturnModal(
-                                                                    sale,
-                                                                )
-                                                            }
-                                                            className="mt-auto px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition-colors"
-                                                        >
-                                                            Return
-                                                        </button>
+                                                        {sale.is_payed && (
+                                                            <button
+                                                                onClick={() =>
+                                                                    openReturnModal(
+                                                                        sale,
+                                                                    )
+                                                                }
+                                                                className="mt-auto px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition-colors"
+                                                            >
+                                                                Return
+                                                            </button>
+                                                        )}
                                                     </div>
                                                 ))}
                                             </div>
@@ -1723,16 +1725,6 @@ export default function StockDashboard({
                                                         }}
                                                     >
                                                         Pay
-                                                    </button>
-                                                    <button
-                                                        className="mt-2 px-4 py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600 transition-colors font-bold"
-                                                        onClick={() =>
-                                                            openReturnModal(
-                                                                sale,
-                                                            )
-                                                        }
-                                                    >
-                                                        Return
                                                     </button>
                                                 </div>
                                             ))}
