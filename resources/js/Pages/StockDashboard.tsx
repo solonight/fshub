@@ -405,11 +405,24 @@ export default function StockDashboard({
             (sum: number, sale: any) => sum + calculateToPay(sale),
             0,
         );
-        paidAmount = filteredPaid.reduce(
-            (sum: number, sale: any) =>
-                sum + (parseFloat(sale.total_amount) || 0),
+        const partialPaymentsFromUnpaid = filteredUnpaid.reduce(
+            (sum: number, sale: any) => {
+                const paidAmount =
+                    sale.payments?.reduce(
+                        (total: number, payment: any) =>
+                            total + (parseFloat(payment.amount) || 0),
+                        0,
+                    ) || 0;
+                return sum + paidAmount;
+            },
             0,
         );
+        paidAmount =
+            filteredPaid.reduce(
+                (sum: number, sale: any) =>
+                    sum + (parseFloat(sale.total_amount) || 0),
+                0,
+            ) + partialPaymentsFromUnpaid;
     } else {
         // For all stocks
         instockValue =
@@ -425,12 +438,22 @@ export default function StockDashboard({
                 (sum: number, sale: any) => sum + calculateToPay(sale),
                 0,
             ) || 0;
+        const partialPaymentsFromUnpaid =
+            unpaidSales?.reduce((sum: number, sale: any) => {
+                const paidAmount =
+                    sale.payments?.reduce(
+                        (total: number, payment: any) =>
+                            total + (parseFloat(payment.amount) || 0),
+                        0,
+                    ) || 0;
+                return sum + paidAmount;
+            }, 0) || 0;
         paidAmount =
-            paidSales?.reduce(
+            (paidSales?.reduce(
                 (sum: number, sale: any) =>
                     sum + (parseFloat(sale.total_amount) || 0),
                 0,
-            ) || 0;
+            ) || 0) + partialPaymentsFromUnpaid;
     }
 
     // Chart data shows categories with values > 0
