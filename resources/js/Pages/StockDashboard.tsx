@@ -77,6 +77,9 @@ export default function StockDashboard({
     const [returnPassword, setReturnPassword] = useState("");
     const [returnConfirmPassword, setReturnConfirmPassword] = useState("");
 
+    const getValidationMessage = (error: any) =>
+        Array.isArray(error) ? error[0] : error || "";
+
     // State for Update Stock form
     const [selectedStockForUpdate, setSelectedStockForUpdate] =
         useState<any>(null);
@@ -305,9 +308,11 @@ export default function StockDashboard({
                 },
                 onError: (errors) => {
                     setReturnError(
-                        errors.returned_quantity?.[0] ||
-                            errors.returned_amount?.[0] ||
-                            errors.notes?.[0] ||
+                        getValidationMessage(errors.password) ||
+                            getValidationMessage(errors.returned_quantity) ||
+                            getValidationMessage(errors.returned_amount) ||
+                            getValidationMessage(errors.notes) ||
+                            getValidationMessage(errors.error) ||
                             errors.message ||
                             "Unable to process return.",
                     );

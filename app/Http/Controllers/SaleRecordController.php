@@ -114,8 +114,19 @@ class SaleRecordController extends Controller
         $request->validate([
             'returned_quantity' => 'required|numeric|min:0.01',
             'returned_amount' => 'required|numeric|min:0.01',
-            'notes' => 'nullable|string'
+            'notes' => 'nullable|string',
+            'password' => 'required|string',
         ]);
+
+        if (!\Hash::check($request->password, auth()->user()->password)) {
+            if ($request->header('X-Inertia')) {
+                return back()->withErrors([
+                    'password' => 'Invalid password.',
+                ])->withInput();
+            }
+
+            return response()->json(['error' => 'Invalid password.'], 400);
+        }
 
         $saleRecord = SaleRecord::findOrFail($id);
 
