@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\FabricStock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class FabricStockController extends Controller
 {
@@ -74,12 +75,26 @@ class FabricStockController extends Controller
     }
 
     // Delete a fabric stock
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
         $fabricStock = FabricStock::findOrFail($id);
         // Authorization: Only the owner can delete
         if (auth()->id() !== $fabricStock->user_id) {
             return response()->json(['message' => 'Forbidden: You can only delete your own stocks.'], 403);
+        }
+
+        $request->validate([
+            'password' => 'required|string',
+        ]);
+
+        if (!Hash::check($request->password, auth()->user()->password)) {
+            if ($request->header('X-Inertia')) {
+                return back()->withErrors([
+                    'password' => 'Invalid password.',
+                ])->withInput();
+            }
+
+            return response()->json(['password' => ['Invalid password.']], 422);
         }
 
         // Cascading forced delete

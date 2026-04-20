@@ -80,6 +80,12 @@ export default function StockDashboard({
     const getValidationMessage = (error: any) =>
         Array.isArray(error) ? error[0] : error || "";
 
+    const getErrorMessage = (error: any) => {
+        if (!error) return "";
+        if (Array.isArray(error)) return error[0] || "";
+        return String(error);
+    };
+
     // State for Update Stock form
     const [selectedStockForUpdate, setSelectedStockForUpdate] =
         useState<any>(null);
@@ -111,8 +117,6 @@ export default function StockDashboard({
     // States for Delete Confirmation
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
     const [confirmDeletePassword, setConfirmDeletePassword] = useState("");
-    const [confirmDeleteConfirmPassword, setConfirmDeleteConfirmPassword] =
-        useState("");
     const [confirmDeleteError, setConfirmDeleteError] = useState("");
     const [selectedStockIdForDelete, setSelectedStockIdForDelete] = useState<
         number | null
@@ -146,9 +150,15 @@ export default function StockDashboard({
             onSuccess: () => {
                 setShowConfirmDelete(false);
                 setConfirmDeletePassword("");
-                setConfirmDeleteConfirmPassword("");
                 setConfirmDeleteError("");
                 setSelectedStockIdForDelete(null);
+            },
+            onError: (errors: any) => {
+                setConfirmDeleteError(
+                    getErrorMessage(errors.password) ||
+                        getErrorMessage(errors.message) ||
+                        "Invalid password",
+                );
             },
         });
     };
@@ -2138,7 +2148,7 @@ export default function StockDashboard({
                             </h3>
                             <div className="mb-4">
                                 <label className="block text-sm font-medium mb-1">
-                                    Password
+                                    Current password
                                 </label>
                                 <input
                                     type="password"
@@ -2146,23 +2156,7 @@ export default function StockDashboard({
                                     onChange={(e) =>
                                         setConfirmDeletePassword(e.target.value)
                                     }
-                                    placeholder="Enter your password"
-                                    className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium mb-1">
-                                    Confirm Password
-                                </label>
-                                <input
-                                    type="password"
-                                    value={confirmDeleteConfirmPassword}
-                                    onChange={(e) =>
-                                        setConfirmDeleteConfirmPassword(
-                                            e.target.value,
-                                        )
-                                    }
-                                    placeholder="Confirm your password"
+                                    placeholder="Enter your current password"
                                     className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
                                 />
                             </div>
@@ -2174,15 +2168,6 @@ export default function StockDashboard({
                             <div className="flex gap-2">
                                 <button
                                     onClick={() => {
-                                        if (
-                                            confirmDeletePassword !==
-                                            confirmDeleteConfirmPassword
-                                        ) {
-                                            setConfirmDeleteError(
-                                                "Passwords do not match",
-                                            );
-                                            return;
-                                        }
                                         if (!confirmDeletePassword.trim()) {
                                             setConfirmDeleteError(
                                                 "Password is required",
@@ -2205,7 +2190,6 @@ export default function StockDashboard({
                                     onClick={() => {
                                         setShowConfirmDelete(false);
                                         setConfirmDeletePassword("");
-                                        setConfirmDeleteConfirmPassword("");
                                         setConfirmDeleteError("");
                                         setSelectedStockIdForDelete(null);
                                     }}
