@@ -81,7 +81,20 @@ class FabricStockController extends Controller
         if (auth()->id() !== $fabricStock->user_id) {
             return response()->json(['message' => 'Forbidden: You can only delete your own stocks.'], 403);
         }
-        $fabricStock->delete();
+
+        // Cascading forced delete
+        // Delete all sale returns for each sale record
+        foreach ($fabricStock->saleRecords as $saleRecord) {
+            $saleRecord->returns()->delete();
+            $saleRecord->payments()->delete();
+        }
+        // Delete all sale records
+        $fabricStock->saleRecords()->delete();
+        // Delete all stock histories
+        $fabricStock->stockHistories()->delete();
+        // Finally, force delete the fabric stock
+        $fabricStock->forceDelete();
+
         return redirect()->route('stock.dashboard')->with('success', 'Deleted successfully');
     }
 }
