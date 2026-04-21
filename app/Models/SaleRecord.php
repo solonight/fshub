@@ -147,9 +147,9 @@ class SaleRecord extends Model
         });
 
         // When a sale record is updated, check if is_payed changed from false to true
-        static::updating(function ($saleRecord) {
-            // Only act if is_payed is being changed from false to true
-            if ($saleRecord->isDirty('is_payed') && $saleRecord->is_payed && !$saleRecord->getOriginal('is_payed')) {
+        static::updated(function ($saleRecord) {
+            // Only act if is_payed was changed from false to true
+            if ($saleRecord->wasChanged('is_payed') && $saleRecord->is_payed) {
                 $stock = $saleRecord->stock;
                 if ($stock) {
                     \App\Models\StockHistory::create([
@@ -162,6 +162,9 @@ class SaleRecord extends Model
                         'customer_name' => $saleRecord->customer_name,
                         'customer_phone' => $saleRecord->customer_phone,
                     ]);
+                    
+                    // Save the stock to trigger auto-delete check via FabricStock boot
+                    $stock->save();
                 }
             }
         });
