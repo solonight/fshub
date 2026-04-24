@@ -398,6 +398,11 @@ export default function StockDashboard({
         );
     };
 
+    const chartStocks =
+        fabricStocks?.data?.filter(
+            (stock: any) => parseFloat(stock.available_quantity) > 0,
+        ) || [];
+
     // Calculate dynamic data for pie chart (amounts)
     let instockValue: number;
     let unpaidAmount: number;
@@ -441,20 +446,28 @@ export default function StockDashboard({
     } else {
         // For all stocks
         instockValue =
-            fabricStocks?.data?.reduce(
+            chartStocks.reduce(
                 (sum: number, stock: any) =>
                     sum +
                     (stock.available_quantity || 0) *
                         (parseFloat(stock.price_per_unit) || 0),
                 0,
             ) || 0;
-        unpaidAmount =
-            unpaidSales?.reduce(
-                (sum: number, sale: any) => sum + calculateToPay(sale),
-                0,
-            ) || 0;
-        const partialPaymentsFromUnpaid =
-            unpaidSales?.reduce((sum: number, sale: any) => {
+        const chartStockIds = chartStocks.map((stock: any) => stock.stock_id);
+        const filteredUnpaid =
+            unpaidSales?.filter((sale: any) =>
+                chartStockIds.includes(sale.stock_id),
+            ) || [];
+        const filteredPaid =
+            paidSales?.filter((sale: any) =>
+                chartStockIds.includes(sale.stock_id),
+            ) || [];
+        unpaidAmount = filteredUnpaid.reduce(
+            (sum: number, sale: any) => sum + calculateToPay(sale),
+            0,
+        );
+        const partialPaymentsFromUnpaid = filteredUnpaid.reduce(
+            (sum: number, sale: any) => {
                 const paidAmount =
                     sale.payments?.reduce(
                         (total: number, payment: any) =>
@@ -462,13 +475,15 @@ export default function StockDashboard({
                         0,
                     ) || 0;
                 return sum + paidAmount;
-            }, 0) || 0;
+            },
+            0,
+        );
         paidAmount =
-            (paidSales?.reduce(
+            filteredPaid.reduce(
                 (sum: number, sale: any) =>
                     sum + (parseFloat(sale.total_amount) || 0),
                 0,
-            ) || 0) + partialPaymentsFromUnpaid;
+            ) + partialPaymentsFromUnpaid;
     }
 
     // Chart data shows categories with values > 0
@@ -815,18 +830,16 @@ export default function StockDashboard({
                                             className="w-full sm:w-60 border rounded px-3 py-2 text-[#1D1B1B] bg-white dark:bg-[#232323] dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 font-semibold shadow text-center"
                                         >
                                             <option value="">All Stocks</option>
-                                            {fabricStocks?.data?.map(
-                                                (stock: any) => (
-                                                    <option
-                                                        key={stock.stock_id}
-                                                        value={stock.stock_id}
-                                                    >
-                                                        Stock #{stock.stock_id}{" "}
-                                                        - {stock.fabric_type}{" "}
-                                                        {stock.color}
-                                                    </option>
-                                                ),
-                                            )}
+                                            {chartStocks.map((stock: any) => (
+                                                <option
+                                                    key={stock.stock_id}
+                                                    value={stock.stock_id}
+                                                >
+                                                    Stock #{stock.stock_id} -{" "}
+                                                    {stock.fabric_type}{" "}
+                                                    {stock.color}
+                                                </option>
+                                            ))}
                                         </select>
                                     )}
                                     {!showPieChart && (

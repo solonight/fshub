@@ -95,7 +95,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth', 'role:StockOwner'])->group(function () {
     Route::get('/stock-dashboard', function () {
         $user = Auth::user();
-        $fabricStocks = \App\Models\FabricStock::where('user_id', $user->id)->orderByDesc('created_at')->paginate(20);
+        $fabricStocks = \App\Models\FabricStock::where('user_id', $user->id)
+            ->orderByDesc('created_at')
+            ->paginate(20);
         $unpaidSales = \App\Models\SaleRecord::where('user_id', $user->id)
             ->where('is_payed', false)
             ->with(['payments', 'returns'])
