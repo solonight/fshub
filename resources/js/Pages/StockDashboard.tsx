@@ -1781,7 +1781,7 @@ export default function StockDashboard({
                                         ) : stockHistories &&
                                           Object.keys(stockHistories).length >
                                               0 ? (
-                                            <div className="space-y-4">
+                                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                                                 {Object.entries(
                                                     stockHistories,
                                                 ).map(
