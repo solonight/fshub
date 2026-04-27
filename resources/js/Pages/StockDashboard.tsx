@@ -152,6 +152,7 @@ export default function StockDashboard({
                 setConfirmDeletePassword("");
                 setConfirmDeleteError("");
                 setSelectedStockIdForDelete(null);
+                router.reload();
             },
             onError: (errors: any) => {
                 setConfirmDeleteError(
@@ -187,6 +188,7 @@ export default function StockDashboard({
             {
                 onSuccess: () => {
                     setSelectedStockForUpdate(null);
+                    router.reload();
                 },
             },
         );
@@ -199,6 +201,7 @@ export default function StockDashboard({
             onSuccess: () => {
                 reset();
                 setShowForm(false);
+                router.reload();
             },
         });
     };
