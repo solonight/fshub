@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 // @ts-ignore
 import InputMask from "react-input-mask";
@@ -382,8 +382,20 @@ export default function StockDashboard({
     const [loadingHistories, setLoadingHistories] = useState(false);
 
     // State for selected stock in chart
-    const [selectedStockForChart, setSelectedStockForChart] =
-        useState<any>(null);
+    const [selectedStockForChartId, setSelectedStockForChartId] = useState<
+        number | null
+    >(null);
+    const selectedStockForChart = useMemo(() => {
+        if (!selectedStockForChartId) {
+            return null;
+        }
+        return (
+            fabricStocks?.data?.find(
+                (stock: any) => stock.stock_id === selectedStockForChartId,
+            ) || null
+        );
+    }, [selectedStockForChartId, fabricStocks]);
+
     useEffect(() => {
         setLoadingHistories(true);
         axios
@@ -808,25 +820,17 @@ export default function StockDashboard({
                                     {showPieChart && (
                                         <select
                                             value={
-                                                selectedStockForChart
-                                                    ? selectedStockForChart.stock_id
-                                                    : ""
+                                                selectedStockForChartId ?? ""
                                             }
                                             onChange={(e) => {
                                                 const id = e.target.value;
                                                 if (id === "") {
-                                                    setSelectedStockForChart(
+                                                    setSelectedStockForChartId(
                                                         null,
                                                     );
                                                 } else {
-                                                    const stock =
-                                                        fabricStocks?.data?.find(
-                                                            (s: any) =>
-                                                                s.stock_id ==
-                                                                id,
-                                                        );
-                                                    setSelectedStockForChart(
-                                                        stock || null,
+                                                    setSelectedStockForChartId(
+                                                        Number(id),
                                                     );
                                                 }
                                             }}
