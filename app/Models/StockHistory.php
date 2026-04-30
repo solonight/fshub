@@ -55,9 +55,9 @@ class StockHistory extends Model
         parent::boot();
 
         static::creating(function ($history) {
-            // Capture snapshot data when creating history
+            // Capture snapshot data when creating history, even if the stock has just been soft-deleted
             if ($history->stock_id) {
-                $stock = FabricStock::find($history->stock_id);
+                $stock = FabricStock::withTrashed()->find($history->stock_id);
                 if ($stock) {
                     $history->fabric_type_snapshot = $stock->fabric_type;
                     $history->color_snapshot = $stock->color;
