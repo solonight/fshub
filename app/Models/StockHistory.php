@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\FabricStock;
+use App\Models\SaleRecord;
 
 class StockHistory extends Model
 {
@@ -24,6 +26,7 @@ class StockHistory extends Model
         'fabric_type_snapshot',
         'color_snapshot',
         'price_per_unit_snapshot',
+        'total_amount_snapshot',
         'is_payed',
         'customer_name',
         'customer_phone',
@@ -32,6 +35,7 @@ class StockHistory extends Model
     protected $casts = [
         'quantity' => 'decimal:2',
         'price_per_unit_snapshot' => 'decimal:2',
+        'total_amount_snapshot' => 'decimal:2',
         'is_payed' => 'boolean'
     ];
 
@@ -62,6 +66,13 @@ class StockHistory extends Model
                     $history->fabric_type_snapshot = $stock->fabric_type;
                     $history->color_snapshot = $stock->color;
                     $history->price_per_unit_snapshot = $stock->price_per_unit;
+                }
+            }
+
+            if ($history->reference_id) {
+                $saleRecord = SaleRecord::find($history->reference_id);
+                if ($saleRecord) {
+                    $history->total_amount_snapshot = $saleRecord->total_amount;
                 }
             }
         });

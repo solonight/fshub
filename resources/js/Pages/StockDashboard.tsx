@@ -1904,9 +1904,27 @@ export default function StockDashboard({
                                                                                         Price
                                                                                         Per
                                                                                         Unit:{" "}
-                                                                                        {history.price_per_unit_snapshot
+                                                                                        {history.price_per_unit_snapshot !=
+                                                                                        null
                                                                                             ? `${Number(
                                                                                                   history.price_per_unit_snapshot,
+                                                                                              )
+                                                                                                  .toLocaleString(
+                                                                                                      "en-US",
+                                                                                                  )
+                                                                                                  .replace(
+                                                                                                      /,/g,
+                                                                                                      ".",
+                                                                                                  )} MAD`
+                                                                                            : "-"}
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        Total
+                                                                                        Amount:{" "}
+                                                                                        {history.total_amount_snapshot !=
+                                                                                        null
+                                                                                            ? `${Number(
+                                                                                                  history.total_amount_snapshot,
                                                                                               )
                                                                                                   .toLocaleString(
                                                                                                       "en-US",

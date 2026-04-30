@@ -37,6 +37,7 @@ return new class extends Migration
             $table->string('fabric_type_snapshot')->nullable();
             $table->string('color_snapshot')->nullable();
             $table->decimal('price_per_unit_snapshot', 10, 2)->nullable();
+            $table->decimal('total_amount_snapshot', 10, 2)->nullable();
 
             // Customer details
             $table->string('customer_name')->nullable();
