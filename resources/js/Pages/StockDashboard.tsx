@@ -136,6 +136,7 @@ export default function StockDashboard({
                     setConfirmPasswordError("");
                     setSelectedSale(null);
                     setPaymentAmount("");
+                    loadStockHistories();
                     router.reload();
                 },
             },
@@ -152,6 +153,7 @@ export default function StockDashboard({
                 setConfirmDeletePassword("");
                 setConfirmDeleteError("");
                 setSelectedStockIdForDelete(null);
+                loadStockHistories();
                 router.reload();
             },
             onError: (errors: any) => {
@@ -188,6 +190,7 @@ export default function StockDashboard({
             {
                 onSuccess: () => {
                     setSelectedStockForUpdate(null);
+                    loadStockHistories();
                     router.reload();
                 },
             },
@@ -201,6 +204,7 @@ export default function StockDashboard({
             onSuccess: () => {
                 reset();
                 setShowForm(false);
+                loadStockHistories();
                 router.reload();
             },
         });
@@ -236,6 +240,7 @@ export default function StockDashboard({
                         sale_date: "",
                     });
                     setSelectedStockForSale(null);
+                    loadStockHistories();
                     router.reload();
                 },
                 onError: (errors) => {
@@ -317,6 +322,7 @@ export default function StockDashboard({
                 preserveScroll: true,
                 onSuccess: () => {
                     closeReturnModal();
+                    loadStockHistories();
                     router.reload();
                 },
                 onError: (errors) => {
@@ -363,6 +369,7 @@ export default function StockDashboard({
                     setPaymentError("");
                     setSelectedSale(null);
                     setPaymentAmount("");
+                    loadStockHistories();
                     router.reload();
                 },
                 onError: (errors) => {
@@ -381,6 +388,17 @@ export default function StockDashboard({
     const [expandedStockIds, setExpandedStockIds] = useState<number[]>([]);
     const [loadingHistories, setLoadingHistories] = useState(false);
 
+    // Function to load stock histories
+    const loadStockHistories = () => {
+        setLoadingHistories(true);
+        axios
+            .get("/user-stock-histories")
+            .then((res) => {
+                setStockHistories(res.data);
+            })
+            .finally(() => setLoadingHistories(false));
+    };
+
     // State for selected stock in chart
     const [selectedStockForChartId, setSelectedStockForChartId] = useState<
         number | null
@@ -397,13 +415,7 @@ export default function StockDashboard({
     }, [selectedStockForChartId, fabricStocks]);
 
     useEffect(() => {
-        setLoadingHistories(true);
-        axios
-            .get("/user-stock-histories")
-            .then((res) => {
-                setStockHistories(res.data);
-            })
-            .finally(() => setLoadingHistories(false));
+        loadStockHistories();
     }, []);
     const toggleExpand = (stockId: number) => {
         setExpandedStockIds((prev) =>
