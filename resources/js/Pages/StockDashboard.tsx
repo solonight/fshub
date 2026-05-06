@@ -33,6 +33,16 @@ export default function StockDashboard({
         return `hsla(${hue}, 100%, 50%, 0.7)`;
     };
 
+    const getNetQuantitySold = (sale: any) => {
+        const sold = parseFloat(sale.quantity_sold) || 0;
+        const returned = (sale.returns || []).reduce(
+            (sum: number, ret: any) =>
+                sum + (parseFloat(ret.returned_quantity) || 0),
+            0,
+        );
+        return Math.max(0, sold - returned);
+    };
+
     // Delete handler for a stock
     const handleDelete = (stockId: number) => {
         setSelectedStockIdForDelete(stockId);
@@ -1572,7 +1582,9 @@ export default function StockDashboard({
                                                                 Quantity Sold:
                                                             </span>{" "}
                                                             {Number(
-                                                                sale.quantity_sold,
+                                                                getNetQuantitySold(
+                                                                    sale,
+                                                                ),
                                                             )
                                                                 .toLocaleString(
                                                                     "en-US",
@@ -1686,7 +1698,9 @@ export default function StockDashboard({
                                                             Quantity Sold:
                                                         </span>{" "}
                                                         {Number(
-                                                            sale.quantity_sold,
+                                                            getNetQuantitySold(
+                                                                sale,
+                                                            ),
                                                         )
                                                             .toLocaleString(
                                                                 "en-US",
