@@ -1071,6 +1071,20 @@ export default function StockDashboard({
                                                                         setShowSalesToReturn(
                                                                             true,
                                                                         );
+                                                                        setTimeout(
+                                                                            () =>
+                                                                                document
+                                                                                    .getElementById(
+                                                                                        "return-sale-section",
+                                                                                    )
+                                                                                    ?.scrollIntoView(
+                                                                                        {
+                                                                                            behavior:
+                                                                                                "smooth",
+                                                                                        },
+                                                                                    ),
+                                                                            100,
+                                                                        );
                                                                     }
                                                                 }}
                                                                 className="w-full sm:w-auto px-2 sm:px-3 py-1 bg-blue-500 text-white text-xs sm:text-sm rounded hover:bg-blue-600 transition-colors"
@@ -1534,7 +1548,10 @@ export default function StockDashboard({
                             )}
 
                             {showSalesToReturn && selectedStockForReturn && (
-                                <div className="mt-6 sm:mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow">
+                                <div
+                                    id="return-sale-section"
+                                    className="mt-6 sm:mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow"
+                                >
                                     <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
                                         Sales Records for Stock #
                                         {selectedStockForReturn.stock_id}
