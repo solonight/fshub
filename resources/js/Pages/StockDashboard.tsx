@@ -2004,6 +2004,10 @@ export default function StockDashboard({
                                                 No stock histories found.
                                             </div>
                                         )}
+
+                                        <h4 className="text-base sm:text-lg font-bold text-primary mb-1 sm:mb-2 mt-2 sm:mt-4 text-center">
+                                            History detailes
+                                        </h4>
                                     </div>
                                 )}
                         </>
