@@ -395,7 +395,7 @@ export default function StockDashboard({
 
     // Stock Histories State
     const [stockHistories, setStockHistories] = useState<any>({});
-    const [expandedStockIds, setExpandedStockIds] = useState<number[]>([]);
+    const [selectedStockId, setSelectedStockId] = useState<number | null>(null);
     const [loadingHistories, setLoadingHistories] = useState(false);
 
     // Function to load stock histories
@@ -428,11 +428,7 @@ export default function StockDashboard({
         loadStockHistories();
     }, []);
     const toggleExpand = (stockId: number) => {
-        setExpandedStockIds((prev) =>
-            prev.includes(stockId)
-                ? prev.filter((id) => id !== stockId)
-                : [...prev, stockId],
-        );
+        setSelectedStockId(selectedStockId === stockId ? null : stockId);
     };
 
     const chartStocks =
@@ -1836,10 +1832,9 @@ export default function StockDashboard({
                                                         <div key={stockId}>
                                                             <button
                                                                 className={`w-full text-left px-4 py-2 rounded font-semibold border border-primary bg-muted dark:bg-dark hover:bg-primary hover:text-white transition-colors ${
-                                                                    expandedStockIds.includes(
-                                                                        Number(
-                                                                            stockId,
-                                                                        ),
+                                                                    selectedStockId ===
+                                                                    Number(
+                                                                        stockId,
                                                                     )
                                                                         ? "bg-primary text-white"
                                                                         : ""
@@ -1869,132 +1864,6 @@ export default function StockDashboard({
                                                                     : ""}
                                                                 )
                                                             </button>
-                                                            {expandedStockIds.includes(
-                                                                Number(stockId),
-                                                            ) &&
-                                                                Array.isArray(
-                                                                    histories,
-                                                                ) && (
-                                                                    <div className="pl-6 pt-2">
-                                                                        {histories.map(
-                                                                            (
-                                                                                history: any,
-                                                                            ) => (
-                                                                                <div
-                                                                                    key={
-                                                                                        history.history_id
-                                                                                    }
-                                                                                    className="mb-4 p-4 rounded border border-gray-300 bg-gray-50 dark:bg-[#232323]"
-                                                                                >
-                                                                                    <div className="font-bold text-primary">
-                                                                                        Change
-                                                                                        Type:{" "}
-                                                                                        {
-                                                                                            history.change_type
-                                                                                        }
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        Quantity:{" "}
-                                                                                        {Number(
-                                                                                            history.quantity,
-                                                                                        )
-                                                                                            .toLocaleString(
-                                                                                                "en-US",
-                                                                                            )
-                                                                                            .replace(
-                                                                                                /,/g,
-                                                                                                ".",
-                                                                                            )}
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        Notes:{" "}
-                                                                                        {history.notes ||
-                                                                                            "-"}
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        Reference
-                                                                                        ID:{" "}
-                                                                                        {history.reference_id ||
-                                                                                            "-"}
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        Is
-                                                                                        Payed:{" "}
-                                                                                        {history.is_payed
-                                                                                            ? "Yes"
-                                                                                            : "No"}
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        Customer
-                                                                                        Name:{" "}
-                                                                                        {history.customer_name ||
-                                                                                            "-"}
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        Customer
-                                                                                        Phone:{" "}
-                                                                                        {history.customer_phone ||
-                                                                                            "-"}
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        Fabric
-                                                                                        Type:{" "}
-                                                                                        {history.fabric_type_snapshot ||
-                                                                                            "-"}
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        Color:{" "}
-                                                                                        {history.color_snapshot ||
-                                                                                            "-"}
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        Price
-                                                                                        Per
-                                                                                        Unit:{" "}
-                                                                                        {history.price_per_unit_snapshot !=
-                                                                                        null
-                                                                                            ? `${Number(
-                                                                                                  history.price_per_unit_snapshot,
-                                                                                              )
-                                                                                                  .toLocaleString(
-                                                                                                      "en-US",
-                                                                                                  )
-                                                                                                  .replace(
-                                                                                                      /,/g,
-                                                                                                      ".",
-                                                                                                  )} MAD`
-                                                                                            : "-"}
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        Total
-                                                                                        Amount:{" "}
-                                                                                        {history.total_amount_snapshot !=
-                                                                                        null
-                                                                                            ? `${Number(
-                                                                                                  history.total_amount_snapshot,
-                                                                                              )
-                                                                                                  .toLocaleString(
-                                                                                                      "en-US",
-                                                                                                  )
-                                                                                                  .replace(
-                                                                                                      /,/g,
-                                                                                                      ".",
-                                                                                                  )} MAD`
-                                                                                            : "-"}
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        Date:{" "}
-                                                                                        {history.created_at
-                                                                                            ? new Date(
-                                                                                                  history.created_at,
-                                                                                              ).toLocaleString()
-                                                                                            : "-"}
-                                                                                    </div>
-                                                                                </div>
-                                                                            ),
-                                                                        )}
-                                                                    </div>
-                                                                )}
                                                         </div>
                                                     ),
                                                 )}
@@ -2008,6 +1877,56 @@ export default function StockDashboard({
                                         <h4 className="text-base sm:text-lg font-bold text-primary mb-1 sm:mb-2 mt-2 sm:mt-4 text-center">
                                             History detailes
                                         </h4>
+                                        {selectedStockId && stockHistories[selectedStockId] && (
+                                            <div className="mt-4">
+                                                <h5 className="text-sm font-semibold mb-2">Details for Stock #{selectedStockId}</h5>
+                                                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                                    {stockHistories[selectedStockId].map((history: any) => (
+                                                        <div
+                                                            key={history.history_id}
+                                                            className="p-4 rounded border border-gray-300 bg-gray-50 dark:bg-[#232323]"
+                                                        >
+                                                            <div className="font-bold text-primary">
+                                                                Change Type: {history.change_type}
+                                                            </div>
+                                                            <div>
+                                                                Quantity: {Number(history.quantity).toLocaleString("en-US").replace(/,/g, ".")}
+                                                            </div>
+                                                            <div>
+                                                                Notes: {history.notes || "-"}
+                                                            </div>
+                                                            <div>
+                                                                Reference ID: {history.reference_id || "-"}
+                                                            </div>
+                                                            <div>
+                                                                Is Payed: {history.is_payed ? "Yes" : "No"}
+                                                            </div>
+                                                            <div>
+                                                                Customer Name: {history.customer_name || "-"}
+                                                            </div>
+                                                            <div>
+                                                                Customer Phone: {history.customer_phone || "-"}
+                                                            </div>
+                                                            <div>
+                                                                Fabric Type: {history.fabric_type_snapshot || "-"}
+                                                            </div>
+                                                            <div>
+                                                                Color: {history.color_snapshot || "-"}
+                                                            </div>
+                                                            <div>
+                                                                Price Per Unit: {history.price_per_unit_snapshot != null ? `${Number(history.price_per_unit_snapshot).toLocaleString("en-US").replace(/,/g, ".")} MAD` : "-"}
+                                                            </div>
+                                                            <div>
+                                                                Total Amount: {history.total_amount_snapshot != null ? `${Number(history.total_amount_snapshot).toLocaleString("en-US").replace(/,/g, ".")} MAD` : "-"}
+                                                            </div>
+                                                            <div>
+                                                                Date: {history.created_at ? new Date(history.created_at).toLocaleString() : "-"}
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                         </>
