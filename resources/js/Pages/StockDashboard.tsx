@@ -62,6 +62,7 @@ export default function StockDashboard({
 
     // State for Add Sale form
     const [selectedStockForSale, setSelectedStockForSale] = useState<any>(null);
+    const [showAddSaleModal, setShowAddSaleModal] = useState(false);
     const [saleForm, setSaleForm] = useState({
         customer_name: "",
         customer_phone: "",
@@ -99,6 +100,7 @@ export default function StockDashboard({
     // State for Update Stock form
     const [selectedStockForUpdate, setSelectedStockForUpdate] =
         useState<any>(null);
+    const [showUpdateStockModal, setShowUpdateStockModal] = useState(false);
     const [updateForm, setUpdateForm] = useState({
         fabric_type: "",
         stock_location: "",
@@ -200,6 +202,7 @@ export default function StockDashboard({
             {
                 onSuccess: () => {
                     setSelectedStockForUpdate(null);
+                    setShowUpdateStockModal(false);
                     loadStockHistories();
                     router.reload();
                 },
@@ -250,6 +253,7 @@ export default function StockDashboard({
                         sale_date: "",
                     });
                     setSelectedStockForSale(null);
+                    setShowAddSaleModal(false);
                     loadStockHistories();
                     router.reload();
                 },
@@ -286,6 +290,37 @@ export default function StockDashboard({
         setReturnPassword("");
         setReturnConfirmPassword("");
         setReturnError(null);
+    };
+
+    const closeAddSaleModal = () => {
+        setShowAddSaleModal(false);
+        setSelectedStockForSale(null);
+        setSaleForm({
+            customer_name: "",
+            customer_phone: "",
+            quantity_sold: "",
+            total_amount: "",
+            is_payed: false,
+            notes: "",
+            sale_date: "",
+        });
+        setSaleError(null);
+    };
+
+    const closeUpdateStockModal = () => {
+        setShowUpdateStockModal(false);
+        setSelectedStockForUpdate(null);
+        setUpdateForm({
+            fabric_type: "",
+            stock_location: "",
+            color: "",
+            price_per_unit: "",
+            total_quantity: "",
+            available_quantity: "",
+            description: "",
+            auto_delete: false,
+            samples_availability: false,
+        });
     };
 
     const handleReturnSubmit = (e: React.FormEvent) => {
@@ -1028,19 +1063,8 @@ export default function StockDashboard({
                                                                     setSelectedStockForSale(
                                                                         stock,
                                                                     );
-                                                                    setTimeout(
-                                                                        () =>
-                                                                            document
-                                                                                .getElementById(
-                                                                                    "add-sale-form",
-                                                                                )
-                                                                                ?.scrollIntoView(
-                                                                                    {
-                                                                                        behavior:
-                                                                                            "smooth",
-                                                                                    },
-                                                                                ),
-                                                                        100,
+                                                                    setShowAddSaleModal(
+                                                                        true,
                                                                     );
                                                                 }}
                                                                 className="w-full sm:w-auto px-2 sm:px-3 py-1 bg-green-500 text-white text-xs sm:text-sm rounded hover:bg-green-600 transition-colors"
@@ -1092,19 +1116,8 @@ export default function StockDashboard({
                                                                     handleUpdateClick(
                                                                         stock,
                                                                     );
-                                                                    setTimeout(
-                                                                        () =>
-                                                                            document
-                                                                                .getElementById(
-                                                                                    "update-stock-form",
-                                                                                )
-                                                                                ?.scrollIntoView(
-                                                                                    {
-                                                                                        behavior:
-                                                                                            "smooth",
-                                                                                    },
-                                                                                ),
-                                                                        100,
+                                                                    setShowUpdateStockModal(
+                                                                        true,
                                                                     );
                                                                 }}
                                                                 className="w-full sm:w-auto px-2 sm:px-3 py-1 bg-yellow-400 text-black text-xs sm:text-sm rounded hover:bg-yellow-500 transition-colors"
@@ -1128,420 +1141,8 @@ export default function StockDashboard({
                                     </div>
                                 )}
                             </div>
-                            {/* Add Sale Form Section (appears below Manage Your Stocks) */}
-                            {selectedStockForSale && (
-                                <div
-                                    id="add-sale-form"
-                                    className="mt-8 p-2 sm:p-6 bg-white dark:bg-[#232323] rounded-lg shadow w-full max-w-md mx-auto"
-                                >
-                                    <h3 className="text-base sm:text-lg font-bold text-green-600 mb-2 sm:mb-4 text-center">
-                                        Add Sale for Stock #
-                                        {selectedStockForSale.stock_id}
-                                    </h3>
-                                    <form
-                                        onSubmit={handleSaleSubmit}
-                                        className="space-y-4"
-                                    >
-                                        {/* customer_name */}
-                                        <div>
-                                            <label className="block text-xs sm:text-sm font-medium">
-                                                Customer Name
-                                            </label>
-                                            <input
-                                                type="text"
-                                                value={saleForm.customer_name}
-                                                onChange={(e) =>
-                                                    setSaleForm({
-                                                        ...saleForm,
-                                                        customer_name:
-                                                            e.target.value,
-                                                    })
-                                                }
-                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                                required
-                                            />
-                                        </div>
-                                        {/* customer_phone */}
-                                        <div>
-                                            <label className="block text-xs sm:text-sm font-medium">
-                                                Customer Phone
-                                            </label>
-                                            <InputMask
-                                                mask="+212 9 99 99 99 99"
-                                                maskChar={null}
-                                                id="customer_phone"
-                                                name="customer_phone"
-                                                type="tel"
-                                                value={saleForm.customer_phone}
-                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                                autoComplete="tel"
-                                                onChange={(
-                                                    e: React.ChangeEvent<HTMLInputElement>,
-                                                ) =>
-                                                    setSaleForm({
-                                                        ...saleForm,
-                                                        customer_phone:
-                                                            e.target.value,
-                                                    })
-                                                }
-                                                placeholder="+212 * ** ** ** **"
-                                            />
-                                        </div>
-                                        {/* quantity_sold */}
-                                        <div>
-                                            <label className="block text-xs sm:text-sm font-medium">
-                                                Quantity Sold
-                                            </label>
-                                            <input
-                                                type="number"
-                                                min="0.01"
-                                                step="0.01"
-                                                value={saleForm.quantity_sold}
-                                                onChange={(e) =>
-                                                    setSaleForm({
-                                                        ...saleForm,
-                                                        quantity_sold:
-                                                            e.target.value,
-                                                    })
-                                                }
-                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                                required
-                                            />
-                                        </div>
-                                        {/* total_amount */}
-                                        <div>
-                                            <label className="block text-xs sm:text-sm font-medium">
-                                                Total Amount (MAD)
-                                            </label>
-                                            <input
-                                                type="number"
-                                                min="0"
-                                                step="0.01"
-                                                value={saleForm.total_amount}
-                                                onChange={(e) =>
-                                                    setSaleForm({
-                                                        ...saleForm,
-                                                        total_amount:
-                                                            e.target.value,
-                                                    })
-                                                }
-                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                                required
-                                            />
-                                        </div>
-                                        {/* is_payed */}
-                                        <div className="flex items-center">
-                                            <input
-                                                type="checkbox"
-                                                checked={saleForm.is_payed}
-                                                onChange={(e) =>
-                                                    setSaleForm({
-                                                        ...saleForm,
-                                                        is_payed:
-                                                            e.target.checked,
-                                                    })
-                                                }
-                                                className="mr-2"
-                                            />
-                                            <label className="text-xs sm:text-sm">
-                                                Is Payed
-                                            </label>
-                                        </div>
-                                        {/* notes */}
-                                        <div>
-                                            <label className="block text-xs sm:text-sm font-medium">
-                                                Notes
-                                            </label>
-                                            <textarea
-                                                value={saleForm.notes}
-                                                onChange={(e) =>
-                                                    setSaleForm({
-                                                        ...saleForm,
-                                                        notes: e.target.value,
-                                                    })
-                                                }
-                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                            ></textarea>
-                                        </div>
-                                        {/* sale_date */}
-                                        <div>
-                                            <label className="block text-xs sm:text-sm font-medium">
-                                                Sale Date
-                                            </label>
-                                            <input
-                                                type="date"
-                                                value={saleForm.sale_date}
-                                                onChange={(e) =>
-                                                    setSaleForm({
-                                                        ...saleForm,
-                                                        sale_date:
-                                                            e.target.value,
-                                                    })
-                                                }
-                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                            />
-                                        </div>
-                                        {/* Display sale error message */}
-                                        {saleError && (
-                                            <div className="text-red-500 text-sm mt-2">
-                                                {saleError}
-                                            </div>
-                                        )}
-                                        <div className="flex gap-2">
-                                            <button
-                                                type="submit"
-                                                className="w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                                            >
-                                                Submit Sale
-                                            </button>
-                                            <button
-                                                type="button"
-                                                className="w-full px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
-                                                onClick={() =>
-                                                    setSelectedStockForSale(
-                                                        null,
-                                                    )
-                                                }
-                                            >
-                                                Cancel
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            )}
-                            {/* Update Stock Form Section (appears below Manage Your Stocks) */}
-                            {selectedStockForUpdate && (
-                                <div
-                                    id="update-stock-form"
-                                    className="mt-8 p-2 sm:p-6 bg-white dark:bg-yellow-100 rounded-lg shadow w-full max-w-md mx-auto"
-                                >
-                                    <h3 className="text-base sm:text-lg font-bold text-yellow-600 mb-2 sm:mb-4 text-center">
-                                        Update Stock #
-                                        {selectedStockForUpdate.stock_id}
-                                    </h3>
-                                    <form
-                                        onSubmit={handleUpdateSubmit}
-                                        className="space-y-4"
-                                    >
-                                        <div>
-                                            <label className="block text-xs sm:text-sm font-medium">
-                                                Fabric Type
-                                            </label>
-                                            <select
-                                                value={updateForm.fabric_type}
-                                                onChange={(e) =>
-                                                    setUpdateForm({
-                                                        ...updateForm,
-                                                        fabric_type:
-                                                            e.target.value,
-                                                    })
-                                                }
-                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                                required
-                                            >
-                                                <option value="">
-                                                    Select Fabric Type
-                                                </option>
-                                                <option value="Cotton">
-                                                    Cotton
-                                                </option>
-                                                <option value="Linen">
-                                                    Linen
-                                                </option>
-                                                <option value="Wool">
-                                                    Wool
-                                                </option>
-                                                <option value="Silk">
-                                                    Silk
-                                                </option>
-                                                <option value="Hemp">
-                                                    Hemp
-                                                </option>
-                                                <option value="Polyester">
-                                                    Polyester
-                                                </option>
-                                                <option value="Nylon">
-                                                    Nylon
-                                                </option>
-                                                <option value="Acrylic">
-                                                    Acrylic
-                                                </option>
-                                                <option value="Spandex">
-                                                    Spandex
-                                                </option>
-                                                <option value="Viscose/Rayon">
-                                                    Viscose/Rayon
-                                                </option>
-                                                <option value="Lyocell (Tencel)">
-                                                    Lyocell (Tencel)
-                                                </option>
-                                                <option value="Denim">
-                                                    Denim
-                                                </option>
-                                                <option value="Jersey">
-                                                    Jersey
-                                                </option>
-                                                <option value="Flannel">
-                                                    Flannel
-                                                </option>
-                                                <option value="Satin">
-                                                    Satin
-                                                </option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label className="block text-xs sm:text-sm font-medium">
-                                                Stock Location
-                                            </label>
-                                            <input
-                                                type="text"
-                                                value={
-                                                    updateForm.stock_location
-                                                }
-                                                onChange={(e) =>
-                                                    setUpdateForm({
-                                                        ...updateForm,
-                                                        stock_location:
-                                                            e.target.value,
-                                                    })
-                                                }
-                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-xs sm:text-sm font-medium">
-                                                Color
-                                            </label>
-                                            <input
-                                                type="text"
-                                                value={updateForm.color}
-                                                onChange={(e) =>
-                                                    setUpdateForm({
-                                                        ...updateForm,
-                                                        color: e.target.value,
-                                                    })
-                                                }
-                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                                required
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-xs sm:text-sm font-medium">
-                                                Price Per Unit (MAD/meter)
-                                            </label>
-                                            <input
-                                                type="number"
-                                                value={
-                                                    updateForm.price_per_unit
-                                                }
-                                                onChange={(e) =>
-                                                    setUpdateForm({
-                                                        ...updateForm,
-                                                        price_per_unit:
-                                                            e.target.value,
-                                                    })
-                                                }
-                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                                required
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-xs sm:text-sm font-medium">
-                                                Total Quantity
-                                            </label>
-                                            <input
-                                                type="number"
-                                                value={
-                                                    updateForm.total_quantity
-                                                }
-                                                onChange={(e) =>
-                                                    setUpdateForm({
-                                                        ...updateForm,
-                                                        total_quantity:
-                                                            e.target.value,
-                                                    })
-                                                }
-                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                                required
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-xs sm:text-sm font-medium">
-                                                Available Quantity
-                                            </label>
-                                            <input
-                                                type="number"
-                                                value={
-                                                    updateForm.available_quantity
-                                                }
-                                                onChange={(e) =>
-                                                    setUpdateForm({
-                                                        ...updateForm,
-                                                        available_quantity:
-                                                            e.target.value,
-                                                    })
-                                                }
-                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-xs sm:text-sm font-medium">
-                                                Description
-                                            </label>
-                                            <textarea
-                                                value={updateForm.description}
-                                                onChange={(e) =>
-                                                    setUpdateForm({
-                                                        ...updateForm,
-                                                        description:
-                                                            e.target.value,
-                                                    })
-                                                }
-                                                className="w-full border rounded px-2 py-2 text-[#1D1B1B] text-xs sm:text-base"
-                                            ></textarea>
-                                        </div>
-                                        <div className="flex items-center">
-                                            <input
-                                                type="checkbox"
-                                                checked={
-                                                    updateForm.samples_availability
-                                                }
-                                                onChange={(e) =>
-                                                    setUpdateForm({
-                                                        ...updateForm,
-                                                        samples_availability:
-                                                            e.target.checked,
-                                                    })
-                                                }
-                                                className="mr-2"
-                                            />
-                                            <label className="text-xs sm:text-sm">
-                                                Samples Availability
-                                            </label>
-                                        </div>
-                                        {/* Removed Auto Delete When Empty checkbox as requested */}
-                                        <div className="flex gap-2">
-                                            <button
-                                                type="submit"
-                                                className="w-full px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-                                            >
-                                                Update Stock
-                                            </button>
-                                            <button
-                                                type="button"
-                                                className="w-full px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
-                                                onClick={() =>
-                                                    setSelectedStockForUpdate(
-                                                        null,
-                                                    )
-                                                }
-                                            >
-                                                Cancel
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
-                            )}
+                            {/* Add Sale Form Section (appears below Manage Your Stocks) - Now in modal */}
+                            {/* Update Stock Form Section (appears below Manage Your Stocks) - Now in modal */}
 
                             {showSalesToReturn && selectedStockForReturn && (
                                 <div
@@ -1877,56 +1478,116 @@ export default function StockDashboard({
                                         <h4 className="text-base sm:text-lg font-bold text-primary mb-1 sm:mb-2 mt-2 sm:mt-4 text-center">
                                             History detailes
                                         </h4>
-                                        {selectedStockId && stockHistories[selectedStockId] && (
-                                            <div className="mt-4">
-                                                <h5 className="text-sm font-semibold mb-2">Details for Stock #{selectedStockId}</h5>
-                                                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                                    {stockHistories[selectedStockId].map((history: any) => (
-                                                        <div
-                                                            key={history.history_id}
-                                                            className="p-4 rounded border border-gray-300 bg-gray-50 dark:bg-[#232323]"
-                                                        >
-                                                            <div className="font-bold text-primary">
-                                                                Change Type: {history.change_type}
-                                                            </div>
-                                                            <div>
-                                                                Quantity: {Number(history.quantity).toLocaleString("en-US").replace(/,/g, ".")}
-                                                            </div>
-                                                            <div>
-                                                                Notes: {history.notes || "-"}
-                                                            </div>
-                                                            <div>
-                                                                Reference ID: {history.reference_id || "-"}
-                                                            </div>
-                                                            <div>
-                                                                Is Payed: {history.is_payed ? "Yes" : "No"}
-                                                            </div>
-                                                            <div>
-                                                                Customer Name: {history.customer_name || "-"}
-                                                            </div>
-                                                            <div>
-                                                                Customer Phone: {history.customer_phone || "-"}
-                                                            </div>
-                                                            <div>
-                                                                Fabric Type: {history.fabric_type_snapshot || "-"}
-                                                            </div>
-                                                            <div>
-                                                                Color: {history.color_snapshot || "-"}
-                                                            </div>
-                                                            <div>
-                                                                Price Per Unit: {history.price_per_unit_snapshot != null ? `${Number(history.price_per_unit_snapshot).toLocaleString("en-US").replace(/,/g, ".")} MAD` : "-"}
-                                                            </div>
-                                                            <div>
-                                                                Total Amount: {history.total_amount_snapshot != null ? `${Number(history.total_amount_snapshot).toLocaleString("en-US").replace(/,/g, ".")} MAD` : "-"}
-                                                            </div>
-                                                            <div>
-                                                                Date: {history.created_at ? new Date(history.created_at).toLocaleString() : "-"}
-                                                            </div>
-                                                        </div>
-                                                    ))}
+                                        {selectedStockId &&
+                                            stockHistories[selectedStockId] && (
+                                                <div className="mt-4">
+                                                    <h5 className="text-sm font-semibold mb-2">
+                                                        Details for Stock #
+                                                        {selectedStockId}
+                                                    </h5>
+                                                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                                        {stockHistories[
+                                                            selectedStockId
+                                                        ].map(
+                                                            (history: any) => (
+                                                                <div
+                                                                    key={
+                                                                        history.history_id
+                                                                    }
+                                                                    className="p-4 rounded border border-gray-300 bg-gray-50 dark:bg-[#232323]"
+                                                                >
+                                                                    <div className="font-bold text-primary">
+                                                                        Change
+                                                                        Type:{" "}
+                                                                        {
+                                                                            history.change_type
+                                                                        }
+                                                                    </div>
+                                                                    <div>
+                                                                        Quantity:{" "}
+                                                                        {Number(
+                                                                            history.quantity,
+                                                                        )
+                                                                            .toLocaleString(
+                                                                                "en-US",
+                                                                            )
+                                                                            .replace(
+                                                                                /,/g,
+                                                                                ".",
+                                                                            )}
+                                                                    </div>
+                                                                    <div>
+                                                                        Notes:{" "}
+                                                                        {history.notes ||
+                                                                            "-"}
+                                                                    </div>
+                                                                    <div>
+                                                                        Reference
+                                                                        ID:{" "}
+                                                                        {history.reference_id ||
+                                                                            "-"}
+                                                                    </div>
+                                                                    <div>
+                                                                        Is
+                                                                        Payed:{" "}
+                                                                        {history.is_payed
+                                                                            ? "Yes"
+                                                                            : "No"}
+                                                                    </div>
+                                                                    <div>
+                                                                        Customer
+                                                                        Name:{" "}
+                                                                        {history.customer_name ||
+                                                                            "-"}
+                                                                    </div>
+                                                                    <div>
+                                                                        Customer
+                                                                        Phone:{" "}
+                                                                        {history.customer_phone ||
+                                                                            "-"}
+                                                                    </div>
+                                                                    <div>
+                                                                        Fabric
+                                                                        Type:{" "}
+                                                                        {history.fabric_type_snapshot ||
+                                                                            "-"}
+                                                                    </div>
+                                                                    <div>
+                                                                        Color:{" "}
+                                                                        {history.color_snapshot ||
+                                                                            "-"}
+                                                                    </div>
+                                                                    <div>
+                                                                        Price
+                                                                        Per
+                                                                        Unit:{" "}
+                                                                        {history.price_per_unit_snapshot !=
+                                                                        null
+                                                                            ? `${Number(history.price_per_unit_snapshot).toLocaleString("en-US").replace(/,/g, ".")} MAD`
+                                                                            : "-"}
+                                                                    </div>
+                                                                    <div>
+                                                                        Total
+                                                                        Amount:{" "}
+                                                                        {history.total_amount_snapshot !=
+                                                                        null
+                                                                            ? `${Number(history.total_amount_snapshot).toLocaleString("en-US").replace(/,/g, ".")} MAD`
+                                                                            : "-"}
+                                                                    </div>
+                                                                    <div>
+                                                                        Date:{" "}
+                                                                        {history.created_at
+                                                                            ? new Date(
+                                                                                  history.created_at,
+                                                                              ).toLocaleString()
+                                                                            : "-"}
+                                                                    </div>
+                                                                </div>
+                                                            ),
+                                                        )}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        )}
+                                            )}
                                     </div>
                                 )}
                         </>
@@ -1936,7 +1597,7 @@ export default function StockDashboard({
                 {/* Return Sale Modal */}
                 {showReturnModal && selectedReturnSale && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                        <div className="bg-white dark:bg-[#232323] p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
+                        <div className="bg-white dark:bg-[#232323] p-6 rounded-lg shadow-lg max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
                             <h3 className="text-lg font-bold mb-4 text-center">
                                 Return Sale #{selectedReturnSale.record_id}
                             </h3>
@@ -2057,7 +1718,7 @@ export default function StockDashboard({
                 {/* Confirmation Modal for Marking as Paid */}
                 {showConfirmPaid && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                        <div className="bg-white dark:bg-[#232323] p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
+                        <div className="bg-white dark:bg-[#232323] p-6 rounded-lg shadow-lg max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
                             <h3 className="text-lg font-bold mb-4 text-center">
                                 Add Payment
                             </h3>
@@ -2146,7 +1807,7 @@ export default function StockDashboard({
                 {/* Confirmation Modal for Deleting Stock */}
                 {showConfirmDelete && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                        <div className="bg-white dark:bg-[#232323] p-6 rounded-lg shadow-lg max-w-md w-full mx-4">
+                        <div className="bg-white dark:bg-[#232323] p-6 rounded-lg shadow-lg max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
                             <h3 className="text-lg font-bold mb-4 text-center">
                                 Delete the stock
                             </h3>
@@ -2202,6 +1863,367 @@ export default function StockDashboard({
                                     Cancel
                                 </button>
                             </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Add Sale Modal */}
+                {showAddSaleModal && selectedStockForSale && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="bg-white dark:bg-[#232323] p-6 rounded-lg shadow-lg max-w-sm md:max-w-md lg:max-w-sm w-full mx-4 max-h-[90vh] overflow-y-auto">
+                            <h3 className="text-lg font-bold mb-4 text-center">
+                                Add Sale for Stock #
+                                {selectedStockForSale.stock_id}
+                            </h3>
+                            <form
+                                onSubmit={handleSaleSubmit}
+                                className="space-y-4"
+                            >
+                                {/* customer_name */}
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">
+                                        Customer Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={saleForm.customer_name}
+                                        onChange={(e) =>
+                                            setSaleForm({
+                                                ...saleForm,
+                                                customer_name: e.target.value,
+                                            })
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                        required
+                                    />
+                                </div>
+                                {/* customer_phone */}
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">
+                                        Customer Phone
+                                    </label>
+                                    <InputMask
+                                        mask="+212 9 99 99 99 99"
+                                        maskChar={null}
+                                        id="customer_phone"
+                                        name="customer_phone"
+                                        type="tel"
+                                        value={saleForm.customer_phone}
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                        autoComplete="tel"
+                                        onChange={(
+                                            e: React.ChangeEvent<HTMLInputElement>,
+                                        ) =>
+                                            setSaleForm({
+                                                ...saleForm,
+                                                customer_phone: e.target.value,
+                                            })
+                                        }
+                                        placeholder="+212 * ** ** ** **"
+                                    />
+                                </div>
+                                {/* quantity_sold */}
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">
+                                        Quantity Sold
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="0.01"
+                                        step="0.01"
+                                        value={saleForm.quantity_sold}
+                                        onChange={(e) =>
+                                            setSaleForm({
+                                                ...saleForm,
+                                                quantity_sold: e.target.value,
+                                            })
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                        required
+                                    />
+                                </div>
+                                {/* total_amount */}
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">
+                                        Total Amount (MAD)
+                                    </label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        step="0.01"
+                                        value={saleForm.total_amount}
+                                        onChange={(e) =>
+                                            setSaleForm({
+                                                ...saleForm,
+                                                total_amount: e.target.value,
+                                            })
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                        required
+                                    />
+                                </div>
+                                {/* is_payed */}
+                                <div className="flex items-center">
+                                    <input
+                                        type="checkbox"
+                                        checked={saleForm.is_payed}
+                                        onChange={(e) =>
+                                            setSaleForm({
+                                                ...saleForm,
+                                                is_payed: e.target.checked,
+                                            })
+                                        }
+                                        className="mr-2"
+                                    />
+                                    <label className="text-sm">Is Payed</label>
+                                </div>
+                                {/* notes */}
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">
+                                        Notes
+                                    </label>
+                                    <textarea
+                                        value={saleForm.notes}
+                                        onChange={(e) =>
+                                            setSaleForm({
+                                                ...saleForm,
+                                                notes: e.target.value,
+                                            })
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                        rows={3}
+                                    ></textarea>
+                                </div>
+                                {/* sale_date */}
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">
+                                        Sale Date
+                                    </label>
+                                    <input
+                                        type="date"
+                                        value={saleForm.sale_date}
+                                        onChange={(e) =>
+                                            setSaleForm({
+                                                ...saleForm,
+                                                sale_date: e.target.value,
+                                            })
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                    />
+                                </div>
+                                {/* Display sale error message */}
+                                {saleError && (
+                                    <div className="text-red-500 text-sm">
+                                        {saleError}
+                                    </div>
+                                )}
+                                <div className="flex gap-2">
+                                    <button
+                                        type="submit"
+                                        className="w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                                    >
+                                        Submit Sale
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="w-full px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+                                        onClick={closeAddSaleModal}
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
+
+                {/* Update Stock Modal */}
+                {showUpdateStockModal && selectedStockForUpdate && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="bg-white dark:bg-[#232323] p-6 rounded-lg shadow-lg max-w-sm md:max-w-md lg:max-w-sm w-full mx-4 max-h-[90vh] overflow-y-auto">
+                            <h3 className="text-lg font-bold mb-4 text-center">
+                                Update Stock #{selectedStockForUpdate.stock_id}
+                            </h3>
+                            <form
+                                onSubmit={handleUpdateSubmit}
+                                className="space-y-4"
+                            >
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">
+                                        Fabric Type
+                                    </label>
+                                    <select
+                                        value={updateForm.fabric_type}
+                                        onChange={(e) =>
+                                            setUpdateForm({
+                                                ...updateForm,
+                                                fabric_type: e.target.value,
+                                            })
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                        required
+                                    >
+                                        <option value="">
+                                            Select Fabric Type
+                                        </option>
+                                        <option value="Cotton">Cotton</option>
+                                        <option value="Linen">Linen</option>
+                                        <option value="Wool">Wool</option>
+                                        <option value="Silk">Silk</option>
+                                        <option value="Hemp">Hemp</option>
+                                        <option value="Polyester">
+                                            Polyester
+                                        </option>
+                                        <option value="Nylon">Nylon</option>
+                                        <option value="Acrylic">Acrylic</option>
+                                        <option value="Spandex">Spandex</option>
+                                        <option value="Viscose/Rayon">
+                                            Viscose/Rayon
+                                        </option>
+                                        <option value="Lyocell (Tencel)">
+                                            Lyocell (Tencel)
+                                        </option>
+                                        <option value="Denim">Denim</option>
+                                        <option value="Jersey">Jersey</option>
+                                        <option value="Flannel">Flannel</option>
+                                        <option value="Satin">Satin</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">
+                                        Stock Location
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={updateForm.stock_location}
+                                        onChange={(e) =>
+                                            setUpdateForm({
+                                                ...updateForm,
+                                                stock_location: e.target.value,
+                                            })
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">
+                                        Color
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={updateForm.color}
+                                        onChange={(e) =>
+                                            setUpdateForm({
+                                                ...updateForm,
+                                                color: e.target.value,
+                                            })
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">
+                                        Price Per Unit (MAD/meter)
+                                    </label>
+                                    <input
+                                        type="number"
+                                        value={updateForm.price_per_unit}
+                                        onChange={(e) =>
+                                            setUpdateForm({
+                                                ...updateForm,
+                                                price_per_unit: e.target.value,
+                                            })
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">
+                                        Total Quantity
+                                    </label>
+                                    <input
+                                        type="number"
+                                        value={updateForm.total_quantity}
+                                        onChange={(e) =>
+                                            setUpdateForm({
+                                                ...updateForm,
+                                                total_quantity: e.target.value,
+                                            })
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                        required
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">
+                                        Available Quantity
+                                    </label>
+                                    <input
+                                        type="number"
+                                        value={updateForm.available_quantity}
+                                        onChange={(e) =>
+                                            setUpdateForm({
+                                                ...updateForm,
+                                                available_quantity:
+                                                    e.target.value,
+                                            })
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium mb-1">
+                                        Description
+                                    </label>
+                                    <textarea
+                                        value={updateForm.description}
+                                        onChange={(e) =>
+                                            setUpdateForm({
+                                                ...updateForm,
+                                                description: e.target.value,
+                                            })
+                                        }
+                                        className="w-full border rounded px-2 py-2 text-[#1D1B1B]"
+                                        rows={3}
+                                    ></textarea>
+                                </div>
+                                <div className="flex items-center">
+                                    <input
+                                        type="checkbox"
+                                        checked={
+                                            updateForm.samples_availability
+                                        }
+                                        onChange={(e) =>
+                                            setUpdateForm({
+                                                ...updateForm,
+                                                samples_availability:
+                                                    e.target.checked,
+                                            })
+                                        }
+                                        className="mr-2"
+                                    />
+                                    <label className="text-sm">
+                                        Samples Availability
+                                    </label>
+                                </div>
+                                <div className="flex gap-2">
+                                    <button
+                                        type="submit"
+                                        className="w-full px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                                    >
+                                        Update Stock
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="w-full px-4 py-2 bg-gray-400 text-white rounded hover:bg-gray-500"
+                                        onClick={closeUpdateStockModal}
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 )}
