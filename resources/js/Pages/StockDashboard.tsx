@@ -637,6 +637,46 @@ export default function StockDashboard({
         data: series.data.slice(6, 12), // Jul-Dec
     }));
 
+    // Calculate quantities for the stock tracking summary
+    let totalQty = 0;
+    let availableQty = 0;
+    let soldQty = 0;
+
+    if (selectedStockForChart) {
+        // For selected stock
+        totalQty = parseFloat(selectedStockForChart.total_quantity) || 0;
+        availableQty =
+            parseFloat(selectedStockForChart.available_quantity) || 0;
+        const selectedStockSales = allSales.filter(
+            (sale: any) => sale.stock_id === selectedStockForChart.stock_id,
+        );
+        soldQty = selectedStockSales.reduce(
+            (sum: number, sale: any) => sum + getNetQuantitySold(sale),
+            0,
+        );
+    } else {
+        // For all stocks
+        totalQty =
+            fabricStocks?.data?.reduce(
+                (sum: number, stock: any) =>
+                    sum + (parseFloat(stock.total_quantity) || 0),
+                0,
+            ) || 0;
+        availableQty =
+            fabricStocks?.data?.reduce(
+                (sum: number, stock: any) =>
+                    sum + (parseFloat(stock.available_quantity) || 0),
+                0,
+            ) || 0;
+        const allStockSales = allSales.filter((sale: any) =>
+            chartStocks.map((s: any) => s.stock_id).includes(sale.stock_id),
+        );
+        soldQty = allStockSales.reduce(
+            (sum: number, sale: any) => sum + getNetQuantitySold(sale),
+            0,
+        );
+    }
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -950,6 +990,55 @@ export default function StockDashboard({
                                                 />
                                             </div>
                                         )}
+                                    </div>
+                                </div>
+                                {/* Stock Quantities Summary */}
+                                <div className="mt-6 p-4 bg-gradient-to-r from-[#2596be]/10 to-[#2596be]/5 dark:from-[#2596be]/20 dark:to-[#2596be]/10 rounded-lg border border-[#2596be]/30 dark:border-[#2596be]/50">
+                                    <div className="grid grid-cols-3 gap-4">
+                                        {/* Total Qty */}
+                                        <div className="text-center p-3 bg-white dark:bg-[#1D1B1B] rounded-lg shadow">
+                                            <div className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-300 mb-2">
+                                                Total Qty
+                                            </div>
+                                            <div className="text-lg sm:text-2xl font-bold text-orange-600">
+                                                {Number(totalQty)
+                                                    .toLocaleString("en-US")
+                                                    .replace(/,/g, ".")}
+                                            </div>
+                                            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                                meters
+                                            </div>
+                                        </div>
+
+                                        {/* Available Qty */}
+                                        <div className="text-center p-3 bg-white dark:bg-[#1D1B1B] rounded-lg shadow">
+                                            <div className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-300 mb-2">
+                                                Available Qty
+                                            </div>
+                                            <div className="text-lg sm:text-2xl font-bold text-[#2596be]">
+                                                {Number(availableQty)
+                                                    .toLocaleString("en-US")
+                                                    .replace(/,/g, ".")}
+                                            </div>
+                                            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                                meters
+                                            </div>
+                                        </div>
+
+                                        {/* Sold Qty */}
+                                        <div className="text-center p-3 bg-white dark:bg-[#1D1B1B] rounded-lg shadow">
+                                            <div className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-300 mb-2">
+                                                Sold Qty
+                                            </div>
+                                            <div className="text-lg sm:text-2xl font-bold text-green-600">
+                                                {Number(soldQty)
+                                                    .toLocaleString("en-US")
+                                                    .replace(/,/g, ".")}
+                                            </div>
+                                            <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                                meters
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
