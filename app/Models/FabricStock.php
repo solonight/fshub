@@ -33,18 +33,6 @@ class FabricStock extends Model
         'samples_availability' => 'boolean'
     ];
 
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::saved(function ($stock) {
-            // Prevent infinite recursion by checking if already being auto-deleted
-            if (!$stock->trashed() && $stock->shouldAutoDelete()) {
-                $stock->delete();
-            }
-        });
-    }
-
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -60,11 +48,4 @@ class FabricStock extends Model
         return $this->hasMany(StockHistory::class, 'stock_id');
     }
 
-    public function shouldAutoDelete()
-    { 
-        // Check if there are any unpaid sale records for this stock
-        $hasUnpaidSales = $this->saleRecords()->where('is_payed', false)->exists();
-        
-        return $this->auto_delete && $this->available_quantity <= 0 && !$hasUnpaidSales;
-    }
 }

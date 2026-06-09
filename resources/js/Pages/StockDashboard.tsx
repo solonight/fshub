@@ -468,8 +468,8 @@ export default function StockDashboard({
 
     const chartStocks =
         fabricStocks?.data?.filter(
-            (stock: any) => parseFloat(stock.available_quantity) > 0,
-        ) || [];
+            (stock: any) => parseFloat(stock.available_quantity) >= 0,
+        ) || []; // include sold-out stocks so the pie chart still shows them in the stock selector and tracking
 
     // Calculate dynamic data for pie chart (amounts)
     let instockValue: number;

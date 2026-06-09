@@ -138,11 +138,6 @@ class SaleRecord extends Model
                     ]);
                 }
 
-                // BEGINNER LOGIC: Auto-delete stock if needed
-                // Check if auto_delete is true and available_quantity is now 0 or less
-                if ($stock->shouldAutoDelete()) {
-                    $stock->delete(); // This will soft-delete the stock (move to trash)
-                }
             }
         });
 
@@ -162,9 +157,6 @@ class SaleRecord extends Model
                         'customer_name' => $saleRecord->customer_name,
                         'customer_phone' => $saleRecord->customer_phone,
                     ]);
-                    
-                    // Save the stock to trigger auto-delete check via FabricStock boot
-                    $stock->save();
                 }
             }
         });
