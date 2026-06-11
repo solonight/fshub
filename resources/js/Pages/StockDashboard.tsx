@@ -432,6 +432,139 @@ export default function StockDashboard({
     const [stockHistories, setStockHistories] = useState<any>({});
     const [selectedStockId, setSelectedStockId] = useState<number | null>(null);
     const [loadingHistories, setLoadingHistories] = useState(false);
+    // Filters for Stock Histories (name, phone, fabric type)
+    const [searchName, setSearchName] = useState<string>("");
+    const [searchPhone, setSearchPhone] = useState<string>("");
+    const [searchFabricType, setSearchFabricType] = useState<string>("");
+    const [filterName, setFilterName] = useState<string>("");
+    const [filterPhone, setFilterPhone] = useState<string>("");
+    const [filterFabricType, setFilterFabricType] = useState<string>("");
+    const [searchResults, setSearchResults] = useState<any[] | null>(null);
+
+    const handleSearchHistory = () => {
+        setFilterName(searchName);
+        setFilterPhone(searchPhone);
+        setFilterFabricType(searchFabricType);
+
+        const criteriaName = searchName.trim().toLowerCase();
+        const criteriaPhone = searchPhone.trim().toLowerCase();
+        const criteriaFabricType = searchFabricType.trim();
+
+        const results = Object.entries(stockHistories).flatMap(
+            ([stockId, histories]: [string, any]) =>
+                (histories || [])
+                    .filter((h: any) => {
+                        let ok = true;
+                        if (criteriaName) {
+                            ok =
+                                ok &&
+                                (h.customer_name || "")
+                                    .toString()
+                                    .toLowerCase()
+                                    .includes(criteriaName);
+                        }
+                        if (criteriaPhone) {
+                            ok =
+                                ok &&
+                                (h.customer_phone || "")
+                                    .toString()
+                                    .toLowerCase()
+                                    .includes(criteriaPhone);
+                        }
+                        if (criteriaFabricType) {
+                            ok =
+                                ok &&
+                                (h.fabric_type_snapshot || "").toString() ===
+                                    criteriaFabricType;
+                        }
+                        return ok;
+                    })
+                    .map((h: any) => ({ ...h, stock_id: Number(stockId) })),
+        );
+
+        setSearchResults(results);
+    };
+
+    const handleClearHistoryFilters = () => {
+        setSearchName("");
+        setSearchPhone("");
+        setSearchFabricType("");
+        setFilterName("");
+        setFilterPhone("");
+        setFilterFabricType("");
+        setSearchResults(null);
+    };
+
+    // Derived list of fabric types to populate the select
+    const fabricTypes = useMemo(() => {
+        if (selectedStockId && stockHistories[selectedStockId]) {
+            return Array.from(
+                new Set(
+                    stockHistories[selectedStockId]
+                        .map((h: any) => h.fabric_type_snapshot)
+                        .filter(Boolean),
+                ),
+            );
+        }
+        return (
+            fabricStocks?.data
+                ?.map((s: any) => s.fabric_type)
+                .filter(Boolean) || []
+        );
+    }, [selectedStockId, stockHistories, fabricStocks]);
+
+    // Filter histories for the selected stock
+    const filteredHistories = useMemo(() => {
+        if (!selectedStockId || !stockHistories[selectedStockId]) return [];
+        const list = stockHistories[selectedStockId] || [];
+        return list.filter((h: any) => {
+            let ok = true;
+            if (filterName && filterName.trim() !== "") {
+                ok =
+                    ok &&
+                    (h.customer_name || "")
+                        .toString()
+                        .toLowerCase()
+                        .includes(filterName.toLowerCase());
+            }
+            if (filterPhone && filterPhone.trim() !== "") {
+                ok =
+                    ok &&
+                    (h.customer_phone || "")
+                        .toString()
+                        .toLowerCase()
+                        .includes(filterPhone.toLowerCase());
+            }
+            if (filterFabricType && filterFabricType.trim() !== "") {
+                ok =
+                    ok &&
+                    (h.fabric_type_snapshot || "").toString() ===
+                        filterFabricType;
+            }
+            return ok;
+        });
+    }, [
+        selectedStockId,
+        stockHistories,
+        filterName,
+        filterPhone,
+        filterFabricType,
+    ]);
+
+    const hasSearchFilters =
+        filterName.trim() !== "" ||
+        filterPhone.trim() !== "" ||
+        filterFabricType.trim() !== "";
+
+    const currentHistories = useMemo(() => {
+        if (selectedStockId && stockHistories[selectedStockId]) {
+            return filteredHistories;
+        }
+        if (searchResults !== null) {
+            return searchResults;
+        }
+        return [];
+    }, [selectedStockId, stockHistories, filteredHistories, searchResults]);
 
     // Function to load stock histories
     const loadStockHistories = () => {
@@ -1507,6 +1640,90 @@ export default function StockDashboard({
                                         <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
                                             Stock Histories
                                         </h3>
+                                        <div className="mt-4 p-4 w-full md:w-full bg-gradient-to-r from-[#2596be]/10 to-[#2596be]/5 dark:from-[#2596be]/20 dark:to-[#2596be]/10 rounded-lg border border-[#2596be]/30 dark:border-[#2596be]/50 mb-6">
+                                            <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 items-end">
+                                                <div>
+                                                    <label className="text-xs font-semibold text-gray-600 dark:text-gray-300">
+                                                        Name
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        value={searchName}
+                                                        onChange={(e) =>
+                                                            setSearchName(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        placeholder="Customer name"
+                                                        className="w-full border rounded px-3 py-2 text-[#1D1B1B] bg-white dark:bg-[#232323] dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 font-semibold shadow"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="text-xs font-semibold text-gray-600 dark:text-gray-300">
+                                                        Phone
+                                                    </label>
+                                                    <input
+                                                        type="text"
+                                                        value={searchPhone}
+                                                        onChange={(e) =>
+                                                            setSearchPhone(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        placeholder="Phone"
+                                                        className="w-full border rounded px-3 py-2 text-[#1D1B1B] bg-white dark:bg-[#232323] dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 font-semibold shadow"
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="text-xs font-semibold text-gray-600 dark:text-gray-300">
+                                                        Fabric Type
+                                                    </label>
+                                                    <select
+                                                        value={searchFabricType}
+                                                        onChange={(e) =>
+                                                            setSearchFabricType(
+                                                                e.target.value,
+                                                            )
+                                                        }
+                                                        className="w-full border rounded px-3 py-2 text-[#1D1B1B] bg-white dark:bg-[#232323] dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 font-semibold shadow"
+                                                    >
+                                                        <option value="">
+                                                            All Fabric Types
+                                                        </option>
+                                                        {fabricTypes.map(
+                                                            (ft: any) => (
+                                                                <option
+                                                                    key={ft}
+                                                                    value={ft}
+                                                                >
+                                                                    {ft}
+                                                                </option>
+                                                            ),
+                                                        )}
+                                                    </select>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <button
+                                                        type="button"
+                                                        onClick={
+                                                            handleSearchHistory
+                                                        }
+                                                        className="w-full px-4 py-2 bg-[#2596be] text-white rounded hover:bg-[#1d7a9e] font-semibold shadow"
+                                                    >
+                                                        Search
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={
+                                                            handleClearHistoryFilters
+                                                        }
+                                                        className="w-full px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-white rounded hover:bg-gray-300 dark:hover:bg-gray-600 font-semibold shadow"
+                                                    >
+                                                        Clear
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                         {loadingHistories ? (
                                             <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
                                                 Loading stock histories...
@@ -1567,17 +1784,19 @@ export default function StockDashboard({
                                         <h4 className="text-base sm:text-lg font-bold text-primary mb-1 sm:mb-2 mt-2 sm:mt-4 text-center">
                                             History detailes
                                         </h4>
-                                        {selectedStockId &&
-                                            stockHistories[selectedStockId] && (
-                                                <div className="mt-4">
-                                                    <h5 className="text-sm font-semibold mb-2">
-                                                        Details for Stock #
-                                                        {selectedStockId}
-                                                    </h5>
-                                                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                                        {stockHistories[
-                                                            selectedStockId
-                                                        ].map(
+                                        {((selectedStockId &&
+                                            stockHistories[selectedStockId]) ||
+                                            searchResults !== null) && (
+                                            <div className="mt-4">
+                                                <h5 className="text-sm font-semibold mb-2">
+                                                    {selectedStockId
+                                                        ? `Details for Stock #${selectedStockId}`
+                                                        : "Search Results"}
+                                                </h5>
+                                                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                                    {currentHistories.length >
+                                                    0 ? (
+                                                        currentHistories.map(
                                                             (history: any) => (
                                                                 <div
                                                                     key={
@@ -1585,6 +1804,16 @@ export default function StockDashboard({
                                                                     }
                                                                     className="p-4 rounded border border-gray-300 bg-gray-50 dark:bg-[#232323]"
                                                                 >
+                                                                    {!selectedStockId &&
+                                                                        history.stock_id && (
+                                                                            <div className="text-xs font-semibold text-[#2596be] mb-2">
+                                                                                Stock
+                                                                                #
+                                                                                {
+                                                                                    history.stock_id
+                                                                                }
+                                                                            </div>
+                                                                        )}
                                                                     <div className="font-bold text-primary">
                                                                         Change
                                                                         Type:{" "}
@@ -1673,10 +1902,17 @@ export default function StockDashboard({
                                                                     </div>
                                                                 </div>
                                                             ),
-                                                        )}
-                                                    </div>
+                                                        )
+                                                    ) : (
+                                                        <div className="col-span-1 md:col-span-2 text-center text-gray-500 dark:text-gray-400 py-8 rounded-lg border border-dashed border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-[#171717]">
+                                                            No stock history
+                                                            records match your
+                                                            search criteria.
+                                                        </div>
+                                                    )}
                                                 </div>
-                                            )}
+                                            </div>
+                                        )}
                                     </div>
                                 )}
                         </>
