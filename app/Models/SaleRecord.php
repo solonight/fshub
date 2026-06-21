@@ -124,40 +124,46 @@ class SaleRecord extends Model
                 $stock->available_quantity -= $saleRecord->quantity_sold;
                 $stock->save();
 
-                // Only create StockHistory if the sale is payed
-                if ($saleRecord->is_payed) {
-                    \App\Models\StockHistory::create([
-                        'stock_id' => $stock->stock_id,
-                        'user_id' => $saleRecord->user_id,
-                        'change_type' => 'SALE',
-                        'quantity' => -$saleRecord->quantity_sold,
-                        'notes' => $saleRecord->notes,
-                        'reference_id' => $saleRecord->record_id,
-                        'customer_name' => $saleRecord->customer_name,
-                        'customer_phone' => $saleRecord->customer_phone,
-                    ]);
-                }
+                // Always create an initial StockHistory entry for the sale.
+                // The `is_payed` column will reflect the sale's current payment status (true/false).
+                \App\Models\StockHistory::create([
+                    'stock_id' => $stock->stock_id,
+                    'user_id' => $saleRecord->user_id,
+                    'change_type' => 'SALE',
+                    'quantity' => -$saleRecord->quantity_sold,
+                    'notes' => $saleRecord->notes,
+                    'reference_id' => $saleRecord->record_id,
+                    'customer_name' => $saleRecord->customer_name,
+                    'customer_phone' => $saleRecord->customer_phone,
+                    'is_payed' => $saleRecord->is_payed,
+                ]);
 
             }
         });
 
         // When a sale record is updated, check if is_payed changed from false to true
         static::updated(function ($saleRecord) {
-            // Only act if is_payed was changed from false to true
+            // If sale moved from unpaid -> paid, update the existing stock history entries
             if ($saleRecord->wasChanged('is_payed') && $saleRecord->is_payed) {
-                $stock = $saleRecord->stock;
-                if ($stock) {
-                    \App\Models\StockHistory::create([
-                        'stock_id' => $stock->stock_id,
-                        'user_id' => $saleRecord->user_id,
-                        'change_type' => 'SALE',
-                        'quantity' => -$saleRecord->quantity_sold,
-                        'notes' => $saleRecord->notes,
-                        'reference_id' => $saleRecord->record_id,
-                        'customer_name' => $saleRecord->customer_name,
-                        'customer_phone' => $saleRecord->customer_phone,
-                    ]);
-                }
+                // Mark any existing StockHistory entries linked to this sale as paid
+                \App\Models\StockHistory::where('reference_id', $saleRecord->record_id)
+                    ->update(['is_payed' => true]);
+
+                // Optionally, create a payment-completion event in history (uncomment if desired)
+                // $stock = $saleRecord->stock;
+                // if ($stock) {
+                //     \App\Models\StockHistory::create([
+                //         'stock_id' => $stock->stock_id,
+                //         'user_id' => $saleRecord->user_id,
+                //         'change_type' => 'PAYMENT_COMPLETED',
+                //         'quantity' => 0,
+                //         'notes' => 'Sale fully paid',
+                //         'reference_id' => $saleRecord->record_id,
+                //         'customer_name' => $saleRecord->customer_name,
+                //         'customer_phone' => $saleRecord->customer_phone,
+                //         'is_payed' => true,
+                //     ]);
+                // }
             }
         });
     }
