@@ -1876,10 +1876,10 @@ export default function StockDashboard({
                                                                         }
                                                                     >
                                                                         <div
-                                                                            className={`p-4 rounded border ${
+                                                                            className={`p-4 rounded border text-black dark:text-white ${
                                                                                 isSaleHistory
-                                                                                    ? "border-green-400 bg-green-50 hover:border-green-500 cursor-pointer"
-                                                                                    : "border-gray-300 bg-gray-50 dark:bg-[#232323]"
+                                                                                    ? "border-green-400 bg-green-50 dark:border-green-500 dark:bg-green-900/30 hover:border-green-500 cursor-pointer"
+                                                                                    : "border-gray-300 bg-gray-50 dark:border-gray-600 dark:bg-[#232323]"
                                                                             }`}
                                                                             onClick={() =>
                                                                                 isSaleHistory &&
@@ -1997,15 +1997,15 @@ export default function StockDashboard({
                                                                         </div>
                                                                         {isSaleHistory &&
                                                                             isExpanded && (
-                                                                                <div className="mt-3 rounded border border-green-500 bg-green-50 p-3">
-                                                                                    <div className="mb-2 text-sm font-semibold text-green-800">
+                                                                                <div className="mt-3 rounded border border-green-500 bg-green-50 dark:border-green-400 dark:bg-green-900/20 p-3">
+                                                                                    <div className="mb-2 text-sm font-semibold text-green-800 dark:text-green-200">
                                                                                         Partial
                                                                                         Payments
                                                                                     </div>
                                                                                     {loadingSalePayments[
                                                                                         saleId
                                                                                     ] ? (
-                                                                                        <div className="text-sm text-gray-700">
+                                                                                        <div className="text-sm text-gray-700 dark:text-gray-300">
                                                                                             Loading
                                                                                             payments...
                                                                                         </div>
@@ -2023,7 +2023,7 @@ export default function StockDashboard({
                                                                                                             payment.created_at ||
                                                                                                             Math.random()
                                                                                                         }
-                                                                                                        className="rounded border border-green-200 bg-white p-3 text-sm text-[#1D1B1B]"
+                                                                                                        className="rounded border border-green-200 bg-white dark:bg-[#171717] p-3 text-sm text-[#1D1B1B] dark:text-white"
                                                                                                     >
                                                                                                         <div className="font-semibold">
                                                                                                             Amount:{" "}
@@ -2056,7 +2056,7 @@ export default function StockDashboard({
                                                                                             )}
                                                                                         </div>
                                                                                     ) : (
-                                                                                        <div className="text-sm text-green-900">
+                                                                                        <div className="text-sm text-green-900 dark:text-green-200">
                                                                                             No
                                                                                             partial
                                                                                             payments
