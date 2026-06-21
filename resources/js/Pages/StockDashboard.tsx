@@ -1877,9 +1877,17 @@ export default function StockDashboard({
                                                                     >
                                                                         <div
                                                                             className={`p-4 rounded border text-black dark:text-white ${
+                                                                                history.is_payed ===
+                                                                                true
+                                                                                    ? "border-green-400 bg-green-50 dark:border-green-500 dark:bg-green-900/30 hover:border-green-500"
+                                                                                    : history.is_payed ===
+                                                                                        false
+                                                                                      ? "border-red-400 bg-red-50 dark:border-red-500 dark:bg-red-900/30 hover:border-red-500"
+                                                                                      : "border-gray-300 bg-gray-50 dark:border-gray-600 dark:bg-[#232323]"
+                                                                            } ${
                                                                                 isSaleHistory
-                                                                                    ? "border-green-400 bg-green-50 dark:border-green-500 dark:bg-green-900/30 hover:border-green-500 cursor-pointer"
-                                                                                    : "border-gray-300 bg-gray-50 dark:border-gray-600 dark:bg-[#232323]"
+                                                                                    ? "cursor-pointer"
+                                                                                    : ""
                                                                             }`}
                                                                             onClick={() =>
                                                                                 isSaleHistory &&
