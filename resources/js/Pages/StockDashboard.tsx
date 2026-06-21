@@ -432,6 +432,15 @@ export default function StockDashboard({
     const [stockHistories, setStockHistories] = useState<any>({});
     const [selectedStockId, setSelectedStockId] = useState<number | null>(null);
     const [loadingHistories, setLoadingHistories] = useState(false);
+    const [expandedSaleHistoryIds, setExpandedSaleHistoryIds] = useState<
+        number[]
+    >([]);
+    const [salePaymentsByHistoryId, setSalePaymentsByHistoryId] = useState<
+        Record<number, any[]>
+    >({});
+    const [loadingSalePayments, setLoadingSalePayments] = useState<
+        Record<number, boolean>
+    >({});
     // Filters for Stock Histories (name, phone, fabric type)
     const [searchName, setSearchName] = useState<string>("");
     const [searchPhone, setSearchPhone] = useState<string>("");
@@ -597,6 +606,46 @@ export default function StockDashboard({
     }, []);
     const toggleExpand = (stockId: number) => {
         setSelectedStockId(selectedStockId === stockId ? null : stockId);
+    };
+
+    const toggleSaleHistoryPayments = async (history: any) => {
+        const saleId = Number(history.reference_id);
+        if (!saleId) {
+            return;
+        }
+
+        const isExpanded = expandedSaleHistoryIds.includes(saleId);
+        if (isExpanded) {
+            setExpandedSaleHistoryIds((prev) =>
+                prev.filter((id) => id !== saleId),
+            );
+            return;
+        }
+
+        setExpandedSaleHistoryIds((prev) => [...prev, saleId]);
+
+        if (!salePaymentsByHistoryId[saleId]) {
+            setLoadingSalePayments((prev) => ({ ...prev, [saleId]: true }));
+            try {
+                const response = await axios.get(
+                    `/sales-records/${saleId}/payments`,
+                );
+                setSalePaymentsByHistoryId((prev) => ({
+                    ...prev,
+                    [saleId]: response.data || [],
+                }));
+            } catch (error) {
+                setSalePaymentsByHistoryId((prev) => ({
+                    ...prev,
+                    [saleId]: [],
+                }));
+            } finally {
+                setLoadingSalePayments((prev) => ({
+                    ...prev,
+                    [saleId]: false,
+                }));
+            }
+        }
     };
 
     const chartStocks =
@@ -1797,111 +1846,231 @@ export default function StockDashboard({
                                                     {currentHistories.length >
                                                     0 ? (
                                                         currentHistories.map(
-                                                            (history: any) => (
-                                                                <div
-                                                                    key={
-                                                                        history.history_id
-                                                                    }
-                                                                    className="p-4 rounded border border-gray-300 bg-gray-50 dark:bg-[#232323]"
-                                                                >
-                                                                    {!selectedStockId &&
-                                                                        history.stock_id && (
-                                                                            <div className="text-xs font-semibold text-[#2596be] mb-2">
-                                                                                Stock
-                                                                                #
+                                                            (history: any) => {
+                                                                const isSaleHistory =
+                                                                    String(
+                                                                        history.change_type,
+                                                                    )
+                                                                        .toUpperCase()
+                                                                        .trim() ===
+                                                                        "SALE" &&
+                                                                    history.reference_id;
+                                                                const saleId =
+                                                                    Number(
+                                                                        history.reference_id,
+                                                                    );
+                                                                const isExpanded =
+                                                                    isSaleHistory &&
+                                                                    expandedSaleHistoryIds.includes(
+                                                                        saleId,
+                                                                    );
+                                                                const payments =
+                                                                    salePaymentsByHistoryId[
+                                                                        saleId
+                                                                    ] || [];
+
+                                                                return (
+                                                                    <div
+                                                                        key={
+                                                                            history.history_id
+                                                                        }
+                                                                    >
+                                                                        <div
+                                                                            className={`p-4 rounded border ${
+                                                                                isSaleHistory
+                                                                                    ? "border-green-400 bg-green-50 hover:border-green-500 cursor-pointer"
+                                                                                    : "border-gray-300 bg-gray-50 dark:bg-[#232323]"
+                                                                            }`}
+                                                                            onClick={() =>
+                                                                                isSaleHistory &&
+                                                                                toggleSaleHistoryPayments(
+                                                                                    history,
+                                                                                )
+                                                                            }
+                                                                        >
+                                                                            {!selectedStockId &&
+                                                                                history.stock_id && (
+                                                                                    <div className="text-xs font-semibold text-[#2596be] mb-2">
+                                                                                        Stock
+                                                                                        #
+                                                                                        {
+                                                                                            history.stock_id
+                                                                                        }
+                                                                                    </div>
+                                                                                )}
+                                                                            <div className="font-bold text-primary">
+                                                                                Change
+                                                                                Type:{" "}
                                                                                 {
-                                                                                    history.stock_id
+                                                                                    history.change_type
                                                                                 }
                                                                             </div>
-                                                                        )}
-                                                                    <div className="font-bold text-primary">
-                                                                        Change
-                                                                        Type:{" "}
-                                                                        {
-                                                                            history.change_type
-                                                                        }
-                                                                    </div>
-                                                                    <div>
-                                                                        Quantity:{" "}
-                                                                        {Number(
-                                                                            history.quantity,
-                                                                        )
-                                                                            .toLocaleString(
-                                                                                "en-US",
-                                                                            )
-                                                                            .replace(
-                                                                                /,/g,
-                                                                                ".",
+                                                                            <div>
+                                                                                Quantity:{" "}
+                                                                                {Number(
+                                                                                    history.quantity,
+                                                                                )
+                                                                                    .toLocaleString(
+                                                                                        "en-US",
+                                                                                    )
+                                                                                    .replace(
+                                                                                        /,/g,
+                                                                                        ".",
+                                                                                    )}
+                                                                            </div>
+                                                                            <div>
+                                                                                Notes:{" "}
+                                                                                {history.notes ||
+                                                                                    "-"}
+                                                                            </div>
+                                                                            <div>
+                                                                                Reference
+                                                                                ID:{" "}
+                                                                                {history.reference_id ||
+                                                                                    "-"}
+                                                                            </div>
+                                                                            <div>
+                                                                                <span className="font-semibold">
+                                                                                    Is
+                                                                                    Payed:
+                                                                                </span>{" "}
+                                                                                <span
+                                                                                    className={`px-2 py-1 rounded text-xs font-semibold ${
+                                                                                        history.is_payed
+                                                                                            ? "bg-green-500 text-white"
+                                                                                            : "bg-red-500 text-white"
+                                                                                    }`}
+                                                                                >
+                                                                                    {history.is_payed
+                                                                                        ? "Yes"
+                                                                                        : "No"}
+                                                                                </span>
+                                                                            </div>
+                                                                            <div>
+                                                                                Customer
+                                                                                Name:{" "}
+                                                                                {history.customer_name ||
+                                                                                    "-"}
+                                                                            </div>
+                                                                            <div>
+                                                                                Customer
+                                                                                Phone:{" "}
+                                                                                {history.customer_phone ||
+                                                                                    "-"}
+                                                                            </div>
+                                                                            <div>
+                                                                                Fabric
+                                                                                Type:{" "}
+                                                                                {history.fabric_type_snapshot ||
+                                                                                    "-"}
+                                                                            </div>
+                                                                            <div>
+                                                                                Color:{" "}
+                                                                                {history.color_snapshot ||
+                                                                                    "-"}
+                                                                            </div>
+                                                                            <div>
+                                                                                Price
+                                                                                Per
+                                                                                Unit:{" "}
+                                                                                {history.price_per_unit_snapshot !=
+                                                                                null
+                                                                                    ? `${Number(history.price_per_unit_snapshot).toLocaleString("en-US").replace(/,/g, ".")} MAD`
+                                                                                    : "-"}
+                                                                            </div>
+                                                                            <div>
+                                                                                Total
+                                                                                Amount:{" "}
+                                                                                {history.total_amount_snapshot !=
+                                                                                null
+                                                                                    ? `${Number(history.total_amount_snapshot).toLocaleString("en-US").replace(/,/g, ".")} MAD`
+                                                                                    : "-"}
+                                                                            </div>
+                                                                            <div>
+                                                                                Date:{" "}
+                                                                                {history.created_at
+                                                                                    ? new Date(
+                                                                                          history.created_at,
+                                                                                      ).toLocaleString()
+                                                                                    : "-"}
+                                                                            </div>
+                                                                        </div>
+                                                                        {isSaleHistory &&
+                                                                            isExpanded && (
+                                                                                <div className="mt-3 rounded border border-green-500 bg-green-50 p-3">
+                                                                                    <div className="mb-2 text-sm font-semibold text-green-800">
+                                                                                        Partial
+                                                                                        Payments
+                                                                                    </div>
+                                                                                    {loadingSalePayments[
+                                                                                        saleId
+                                                                                    ] ? (
+                                                                                        <div className="text-sm text-gray-700">
+                                                                                            Loading
+                                                                                            payments...
+                                                                                        </div>
+                                                                                    ) : payments.length >
+                                                                                      0 ? (
+                                                                                        <div className="space-y-2">
+                                                                                            {payments.map(
+                                                                                                (
+                                                                                                    payment: any,
+                                                                                                ) => (
+                                                                                                    <div
+                                                                                                        key={
+                                                                                                            payment.id ||
+                                                                                                            payment.payment_id ||
+                                                                                                            payment.created_at ||
+                                                                                                            Math.random()
+                                                                                                        }
+                                                                                                        className="rounded border border-green-200 bg-white p-3 text-sm text-[#1D1B1B]"
+                                                                                                    >
+                                                                                                        <div className="font-semibold">
+                                                                                                            Amount:{" "}
+                                                                                                            {Number(
+                                                                                                                payment.amount,
+                                                                                                            )
+                                                                                                                .toLocaleString(
+                                                                                                                    "en-US",
+                                                                                                                )
+                                                                                                                .replace(
+                                                                                                                    /,/g,
+                                                                                                                    ".",
+                                                                                                                )}{" "}
+                                                                                                            MAD
+                                                                                                        </div>
+                                                                                                        <div>
+                                                                                                            Date:{" "}
+                                                                                                            {payment.payment_date
+                                                                                                                ? new Date(
+                                                                                                                      payment.payment_date,
+                                                                                                                  ).toLocaleDateString()
+                                                                                                                : payment.created_at
+                                                                                                                  ? new Date(
+                                                                                                                        payment.created_at,
+                                                                                                                    ).toLocaleDateString()
+                                                                                                                  : "-"}
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                ),
+                                                                                            )}
+                                                                                        </div>
+                                                                                    ) : (
+                                                                                        <div className="text-sm text-green-900">
+                                                                                            No
+                                                                                            partial
+                                                                                            payments
+                                                                                            found
+                                                                                            for
+                                                                                            this
+                                                                                            sale.
+                                                                                        </div>
+                                                                                    )}
+                                                                                </div>
                                                                             )}
                                                                     </div>
-                                                                    <div>
-                                                                        Notes:{" "}
-                                                                        {history.notes ||
-                                                                            "-"}
-                                                                    </div>
-                                                                    <div>
-                                                                        Reference
-                                                                        ID:{" "}
-                                                                        {history.reference_id ||
-                                                                            "-"}
-                                                                    </div>
-                                                                    <div>
-                                                                        Is
-                                                                        Payed:{" "}
-                                                                        {history.is_payed
-                                                                            ? "Yes"
-                                                                            : "No"}
-                                                                    </div>
-                                                                    <div>
-                                                                        Customer
-                                                                        Name:{" "}
-                                                                        {history.customer_name ||
-                                                                            "-"}
-                                                                    </div>
-                                                                    <div>
-                                                                        Customer
-                                                                        Phone:{" "}
-                                                                        {history.customer_phone ||
-                                                                            "-"}
-                                                                    </div>
-                                                                    <div>
-                                                                        Fabric
-                                                                        Type:{" "}
-                                                                        {history.fabric_type_snapshot ||
-                                                                            "-"}
-                                                                    </div>
-                                                                    <div>
-                                                                        Color:{" "}
-                                                                        {history.color_snapshot ||
-                                                                            "-"}
-                                                                    </div>
-                                                                    <div>
-                                                                        Price
-                                                                        Per
-                                                                        Unit:{" "}
-                                                                        {history.price_per_unit_snapshot !=
-                                                                        null
-                                                                            ? `${Number(history.price_per_unit_snapshot).toLocaleString("en-US").replace(/,/g, ".")} MAD`
-                                                                            : "-"}
-                                                                    </div>
-                                                                    <div>
-                                                                        Total
-                                                                        Amount:{" "}
-                                                                        {history.total_amount_snapshot !=
-                                                                        null
-                                                                            ? `${Number(history.total_amount_snapshot).toLocaleString("en-US").replace(/,/g, ".")} MAD`
-                                                                            : "-"}
-                                                                    </div>
-                                                                    <div>
-                                                                        Date:{" "}
-                                                                        {history.created_at
-                                                                            ? new Date(
-                                                                                  history.created_at,
-                                                                              ).toLocaleString()
-                                                                            : "-"}
-                                                                    </div>
-                                                                </div>
-                                                            ),
+                                                                );
+                                                            },
                                                         )
                                                     ) : (
                                                         <div className="col-span-1 md:col-span-2 text-center text-gray-500 dark:text-gray-400 py-8 rounded-lg border border-dashed border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-[#171717]">
