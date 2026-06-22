@@ -139,6 +139,15 @@ class SaleRecord extends Model
                 ]);
 
             }
+
+            // If the sale is marked as paid when created, register the payment immediately
+            if ($saleRecord->is_payed && $saleRecord->total_amount > 0) {
+                \App\Models\Payment::create([
+                    'sale_record_id' => $saleRecord->record_id,
+                    'amount' => $saleRecord->total_amount,
+                    'payment_date' => now()->toDateString(),
+                ]);
+            }
         });
 
         // When a sale record is updated, check if is_payed changed from false to true
