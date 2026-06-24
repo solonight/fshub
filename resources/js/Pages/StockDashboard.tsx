@@ -1106,11 +1106,11 @@ export default function StockDashboard({
                                                     e.target.checked,
                                                 )
                                             }
-                                            className="h-4 w-4 text-[#2596be] rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-[#232323] mr-2"
+                                            className="h-4 w-4 text-[#2596be] rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-[#232323] mr-2 shadow-sm cursor-pointer"
                                         />
                                         <label
                                             htmlFor="show-sold-out-charts"
-                                            className="text-sm text-gray-700 dark:text-gray-300"
+                                            className="text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer"
                                         >
                                             Show sold-out chart
                                         </label>
@@ -1252,7 +1252,7 @@ export default function StockDashboard({
                                 <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
                                     Manage Your Stocks
                                 </h3>
-                                <div className="flex items-center justify-center mb-4 gap-2">
+                                <div className="flex items-center justify-start mb-4 gap-2">
                                     <input
                                         id="show-sold-out-stocks"
                                         type="checkbox"
@@ -1262,11 +1262,11 @@ export default function StockDashboard({
                                                 e.target.checked,
                                             )
                                         }
-                                        className="h-4 w-4 text-[#2596be] rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-[#232323]"
+                                        className="h-4 w-4 text-[#2596be] rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-[#232323] shadow-sm cursor-pointer"
                                     />
                                     <label
                                         htmlFor="show-sold-out-stocks"
-                                        className="text-sm text-gray-700 dark:text-gray-300"
+                                        className="text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer"
                                     >
                                         Show sold-out stocks
                                     </label>
