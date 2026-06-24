@@ -101,6 +101,7 @@ export default function StockDashboard({
     const [selectedStockForUpdate, setSelectedStockForUpdate] =
         useState<any>(null);
     const [showUpdateStockModal, setShowUpdateStockModal] = useState(false);
+    const [showSoldOutStocks, setShowSoldOutStocks] = useState(false);
     const [updateForm, setUpdateForm] = useState({
         fabric_type: "",
         stock_location: "",
@@ -1229,9 +1230,32 @@ export default function StockDashboard({
                                 <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
                                     Manage Your Stocks
                                 </h3>
+                                <div className="flex items-center justify-center mb-4 gap-2">
+                                    <input
+                                        id="show-sold-out-stocks"
+                                        type="checkbox"
+                                        checked={showSoldOutStocks}
+                                        onChange={(e) =>
+                                            setShowSoldOutStocks(
+                                                e.target.checked,
+                                            )
+                                        }
+                                        className="h-4 w-4 text-[#2596be] rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-[#232323]"
+                                    />
+                                    <label
+                                        htmlFor="show-sold-out-stocks"
+                                        className="text-sm text-gray-700 dark:text-gray-300"
+                                    >
+                                        Show sold-out stocks
+                                    </label>
+                                </div>
                                 {fabricStocks &&
                                 fabricStocks.data &&
-                                fabricStocks.data.length === 0 ? (
+                                fabricStocks.data.filter(
+                                    (stock: any) =>
+                                        showSoldOutStocks ||
+                                        Number(stock.available_quantity) !== 0,
+                                ).length === 0 ? (
                                     <div className="text-center text-gray-500 dark:text-gray-300 py-8 sm:py-12">
                                         No stocks found.
                                     </div>
@@ -1239,8 +1263,15 @@ export default function StockDashboard({
                                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                         {fabricStocks &&
                                             fabricStocks.data &&
-                                            fabricStocks.data.map(
-                                                (stock: any) => (
+                                            fabricStocks.data
+                                                .filter(
+                                                    (stock: any) =>
+                                                        showSoldOutStocks ||
+                                                        Number(
+                                                            stock.available_quantity,
+                                                        ) !== 0,
+                                                )
+                                                .map((stock: any) => (
                                                     <div
                                                         key={stock.stock_id}
                                                         className="bg-[#F5F5F5] dark:bg-[#1D1B1B] border border-[#2596be] rounded-lg p-4 shadow hover:shadow-lg transition-shadow flex flex-col"
@@ -1407,8 +1438,7 @@ export default function StockDashboard({
                                                             </button>
                                                         </div>
                                                     </div>
-                                                ),
-                                            )}
+                                                ))}
                                     </div>
                                 )}
                             </div>
