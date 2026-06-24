@@ -102,6 +102,7 @@ export default function StockDashboard({
         useState<any>(null);
     const [showUpdateStockModal, setShowUpdateStockModal] = useState(false);
     const [showSoldOutStocks, setShowSoldOutStocks] = useState(false);
+    const [showSoldOutCharts, setShowSoldOutCharts] = useState(false);
     const [updateForm, setUpdateForm] = useState({
         fabric_type: "",
         stock_location: "",
@@ -651,8 +652,10 @@ export default function StockDashboard({
 
     const chartStocks =
         fabricStocks?.data?.filter(
-            (stock: any) => parseFloat(stock.available_quantity) >= 0,
-        ) || []; // include sold-out stocks so the pie chart still shows them in the stock selector and tracking
+            (stock: any) =>
+                parseFloat(stock.available_quantity) >= 0 &&
+                (showSoldOutCharts || Number(stock.available_quantity) !== 0),
+        ) || []; // filter sold-out stocks from chart selector unless toggled on
 
     // Calculate dynamic data for pie chart (amounts)
     let instockValue: number;
@@ -1092,7 +1095,26 @@ export default function StockDashboard({
                                 <h3 className="text-base sm:text-lg font-bold text-primary mb-2 sm:mb-4 text-center">
                                     Stocks Tracking
                                 </h3>
-                                <div className="flex mb-4">
+                                <div className="flex mb-4 items-center gap-4">
+                                    <div className="flex items-center">
+                                        <input
+                                            id="show-sold-out-charts"
+                                            type="checkbox"
+                                            checked={showSoldOutCharts}
+                                            onChange={(e) =>
+                                                setShowSoldOutCharts(
+                                                    e.target.checked,
+                                                )
+                                            }
+                                            className="h-4 w-4 text-[#2596be] rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-[#232323] mr-2"
+                                        />
+                                        <label
+                                            htmlFor="show-sold-out-charts"
+                                            className="text-sm text-gray-700 dark:text-gray-300"
+                                        >
+                                            Show sold-out chart
+                                        </label>
+                                    </div>
                                     {showPieChart && (
                                         <select
                                             value={
